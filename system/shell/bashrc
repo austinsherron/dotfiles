@@ -1,0 +1,405 @@
+# added by Austin on 08/01/2016; for colors in bash
+
+#export CLICOLOR=1
+#export LSCOLORS=GxFxCxDxBxegedabagaced
+
+#export JQ_COLORS="1;36:0;39:0;39:0;39:0;32:1;39:1;39"
+ 
+# for git prompt, not sure when I added this
+# commented out by Austin on 05/01/2021 since oh my bash was installed
+
+# source ~/.git-prompt.sh
+# export GIT_PS1_SHOWDIRTYSTATE=1
+# export PS1='$(__git_ps1 "\n(%s)")\n\W [\!] $ '
+
+# added by Austin on 08/09/2016; for git branch autocompletion
+
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh"  ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+
+# added by Austin on 04/29/2021; for git autocompletion
+
+source ~/.git-completion.bash
+
+# added by Austin on 08/11/2016; shorter spotify command
+
+# alias spt="spotify"
+
+# gh aliases
+
+alias pr-list="gh pr ls --author \"@me\""
+# alias pr-todo="gh pr ls --search 'is:open is:pr review-requested:austinsherron archived:false'"
+alias pr-view="gh pr view ${1}"
+alias pr-cmts="gh pr view ${1} --comments"
+# alias pr-create="gh pr create -a \"@me\" -r \"sigmacomputing/infra\""
+
+# added by Austin on 04/29/2021; for kubectl autocompletion
+
+# source <(kubectl completion bash)
+# complete -F __start_kubectl skc
+
+# added by Austin on 05/11/2021; for pyenv
+
+# eval "$(pyenv init -)"
+
+# added by Austin on 08/15/2016; so git-complete only looks at local branches
+
+_git_checkout ()
+{
+	__git_has_doubledash && return
+
+	case "$cur" in
+	--conflict=*)
+		__gitcomp "diff3 merge" "" "${cur##--conflict=}"
+		;;
+	--*)
+		__gitcomp "
+			--quiet --ours --theirs --track --no-track --merge
+			--conflict= --orphan --patch
+			"
+		;;
+	*)
+		# check if --track, --no-track, or --no-guess was specified
+		# if so, disable DWIM mode
+		local flags="--track --no-track --no-guess" track=1
+		if [ -n "$(__git_find_on_cmdline "$flags")" ]; then
+			track=''
+		fi
+                if [ "$command" = "checkoutr"  ]; then
+                    __gitcomp_nl "$(__git_refs '' $track)"
+                else
+                    __gitcomp_nl "$(__git_heads '' $track)"
+                fi
+		;;
+	esac
+}
+
+# added by Austin on 12/11/2022 for proxmark3
+
+# PKG_CONFIG_PATH="/usr/local/Cellar/qt@5/5.15.7/lib/pkgconfig/"
+
+# export QT_PKG_CONFIG_QT5CORE=$(find /usr -name Qt5Core.pc 2>/dev/null)
+# chmod 666 $QT_PKG_CONFIG_QT5CORE
+# echo "moc_location=\${prefix}/bin/moc" >> $QT_PKG_CONFIG_QT5CORE
+# chmod 444 $QT_PKG_CONFIG_QT5CORE
+
+## aliases #####################################################################
+
+# added by Austin; misc aliases for convenience
+
+alias down="cd ~/Downloads"
+alias vol="cd /media"
+alias docs="cd ~/Documents"
+alias bashconf="vim ~/.bashrc"
+alias loadbashconf="source ~/.bashrc"
+alias loadtmuxconf="tmux source-file ~/.tmux.conf"
+alias tmuxconf="vim ~/.tmux.conf"
+alias loadtmuxconf="tmux source ~/.tmux.conf"
+alias gitconf="vim ~/.gitconfig"
+alias kubeconf="vim ~/.kube/config"
+# alias kubectl="kubecolor"
+# alias kc="kubecolor"
+alias wk="cd ~/Workspace"
+alias diff="colordiff"
+alias pbcopy='xsel --clipboard'
+alias pbpaste='xsel --clipboard >'
+# alias pip="pip3"
+# alias python="python3"
+# alias fix-veracrypt="sudo /usr/bin/kmutil unload -b io.macfuse.filesystems.macfuse"
+# alias keepassxc="/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli"
+
+# added by Austin, starting on 04/27/2021; misc sigma aliases for convenience
+
+## functions ###################################################################
+
+git-root() {
+    ROOT=`git rev-parse --show-toplevel`
+    cd "${ROOT}"
+}
+
+# switch() {
+#     repo="$(ls ~/sigma | fzf +i +m -e)"
+#     cd ~/sigma/${repo}
+# }
+
+# op-login() {
+#     eval $(op signin sigmacomputing)
+# }
+
+# veracrypt functions
+
+alias veracrypt="veracrypt --text"
+
+vc-mount() {
+    veracrypt --mount "${1}" --mount "${2}" --pim "${3}" --keyfiles "" --protect-hidden no --verbose
+}
+
+vc-dismount() {
+    veracrypt --dismount "${1}"
+}
+
+vc-dismount-all() {
+    vc-dismount
+}
+
+## known volumes
+
+vc-mount-vlt() {
+    vc-mount "/media/the.vole.viscount/DukeOfMoles/Encrypted" "/media/veracrypt1/" "0"
+}
+ 
+vc-dismount-vlt() {
+    vc-dismount "/media/the.vole.viscount/DukeOfMoles/Encrypted" 
+}
+
+vc-mount-bkup() {
+    vc-mount "/media/the.vole.viscount/DaneOfDucks/Encrypted" "/media/veracrypt2/Backups" "0"
+}
+
+vc-dismount-bkup() {
+    vc-dismount "/media/the.vole.viscount/DaneOfDucks/Encrypted" 
+}
+
+vc-mount-keys() {
+    vc-mount "/media/the.vole.viscount/BreakGlass/Encrypted" "/media/veracrypt2/Keys" "0"
+}
+
+vc-dismount-keys() {
+    vc-dismount "/media/the.vole.viscount/BreakGlass/Encrypted" 
+}
+
+# encrypted volume functions
+
+init-vlt() {
+    vc-mount-vlt
+}
+
+term-vlt() {
+    vc-dismount-vlt
+    sudo eject "/media/the.vole.viscount/DukeOfMoles"
+}
+ 
+init-bkup() {
+    vc-mount-bkup
+}
+
+term-bkup() {
+    vc-dismount-bkup
+    sudo eject "/media/the.vole.viscount/DaneOfDucks"
+}
+
+init-keys() {
+    fix-veracrypt
+    vc-mount-bkup
+    vc-mount-keys
+}
+
+term-keys() {
+    vc-dismount-keys
+    sudo diskutil eject "/media/the.vole.viscount/BreakGlass"
+}
+
+init-all() {
+    fix-veracrypt
+    vc-mount-vlt
+    vc-mount-bkup
+    vc-mount-keys
+}
+
+term-all() {
+    vc-dismount-all
+    sudo diskutil eject "/media/the.vole.viscount/DukeOfMoles"
+    sudo diskutil eject "/media/the.vole.viscount/DaneOfDucks"
+    sudo diskutil eject "/media/the.vole.viscount/BreakGlass"
+}
+
+# keepassxc functions
+
+open-vlt() {
+    keepassxc open /home/the.vole.viscount/Documents/Security/Passwords.kdbx -y 2
+}
+
+open-vlt-gui() {
+    open /Volumes/Vault/Secrets/Passwords.kdbx -a /Applications/KeePassXC.app
+}
+
+get-pw() {
+    keepassxc clip /Volumes/Vault/Secrets/Passwords.kdbx "${1}" "${2}" -b -y 2    
+}
+
+# gpg functions
+
+# gpg-decrypt() {
+#     if [[ "${1}" != "-c" ]]; then
+#         gpg --decrypt "${from}"
+#         return
+#     fi
+# 
+#     pbpaste > msg
+#     gpg --decrypt msg
+#     rm msg
+# }
+# 
+# 
+# gpg-verify() {
+#     pbpaste > fle
+#     gpg --verify fle
+#     rm fle
+# }
+# 
+# 
+# gpg-export() {
+#     mkdir gpg-keychain
+#     cd gpg-keychain
+# 
+#     gpg --armor --export-secret-keys > priv.asc
+#     gpg --armor --export > pub.asc
+#     gpg --armor --export-ownertrust > trust.asc
+# 
+#     if [[ "${1}" != "-c" ]]; then
+#         return
+#     fi
+# 
+#     cp ~/.gnupg/dirmngr.conf .
+#     cp ~/.gnupg/gpg-agent.conf .
+#     cp ~/.gnupg/gpg.conf .
+#     cd -
+# }
+
+## 2-fa 
+
+# 2-fa() {
+#     gpg-decrypt -c | grep "${1}" | cut -d ':' -f2 | xargs | pbcopy 
+# }
+# 
+# 
+# ab-2fa() {
+#     2-fa "Your AlphaBay 2-FA Code: " 
+# }
+# 
+# bh-2fa() {
+#     2-fa "Your authorization code is: "
+# }
+
+
+# crypto
+
+as-qr() {
+   qrencode -o qr.png "$1:$2?amount=$3" 
+}
+
+monero-qr() {
+    as-qr "monero" $1 $2
+    open qr.png
+}
+
+# Path to your oh-my-bash installation.
+export OSH="/home/the.vole.viscount/.oh-my-bash"
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-bash is loaded.
+OSH_THEME="agnoster"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_OSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $OSH/custom?
+# OSH_CUSTOM=/path/to/new-custom-folder
+
+# Which completions would you like to load? (completions can be found in ~/.oh-my-bash/completions/*)
+# Custom completions may be added to ~/.oh-my-bash/custom/completions/
+# Example format: completions=(ssh git bundler gem pip pip3)
+# Add wisely, as too many completions slow down shell startup.
+completions=(
+  git
+  composer
+  ssh
+  # kubectl
+  go
+  awscli
+  terraform
+)
+
+# Which aliases would you like to load? (aliases can be found in ~/.oh-my-bash/aliases/*)
+# Custom aliases may be added to ~/.oh-my-bash/custom/aliases/
+# Example format: aliases=(vagrant composer git-avh)
+# Add wisely, as too many aliases slow down shell startup.
+aliases=(
+  general
+)
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-bash/plugins/*)
+# Custom plugins may be added to ~/.oh-my-bash/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  bashmarks
+  # kubectl
+)
+
+source $OSH/oh-my-bash.sh
+
+# User configuration
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-bash libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-bash
+# users are encouraged to define aliases within the OSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias bashconfig="mate ~/.bashrc"
+# alias ohmybash="mate ~/.oh-my-bash"
+
+POWERLINE_PROMPT="user_info scm python_venv ruby cwd"
+
+# KUBECONFIG added by k8s-configs install script
+export KUBECONFIG="/Users/austinsherron/.kube/config"

@@ -1,0 +1,9 @@
+searxng
+
+customProviders [
+  {
+    name: searxng
+    url: "http://searx.be?q=%s"
+    tags: [private]
+  }
+]

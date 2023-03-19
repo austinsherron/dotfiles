@@ -1,0 +1,128 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""" 'legacy' vim config file """"""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" general settings """"""""""""""""""""""""""""""""""""""""""""""""""""
+
+set nu
+set ai
+set si
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+set smartindent
+set incsearch
+set hlsearch
+set ruler
+set clipboard=unnamed
+syntax on
+
+"" navigation settings """""""""""""""""""""""""""""""""""""""""""""""""
+
+" for switching between windows easily (doesn't work in tmux)
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+"" interaction settings """""""""""""""""""""""""""""""""""""""""""""""""
+
+" disable mouse
+set mouse= 
+
+" remap escape key
+nnoremap <C-c> <Esc>
+
+" j/k scrolling for popup menu nav (instead of up/down arrows)
+inoremap <expr> j pumvisible() ? "\<C-N>" : "j"
+inoremap <expr> k pumvisible() ? "\<C-P>" : "k"
+
+" toggle relative line numbers
+nmap <C-L><C-L> :set invrelativenumber<CR>
+
+"" plugins """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" plugin mgmt. (pathogen)
+
+" disabled plugins
+let g:pathogen_disabled = [
+    'auto-pairs', 
+    'syntastic',
+    'VimCompletesMe',
+    'delimitMate'
+]
+
+" init pathogen
+execute pathogen#infect()
+
+"" nerdtree 
+
+" toggle shortcut
+command NE NERDTreeToggle	
+
+" open NERDTree with `vim`
+autocmd StdinReadPre * let s:std_in 1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTreeToggle | endif
+
+"" tagbar
+
+" toggle shortcut
+command TT TagbarToggle
+
+"" supertab (autocompletion)
+
+" lets supertab and snipmate play nicely
+let g:SuperTabDefaultCompletionType = "context"
+
+"" syntastic 
+ 
+" unused/unvetted at this point (20230315, in the wee hours)
+set statusline+=%#warningmsg#
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+"" easymotion 
+
+" leader remap
+map \ <Plug>(easymotion-prefix)
+
+"" commentary 
+
+" change default commentstring
+set commentstring=#\ %s
+
+" commentstring for lua
+autocmd FileType lua setlocal commentstring=\-\-\ %s
+
+"" language specific settings """"""""""""""""""""""""""""""""""""""""""
+
+"" python
+
+autocmd FileType python call Python_settings()
+
+function! Python_settings()
+  setlocal tabstop=4
+  setlocal shiftwidth=4
+  setlocal expandtab
+endfunction
+
+"" lua
+
+autocmd FileType lua call Lua_settings()
+
+function! Lua_settings()
+  setlocal tabstop=2
+  setlocal shiftwidth=2
+  setlocal expandtab
+endfunction
+
+"" visual settings """""""""""""""""""""""""""""""""""""""""""""""""""""
+ 
+"" colors!
+
+" current colorscheme (technically a plugin, must come after pathongen init)
+colorscheme wombat256mod
