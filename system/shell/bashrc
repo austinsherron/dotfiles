@@ -1,131 +1,199 @@
-# added by Austin on 08/01/2016; for colors in bash
+## constants ###############c###################################################
 
-#export CLICOLOR=1
-#export LSCOLORS=GxFxCxDxBxegedabagaced
+export ME="austinsherron"
+export MY_NICKNAME="austin"
+export MACHINE="StarBook"
+export MACHINE_NICKNAME="⭐📖"
 
-#export JQ_COLORS="1;36:0;39:0;39:0;39:0;32:1;39:1;39"
- 
-# for git prompt, not sure when I added this
-# commented out by Austin on 05/01/2021 since oh my bash was installed
+export EDITOR="nvim"
+export LEGACY_EDITOR="vim"
 
-# source ~/.git-prompt.sh
-# export GIT_PS1_SHOWDIRTYSTATE=1
-# export PS1='$(__git_ps1 "\n(%s)")\n\W [\!] $ '
+## tmux ########################################################################
 
-# added by Austin on 08/09/2016; for git branch autocompletion
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux
+fi
 
-[[ -r "/usr/local/etc/profile.d/bash_completion.sh"  ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+## important paths #############################################################
 
-# added by Austin on 04/29/2021; for git autocompletion
+## shell
 
-source ~/.git-completion.bash
+export SHELL_NAME=`filename ${SHELL}`
+export RC="${HOME}/.${SHELL_NAME}rc"
+export PROFILE="${HOME}/.${SHELL_NAME}_profile"
 
-# added by Austin on 08/11/2016; shorter spotify command
+## development
 
-# alias spt="spotify"
+export DEV_ROOT="${HOME}/Workspace"
+export CONFIG_ROOT="${DEV_ROOT}/dotfiles"
+export EDITORS_ROOT="${CONFIG_ROOT}/editors"
+export PROJECTS_ROOT="${DEV_ROOT}/projects"
 
-# gh aliases
+## tooling
 
-alias pr-list="gh pr ls --author \"@me\""
-# alias pr-todo="gh pr ls --search 'is:open is:pr review-requested:austinsherron archived:false'"
-alias pr-view="gh pr view ${1}"
-alias pr-cmts="gh pr view ${1} --comments"
-# alias pr-create="gh pr create -a \"@me\" -r \"sigmacomputing/infra\""
+# vim
 
-# added by Austin on 04/29/2021; for kubectl autocompletion
+export VIM_ROOT="${EDITORS_ROOT}/vim"
+export VIMRC="${VIM_ROOT}/.vimrc"
+export VUNDLE="${VIM_ROOT}/.vim"
 
-# source <(kubectl completion bash)
-# complete -F __start_kubectl skc
+# nvim
 
-# added by Austin on 05/11/2021; for pyenv
+export NVIM_ROOT="${EDITORS_ROOT}/nvim"
+export NVIMRC="${NVIM_ROOT}/init.lua"
+export NVUNDLE="${NVIM_ROOT}/packages"
 
-# eval "$(pyenv init -)"
+# tmux
 
-# added by Austin on 08/15/2016; so git-complete only looks at local branches
+export TMUX_ROOT="${CONFIG_ROOT}/tooling/tmux"
+export TMUX_CONF="${TMUX_ROOT}/tmux.conf"
+export TMUX_BUNDLE="${TMUX_ROOT}/plugins"
 
-_git_checkout ()
-{
-	__git_has_doubledash && return
+## interface points
 
-	case "$cur" in
-	--conflict=*)
-		__gitcomp "diff3 merge" "" "${cur##--conflict=}"
-		;;
-	--*)
-		__gitcomp "
-			--quiet --ours --theirs --track --no-track --merge
-			--conflict= --orphan --patch
-			"
-		;;
-	*)
-		# check if --track, --no-track, or --no-guess was specified
-		# if so, disable DWIM mode
-		local flags="--track --no-track --no-guess" track=1
-		if [ -n "$(__git_find_on_cmdline "$flags")" ]; then
-			track=''
-		fi
-                if [ "$command" = "checkoutr"  ]; then
-                    __gitcomp_nl "$(__git_refs '' $track)"
-                else
-                    __gitcomp_nl "$(__git_heads '' $track)"
-                fi
-		;;
-	esac
-}
+export CONFIG_ROOT_PUB="${HOME}/.config"
+export LEGACY_CONFIG_ROOT_PUB="${HOME}"
+export NVIM_ROOT_PUB="${CONFIG_ROOT_PUB}/nvim"
+export TMUX_ROOT_PUB="${CONFIG_ROOT_PUB}/tmux"
+export TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
 
-# added by Austin on 12/11/2022 for proxmark3
+## path manipulations ##########################################################
 
-# PKG_CONFIG_PATH="/usr/local/Cellar/qt@5/5.15.7/lib/pkgconfig/"
+## lua
 
-# export QT_PKG_CONFIG_QT5CORE=$(find /usr -name Qt5Core.pc 2>/dev/null)
-# chmod 666 $QT_PKG_CONFIG_QT5CORE
-# echo "moc_location=\${prefix}/bin/moc" >> $QT_PKG_CONFIG_QT5CORE
-# chmod 444 $QT_PKG_CONFIG_QT5CORE
+# note: as with PYTHONPATH, I'd rather not have to specify the lua path like this,
+#       as it makes the scripts that rely on the path significantly less portable; at the
+#       time of writing, however (03/14/2023 [pi day!]), I don't know a better solution to
+#       the problem of importing homegrown modules
+
+export LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?.lua"
+export LUA_PATH="${LUA_PATH};${PROJECTS_ROOT}/?.lua" 
+export LUA_PATH="${LUA_PATH};${EDITORS_ROOT}/?.lua" 
+export LUA_PATH="${LUA_PATH};${NVUNDLE}/?.lua" 
+export LUA_PATH="${LUA_PATH};${NVUNDLE}/nvim-treesitter/lua/?.lua" 
 
 ## aliases #####################################################################
 
-# added by Austin; misc aliases for convenience
+## rename
+alias vim="nvim"
+alias og-vim="vim"
 
-alias down="cd ~/Downloads"
-alias vol="cd /media"
-alias docs="cd ~/Documents"
-alias bashconf="vim ~/.bashrc"
-alias loadbashconf="source ~/.bashrc"
-alias loadtmuxconf="tmux source-file ~/.tmux.conf"
-alias tmuxconf="vim ~/.tmux.conf"
-alias loadtmuxconf="tmux source ~/.tmux.conf"
-alias gitconf="vim ~/.gitconfig"
-alias kubeconf="vim ~/.kube/config"
-# alias kubectl="kubecolor"
-# alias kc="kubecolor"
-alias wk="cd ~/Workspace"
-alias diff="colordiff"
+## navigation
+alias cst="cd ${HOME}/Customization"
+alias desk="cd ${HOME}/Desktop"
+alias docs="cd ${HOME}/Documents"
+alias dots="cd ${CONFIG_ROOT}"
+alias down="cd ${HOME}/Downloads"
+alias drop="cd ${HOME}/Remote/Dropbox"
+alias pics="cd ${HOME}/Pictures"
+alias proj="cd ${PROJECTS_ROOT}"
+alias vid="cd ${HOME}/Videos"
+alias vol="cd /media/"
+alias wk="cd ${DEV_ROOT}"
+
+## config
+
+alias loadrc="source ${RC}"
+alias loadtmuxconf="tmux source-file ${TMUX_CONF_PUB}"
+alias rc="${EDITOR} ${RC}; loadrc"
+alias tmuxconf="${EDITOR} ${TMUX_CONF} ; loadtmuxconf "
+alias tmuxroot="cd ${TMUX_ROOT}"
+alias tmuxrootpub="cd ${TMUX_ROOT_PUB}"
+alias nvimrc="${EDITOR} ${NVIM_ROOT_PUB}/init.lua"
+alias nvrc="nvimrc"
+alias nvroot="cd ${NVIM_ROOT}"
+alias nvrootpub="cd ${NVIM_ROOT_PUB}"
+alias nvundle="cd ${NVUNDLE}"
+alias vimrc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.vimrc"
+alias vundle="cd ${LEGACY_CONFIG_ROOT_PUB}/.vim"
+alias gitconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.gitconfig"
+alias hyperconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.hyper.js"
+alias kubeconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.kube/config"
+
+## utils
+alias diff="colordiff -N -u"
 alias pbcopy='xsel --clipboard'
-alias pbpaste='xsel --clipboard >'
-# alias pip="pip3"
-# alias python="python3"
-# alias fix-veracrypt="sudo /usr/bin/kmutil unload -b io.macfuse.filesystems.macfuse"
-# alias keepassxc="/Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli"
+alias pbpaste='xsel --clipboard'
+alias pbc="pbcopy"
+alias pbp="pbpaste"
+alias open="xdg-open"
+alias dbc="dbxcli"
+alias dp2="devilspie2"  # todo
+alias tx="tmux"
+alias ss="s-search"     # todo
+alias nv="nvim"         # todo
 
-# added by Austin, starting on 04/27/2021; misc sigma aliases for convenience
+## github ######################################################################
+
+alias pr-list="gh pr ls --author \"@me\""
+alias pr-view="gh pr view ${1}"
+alias pr-cmts="gh pr view ${1} --comments"
 
 ## functions ###################################################################
 
-git-root() {
-    ROOT=`git rev-parse --show-toplevel`
-    cd "${ROOT}"
+## config
+
+init-links() {
+    ln -s -f ${NVIM_ROOT} ${CONFIG_HOME}
+    ln -s -f ${TMUX_ROOT} ${CONFIG_HOME}
 }
 
-# switch() {
-#     repo="$(ls ~/sigma | fzf +i +m -e)"
-#     cd ~/sigma/${repo}
-# }
+## utils
+
+pbpo() {
+    pbpaste > $1
+    nvim $1
+}
+
+pbcf() {
+    cat $1 | pbcopy
+}
+
+unhide() {
+  GLOBIGNORE=".:.."
+  for file in .*; do
+     mv -n "$file" "${file#.}"
+  done
+}
+
+diff-clip() {
+    tmp=`mktemp`    
+    pbpaste >| $tmp
+    diff $tmp $1 && rm $tmp
+
+}
+
+## git
+
+alias get-git-root="git rev-parse --show-toplevel"
+
+git-root() {
+    cd `get-git-root`
+}
+
+
+git-ignore() {
+    ${EDITOR} `get-git-root`/.gitignore
+}
+
+
+## navigation
+
+switch() {
+    repo="$(ls ${PROJECTS_ROOT} | fzf +i +m -e --height=1%)"
+    cd ${PROJECTS_ROOT}/${repo}
+}
+
+## 1password
 
 # op-login() {
-#     eval $(op signin sigmacomputing)
+#     eval $(op signin austinsherron)
 # }
 
-# veracrypt functions
+## mounts/veracrypt
+
+MOUNT_POINT="/media/the.vole.viscount"
+VC_MOUNT_POINT="/media/veracrypt"
 
 alias veracrypt="veracrypt --text"
 
@@ -141,33 +209,43 @@ vc-dismount-all() {
     vc-dismount
 }
 
-## known volumes
+### known volumes
 
 vc-mount-vlt() {
-    vc-mount "/media/the.vole.viscount/DukeOfMoles/Encrypted" "/media/veracrypt1/" "0"
+    vc-mount "${MOUNT_POINT}/DukeOfMoles/Encrypted" "/media/veracrypt1/" "0"
+#     vc-mount "/home/the.vole.viscount/Dropbox/Storage/DukeOfMoles-Encrypted" "/media/veracrypt1/" "0"
 }
  
 vc-dismount-vlt() {
-    vc-dismount "/media/the.vole.viscount/DukeOfMoles/Encrypted" 
+    vc-dismount "/media/veracrypt1" 
 }
 
 vc-mount-bkup() {
-    vc-mount "/media/the.vole.viscount/DaneOfDucks/Encrypted" "/media/veracrypt2/Backups" "0"
+    vc-mount "${MOUNT_POINT}/VcntOfVoles/Encrypted" "/media/veracrypt2/" "0"
 }
 
 vc-dismount-bkup() {
-    vc-dismount "/media/the.vole.viscount/DaneOfDucks/Encrypted" 
+    vc-dismount "/media/veracrypt2" 
+}
+
+vc-mount-dp-frz() {
+#     vc-mount "${MOUNT_POINT}/DaneOfDucks/Encrypted" "/media/veracrypt3/" "0"
+    vc-mount "/home/the.vole.viscount/Dropbox/Storage/DaneOfDucks-Encrypted" "/media/veracrypt1/" "0"
+}
+
+vc-dismount-dp-frz() {
+    vc-dismount "/media/veracrypt3" 
 }
 
 vc-mount-keys() {
-    vc-mount "/media/the.vole.viscount/BreakGlass/Encrypted" "/media/veracrypt2/Keys" "0"
+    vc-mount "${MOUNT_POINT}/BreakGlass/Encrypted" "/media/veracrypt4/" "0"
 }
 
 vc-dismount-keys() {
-    vc-dismount "/media/the.vole.viscount/BreakGlass/Encrypted" 
+    vc-dismount "/media/veracrypt4" 
 }
 
-# encrypted volume functions
+### encrypted volumes
 
 init-vlt() {
     vc-mount-vlt
@@ -175,7 +253,7 @@ init-vlt() {
 
 term-vlt() {
     vc-dismount-vlt
-    sudo eject "/media/the.vole.viscount/DukeOfMoles"
+    sudo eject "${MOUNT_POINT}/DukeOfMoles"
 }
  
 init-bkup() {
@@ -184,104 +262,101 @@ init-bkup() {
 
 term-bkup() {
     vc-dismount-bkup
-    sudo eject "/media/the.vole.viscount/DaneOfDucks"
+    sudo eject "${MOUNT_POINT}/VcntOfVoles"
+}
+
+init-dp-frz() {
+    vc-mount-dp-frz
+}
+
+term-dp-frz() {
+    vc-dismount-dp-frz
+    sudo eject "${MOUNT_POINT}/DaneOfDucks"
 }
 
 init-keys() {
-    fix-veracrypt
-    vc-mount-bkup
     vc-mount-keys
 }
 
 term-keys() {
     vc-dismount-keys
-    sudo diskutil eject "/media/the.vole.viscount/BreakGlass"
+    sudo eject "${MOUNT_POINT}/BreakGlass"
 }
 
 init-all() {
     fix-veracrypt
     vc-mount-vlt
     vc-mount-bkup
+    vc-mount-dp-frz
     vc-mount-keys
 }
 
 term-all() {
     vc-dismount-all
-    sudo diskutil eject "/media/the.vole.viscount/DukeOfMoles"
-    sudo diskutil eject "/media/the.vole.viscount/DaneOfDucks"
-    sudo diskutil eject "/media/the.vole.viscount/BreakGlass"
+    sudo eject "${MOUNT_POINT}/DukeOfMoles"
+    sudo eject "${MOUNT_POINT}/DaneOfDucks"
+    sudo eject "${MOUNT_POINT}/VcntOfVoles"
+    sudo eject "${MOUNT_POINT}/BreakGlass"
 }
 
-# keepassxc functions
+## keepassxc
 
-open-vlt() {
-    keepassxc open /home/the.vole.viscount/Documents/Security/Passwords.kdbx -y 2
+open-kp-vlt() {
+    kpdb=`find /media/ ${HOME} -not -path "${HOME}/Dropbox*" -not -path "*/.*" -not -path "*/*-Locked.kdbx" -type f -name "*.kdbx" | fzf +i --height=1%`
+    xdg-open ${kpdb}
 }
 
-open-vlt-gui() {
-    open /Volumes/Vault/Secrets/Passwords.kdbx -a /Applications/KeePassXC.app
-}
-
-get-pw() {
-    keepassxc clip /Volumes/Vault/Secrets/Passwords.kdbx "${1}" "${2}" -b -y 2    
-}
-
-# gpg functions
-
-# gpg-decrypt() {
-#     if [[ "${1}" != "-c" ]]; then
-#         gpg --decrypt "${from}"
-#         return
-#     fi
-# 
-#     pbpaste > msg
-#     gpg --decrypt msg
-#     rm msg
+# open-vlt() {
+#     keepassxc open /home/the.vole.viscount/Documents/Security/Passwords.kdbx -y 2
 # }
 # 
-# 
-# gpg-verify() {
-#     pbpaste > fle
-#     gpg --verify fle
-#     rm fle
+# open-vlt-gui() {
+#     open /Volumes/Vault/Secrets/Passwords.kdbx -a /Applications/KeePassXC.app
 # }
 # 
-# 
-# gpg-export() {
-#     mkdir gpg-keychain
-#     cd gpg-keychain
-# 
-#     gpg --armor --export-secret-keys > priv.asc
-#     gpg --armor --export > pub.asc
-#     gpg --armor --export-ownertrust > trust.asc
-# 
-#     if [[ "${1}" != "-c" ]]; then
-#         return
-#     fi
-# 
-#     cp ~/.gnupg/dirmngr.conf .
-#     cp ~/.gnupg/gpg-agent.conf .
-#     cp ~/.gnupg/gpg.conf .
-#     cd -
+# get-pw() {
+#     keepassxc clip /Volumes/Vault/Secrets/Passwords.kdbx "${1}" "${2}" -b -y 2    
 # }
+
+## gpg
+
+gpg-export() {
+    mkdir gpg-keychain
+    cd gpg-keychain
+
+    gpg --armor --export-secret-keys > priv.asc
+    gpg --armor --export > pub.asc
+    gpg --armor --export-ownertrust > trust.asc
+
+    if [[ "${1}" != "-c" ]]; then
+        return
+    fi
+
+    cp ~/.gnupg/dirmngr.conf .
+    cp ~/.gnupg/gpg-agent.conf .
+    cp ~/.gnupg/gpg.conf .
+    cd -
+}
 
 ## 2-fa 
 
-# 2-fa() {
-#     gpg-decrypt -c | grep "${1}" | cut -d ':' -f2 | xargs | pbcopy 
-# }
-# 
-# 
-# ab-2fa() {
-#     2-fa "Your AlphaBay 2-FA Code: " 
-# }
-# 
-# bh-2fa() {
-#     2-fa "Your authorization code is: "
-# }
+2-fa() {
+    pbpaste | gpg -d | grep "${1}" | cut -d ':' -f2 | xargs | pbcopy 
+}
 
+ab-2fa() {
+    2-fa "Your AlphaBay 2-FA Code: " 
+}
 
-# crypto
+bh-2fa() {
+    2-fa "Your authorization code is: "
+}
+
+ic-2fa() {
+    2-fa "Incognito Verification Token: "
+}
+
+## crypto
 
 as-qr() {
    qrencode -o qr.png "$1:$2?amount=$3" 
@@ -292,12 +367,21 @@ monero-qr() {
     open qr.png
 }
 
+bitcoin-qr() {
+    as-qr "bitcoin" $1 $2
+    open qr.png
+}
+
+## oh my bash ##################################################################
+
 # Path to your oh-my-bash installation.
 export OSH="/home/the.vole.viscount/.oh-my-bash"
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-bash is loaded.
-OSH_THEME="agnoster"
+# OSH_THEME="agnoster"
+OSH_THEME="powerline"
+# OSH_THEME="rr"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -345,10 +429,11 @@ completions=(
   git
   composer
   ssh
-  # kubectl
+  kubectl
   go
   awscli
   terraform
+  tmux
 )
 
 # Which aliases would you like to load? (aliases can be found in ~/.oh-my-bash/aliases/*)
@@ -365,7 +450,7 @@ aliases=(
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  bashmarks
+  # bashmarks
   # kubectl
 )
 
@@ -401,5 +486,37 @@ source $OSH/oh-my-bash.sh
 
 POWERLINE_PROMPT="user_info scm python_venv ruby cwd"
 
-# KUBECONFIG added by k8s-configs install script
-export KUBECONFIG="/Users/austinsherron/.kube/config"
+
+################################################################################
+## DISABLED 
+################################################################################
+
+
+## kube* #######################################################################
+
+## autocomplete
+# source <(kubectl completion bash)
+# complete -F __start_kubectl skc
+
+## aliases
+# alias kubectl="kubecolor"
+# alias kc="kubecolor"
+
+## python ######################################################################
+
+## pyenv
+# eval "$(pyenv init -)"
+
+## aliases
+# alias pip="pip3"
+# alias python="python3"
+
+## proxmark3 ###################################################################
+
+# PKG_CONFIG_PATH="/usr/local/Cellar/qt@5/5.15.7/lib/pkgconfig/"
+
+# export QT_PKG_CONFIG_QT5CORE=$(find /usr -name Qt5Core.pc 2>/dev/null)
+# chmod 666 $QT_PKG_CONFIG_QT5CORE
+# echo "moc_location=\${prefix}/bin/moc" >> $QT_PKG_CONFIG_QT5CORE
+# chmod 444 $QT_PKG_CONFIG_QT5CORE
+#
