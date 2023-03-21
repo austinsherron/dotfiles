@@ -1,6 +1,7 @@
-editors/vim/archive/**
-editors/vim/.vim/**
-tooling/tmux/plugins/**
-system/terminal/hyper_plugins/**
+editors/vim/archive/
+editors/vim/.vim/
+editors/nvim/packages/
+tooling/tmux/plugins/
+system/terminal/hyper_plugins/
 *.netrwhist
 
