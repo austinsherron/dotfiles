@@ -1,33 +1,43 @@
-## constants ###############c###################################################
+## TODO: extract pieces of this file into standalone scripts, config files, etc.
 
-export ME="austinsherron"
-export MY_NICKNAME="austin"
-export MACHINE="StarBook"
-export MACHINE_NICKNAME="⭐📖"
+## constants ###################################################################
 
-export EDITOR="nvim"
-export LEGACY_EDITOR="vim"
+export readonly ME="austinsherron"
+export readonly MY_NICKNAME="austin"
+export readonly MACHINE="StarBook"
+export readonly MACHINE_NICKNAME="⭐📖"
+
+export readonly EDITOR="nvim"
+export readonly LEGACY_EDITOR="vim"
+
+## shell #######################################################################
+
+## behavior
+
+bind 'set match-hidden-files off'
 
 ## tmux ########################################################################
 
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux
-fi
+## auto start tmux when shell starts
+
+# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+#   exec tmux
+# fi
 
 ## important paths #############################################################
 
 ## shell
 
-export SHELL_NAME=`filename ${SHELL}`
-export RC="${HOME}/.${SHELL_NAME}rc"
-export PROFILE="${HOME}/.${SHELL_NAME}_profile"
+export readonly SHELL_NAME=`filename ${SHELL}`
+export readonly RC="${HOME}/.${SHELL_NAME}rc"
+export readonly PROFILE="${HOME}/.${SHELL_NAME}_profile"
 
 ## development
 
-export DEV_ROOT="${HOME}/Workspace"
-export CONFIG_ROOT="${DEV_ROOT}/dotfiles"
-export EDITORS_ROOT="${CONFIG_ROOT}/editors"
-export PROJECTS_ROOT="${DEV_ROOT}/projects"
+export readonly DEV_ROOT="${HOME}/Workspace"
+export readonly CONFIG_ROOT="${DEV_ROOT}/dotfiles"
+export readonly EDITORS_ROOT="${CONFIG_ROOT}/editors"
+export readonly PROJECTS_ROOT="${DEV_ROOT}/projects"
 
 ## tooling
 
@@ -92,7 +102,6 @@ alias vol="cd /media/"
 alias wk="cd ${DEV_ROOT}"
 
 ## config
-
 alias loadrc="source ${RC}"
 alias loadtmuxconf="tmux source-file ${TMUX_CONF_PUB}"
 alias rc="${EDITOR} ${RC}; loadrc"
@@ -183,12 +192,6 @@ switch() {
     repo="$(ls ${PROJECTS_ROOT} | fzf +i +m -e --height=1%)"
     cd ${PROJECTS_ROOT}/${repo}
 }
-
-## 1password
-
-# op-login() {
-#     eval $(op signin austinsherron)
-# }
 
 ## mounts/veracrypt
 
@@ -487,36 +490,3 @@ source $OSH/oh-my-bash.sh
 POWERLINE_PROMPT="user_info scm python_venv ruby cwd"
 
 
-################################################################################
-## DISABLED 
-################################################################################
-
-
-## kube* #######################################################################
-
-## autocomplete
-# source <(kubectl completion bash)
-# complete -F __start_kubectl skc
-
-## aliases
-# alias kubectl="kubecolor"
-# alias kc="kubecolor"
-
-## python ######################################################################
-
-## pyenv
-# eval "$(pyenv init -)"
-
-## aliases
-# alias pip="pip3"
-# alias python="python3"
-
-## proxmark3 ###################################################################
-
-# PKG_CONFIG_PATH="/usr/local/Cellar/qt@5/5.15.7/lib/pkgconfig/"
-
-# export QT_PKG_CONFIG_QT5CORE=$(find /usr -name Qt5Core.pc 2>/dev/null)
-# chmod 666 $QT_PKG_CONFIG_QT5CORE
-# echo "moc_location=\${prefix}/bin/moc" >> $QT_PKG_CONFIG_QT5CORE
-# chmod 444 $QT_PKG_CONFIG_QT5CORE
-#
