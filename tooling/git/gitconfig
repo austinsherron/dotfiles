@@ -1,69 +1,76 @@
 [user]
-	email = austin@pryvate.email
-	name  = Austin Sherron
-	signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
-[core]
-	editor = vim
-	excludesfile = /Users/austinsherron/.gitignore
-[alias]
-        ls           = "!git branch | grep -v STORAGE"
-        mylog        = log --author austin.sherron
-	checkoutr    = checkout
-        merc         = merge --log --no-ff
-        in-branches  = branch --contains
-        squash       = rebase -i
-        diff         = diff -w -M
-        mmerge       = merge master
-        mrebase      = rebase master
-        home         = checkout master
-        publish      = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH} 
-        new-branch   = "!git checkout -b \"$1\"\\/\"$2\" #"
-        rls          = "!git ls-remote | grep sherron"
-        rdel         = "!git push origin :\"$1\" #"
-        jreset       = !BRANCH=`git jstatus | sed -n '2 p' | awk -F ' +' '{print $3}'` && git reset --hard ${BRANCH}
-        clear        = !git reset head && git checkout -- .
+    email = austin@pryvate.email
+    name  = Austin Sherron
+    signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 
-        # stash aliases
-        sl  = stash list 
-        sst = stash show -p stash@{0}
-        ss  = "!git stash show -p stash@{\"$1\"} #"
-        sat = stash apply stash@{0}
-        sa  = "!git stash apply stash@{\"$1\"} #"
-        spt = stash pop stash@{0}
-        sp  = "!git stash pop stash@{\"$1\"} #"
-        sdt = stash drop stash@{0}
-        sd  = "!git stash drop stash@{\"$1\"} #"
-        
-        # fuzzy commands
-        fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e --height=10` && git checkout ${BRANCH}
-        frcheckout      = !BRANCH=`git ls-remote | fzf +i +m -e` && git checkout ${BRANCH}
-        fdel            = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -d ${BRANCH}
-        frdel           = !BRANCH=`git ls $@ | fzf +i +m -e` && git rdel ${BRANCH}
-        ffdel           = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -D ${BRANCH}
-        fmerge          = !BRANCH=`git ls $@ | fzf +i +m -e` && git merge ${BRANCH}
-        fmerc           = !BRANCH=`git ls $@ | fzf +i +m -e` && git merc ${BRANCH}
-        frebase         = !BRANCH=`git ls $@ | fzf +i +m -e` && git rebase ${BRANCH}
-        flog            = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}
-        fdiff           = !BRANCH=`git ls $@ | fzf +i +m -e` && git diff ${BRANCH}
-        fcdiff          = !BRANCH=`git ls $@ | fzf +i +m -e` && git log head..${BRANCH}
-        frcdiff         = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}..head
-        fcinthatnotthis = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges head..${BRANCH}
-        fcinthisnotthat = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges ${BRANCH}..head 
+[core]
+    editor = vim
+    excludesfile = /Users/austinsherron/.gitignore
+[alias]
+    checkoutr   = checkout
+    clear       = !git reset head && git checkout -- .
+    diff        = diff -w -M
+    hdiff       = diff HEAD 
+    home        = checkout master
+    in-branches = branch --contains
+    jreset      = !BRANCH=`git jstatus | sed -n '2 p' | awk -F ' +' '{print $3}'` && git reset --hard ${BRANCH}
+    ls          = "!git branch | grep -v STORAGE"
+    merc        = merge --log --no-ff
+    mmerge      = merge master
+    mrebase     = rebase master
+    mylog       = log --author austin.sherron
+    new-branch  = "!git checkout -b \"$1\"\\/\"$2\" #"
+    publish     = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH} 
+    radd        = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
+    rdel        = "!git push origin :\"$1\" #"
+    rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\""
+    squash      = rebase -i
+
+    # stash aliases
+    sl  = stash list 
+    sst = stash show -p stash@{0}
+    ss  = "!git stash show -p stash@{\"$1\"} #"
+    sat = stash apply stash@{0}
+    sa  = "!git stash apply stash@{\"$1\"} #"
+    spt = stash pop stash@{0}
+    sp  = "!git stash pop stash@{\"$1\"} #"
+    sdt = stash drop stash@{0}
+    sd  = "!git stash drop stash@{\"$1\"} #"
+    
+    # fuzzy commands
+    fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e --height=10` && git checkout ${BRANCH}
+    frcheckout      = !BRANCH=`git ls-remote | fzf +i +m -e` && git checkout ${BRANCH}
+    fdel            = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -d ${BRANCH}
+    frdel           = !BRANCH=`git ls $@ | fzf +i +m -e` && git rdel ${BRANCH}
+    ffdel           = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -D ${BRANCH}
+    fmerge          = !BRANCH=`git ls $@ | fzf +i +m -e` && git merge ${BRANCH}
+    fmerc           = !BRANCH=`git ls $@ | fzf +i +m -e` && git merc ${BRANCH}
+    frebase         = !BRANCH=`git ls $@ | fzf +i +m -e` && git rebase ${BRANCH}
+    flog            = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}
+    fdiff           = !BRANCH=`git ls $@ | fzf +i +m -e` && git diff ${BRANCH}
+    fcdiff          = !BRANCH=`git ls $@ | fzf +i +m -e` && git log head..${BRANCH}
+    frcdiff         = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}..head
+    fcinthatnotthis = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges head..${BRANCH}
+    fcinthisnotthat = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges ${BRANCH}..head 
 [push]
-	default = upstream
+    default = upstream
 [pull]
-	ff = only
+    ff = only
 [credential]
-	helper = store
+    helper = store
 [commit]
-	gpgsign = true
+    gpgsign = true
 [url "https://user@hostname"]
-	insteadOf = ssh://git@hostname
+    insteadOf = ssh://git@hostname
 [url "https://x-access-token@github.com"]
-	insteadOf = ssh://git@github.com
+    insteadOf = ssh://git@github.com
 [url "https://x-access-token@127.0.0.1:54480"]
-	insteadOf = ssh://git@127.0.0.1:54480
+    insteadOf = ssh://git@127.0.0.1:54480
 [url "https://x-access-token@some-host"]
-	insteadOf = ssh://git@some-host
+    insteadOf = ssh://git@some-host
 [url "https://x-access-token@127.0.0.1:56799"]
-	insteadOf = ssh://git@127.0.0.1:56799
+    insteadOf = ssh://git@127.0.0.1:56799
+
+[includeIf "gitdir:~/sigma/**"]
+    path = .gitconfig-sigma
+
