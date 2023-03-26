@@ -137,20 +137,20 @@ alias wk="cd ${DEV_ROOT}"
 ## config
 
 # reload
-alias loadrc="source ${RC}"
-alias loadtmuxconf="tmux source-file ${TMUX_CONF_PUB}"
+alias rcload="source ${RC}"
+alias txload="tmux source-file ${TMUX_CONF_PUB}"
 
 # shell + tmux
-alias rc="${EDITOR} ${RC}; loadrc"
-alias tmuxconf="${EDITOR} ${TMUX_CONF} ; loadtmuxconf "
+alias rc="${EDITOR} ${RC}; rcload"
+alias tmuxconf="${EDITOR} ${TMUX_CONF} ; txload "
 alias tmuxroot="cd ${TMUX_ROOT}"
 alias tmuxrootpub="cd ${TMUX_ROOT_PUB}"
 
 # nvim
 alias nvimrc="${EDITOR} ${NVIM_ROOT_PUB}/init.lua"
 alias nvrc="nvimrc"
-alias nvroot="cd ${NVIM_ROOT}"
-alias nvrootpub="cd ${NVIM_ROOT_PUB}"
+alias nvrt="cd ${NVIM_ROOT}"
+alias nvrtpub="cd ${NVIM_ROOT_PUB}"
 alias nvundle="cd ${NVUNDLE}"
 
 # vim
