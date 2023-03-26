@@ -85,6 +85,7 @@ export LUA_PATH="${LUA_PATH};${NVUNDLE}/nvim-treesitter/lua/?.lua"
 ## aliases #####################################################################
 
 ## rename
+
 alias vim="nvim"
 alias og-vim="vim"
 
