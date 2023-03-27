@@ -8,6 +8,8 @@
 
 export readonly ME="austinsherron"
 export readonly MY_NICKNAME="austin"
+# dangerously close to $HOSTNAME...
+export readonly HOST_NAME="$(hostname -s)"
 
 ## editors
 

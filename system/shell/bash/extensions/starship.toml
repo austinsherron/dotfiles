@@ -10,37 +10,87 @@ $line_break\
 $python\
 $character"""
 
+# Replace the "❯" symbol in the prompt with "➜"
+[character]
+symbol = "➜"
+
+# Configure the number of directories to truncate in the current path
 [directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "purple"
+
+# Configure the duration of the last command
+[cmd_duration]
+min_time = 100
+style = "dimmed white"
+disabled = true
+
+# Configure the Git prompt
+[git_branch]
 style = "blue"
 
-[character]
-success_symbol = "[❯](purple)"
-error_symbol = "[❯](red)"
-vimcmd_symbol = "[❮](green)"
-
-[git_branch]
-format = "[$branch]($style)"
-style = "bright-black"
-
+# Configure the Git symbols
 [git_status]
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
-style = "cyan"
-conflicted = "​"
-untracked = "​"
-modified = "​"
-staged = "​"
-renamed = "​"
-deleted = "​"
-stashed = "≡"
-
-[git_state]
-format = '\([$state( $progress_current/$progress_total)]($style)\) '
-style = "bright-black"
-
-[cmd_duration]
-format = "[$duration]($style) "
 style = "yellow"
+conflicted = "  "
+deleted = " 﫧"
+modified = "  "
+stashed = "  "
+staged = "  "
+renamed = "  "
+untracked = "  "
+prefix = "|"
+suffix = " | "
+show_sync_count = true
+conflicted_count.enabled = true
+deleted_count.enabled = true
+modified_count.enabled = true
+stashed_count.enabled = true
+staged_count.enabled = true
+renamed_count.enabled = true
+untracked_count.enabled = true
 
-[python]
-format = "[$virtualenv]($style) "
-style = "bright-black"
+# [time]
+# disabled = false
+#
+# # Configure the SSH prompt
+# [hostname]
+# ssh_only = true
+# prefix = "⟪"
+# suffix = "⟫"
+#
+# # Configure the battery display
+# [battery]
+# full_symbol = ""
+# charging_symbol = ""
+# discharging_symbol = ""
+#
+# # Configure the background jobs
+# [jobs]
+# symbol = ""
+#
+# # Configure the package version
+# [package]
+# symbol = " "
+# style = "dimmed white"
+#
+# # Configure the .NET module
+# [dotnet]
+# symbol = " "
+# style = "dimmed blue"
+#   
+# # Configure the Rust module
+# [rust]
+# symbol = " "
+# style = "dimmed red"
+#
+# # Configure the Node.js module
+# [nodejs]
+# symbol = " "
+# style = "dimmed green"
+#
+# # Configure the Java module
+# [java]
+# symbol = " "
+# style = "dimmed purple"
