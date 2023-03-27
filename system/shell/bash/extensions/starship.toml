@@ -1,24 +1,28 @@
 format = """
+$battery\
+$time\
 $username\
 $hostname\
 $directory\
+$python\
 $git_branch\
 $git_state\
 $git_status\
 $cmd_duration\
 $line_break\
-$python\
 $character"""
 
 # Replace the "❯" symbol in the prompt with "➜"
 [character]
-symbol = "➜"
+success_symbol = "[❯](purple)"
+error_symbol = "[❯](red)"
+vimcmd_symbol = "[❮](green)"
 
 # Configure the number of directories to truncate in the current path
 [directory]
 truncation_length = 3
 truncate_to_repo = true
-style = "purple"
+style = "green"
 
 # Configure the duration of the last command
 [cmd_duration]
@@ -40,20 +44,24 @@ stashed = "  "
 staged = "  "
 renamed = "  "
 untracked = "  "
-prefix = "|"
-suffix = " | "
-show_sync_count = true
-conflicted_count.enabled = true
-deleted_count.enabled = true
-modified_count.enabled = true
-stashed_count.enabled = true
-staged_count.enabled = true
-renamed_count.enabled = true
-untracked_count.enabled = true
+# conflicted_count.enabled = true
+# deleted_count.enabled = true
+# modified_count.enabled = true
+# stashed_count.enabled = true
+# staged_count.enabled = true
+# renamed_count.enabled = true
+# untracked_count.enabled = true
 
-# [time]
-# disabled = false
-#
+[python]
+symbol = " "
+
+[time]
+use_12hr = true
+style = "bold purple"
+format = "[$time]($style) "
+disabled = false
+time_format = "%R"
+
 # # Configure the SSH prompt
 # [hostname]
 # ssh_only = true

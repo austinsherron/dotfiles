@@ -4,7 +4,7 @@
     signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 
 [core]
-    editor = vim
+    editor = "${EDITOR}"
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
@@ -38,7 +38,7 @@
     sd  = "!git stash drop stash@{\"$1\"} #"
     
     # fuzzy commands
-    fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e --height=5` && git checkout ${BRANCH}
+    fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | fzf +i +m -e` && git checkout ${BRANCH}
     fdel            = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -d ${BRANCH}
     frdel           = !BRANCH=`git ls $@ | fzf +i +m -e` && git rdel ${BRANCH}

@@ -51,6 +51,11 @@ alias sga="sig-auth"
 alias sig="cd ~/sigma"
 alias oc-jrnl="nvim /Users/austinsherron/sigma/infra-oncall/journal/03062023-03132023.md"
 alias oracle="curl \"https://resolv.sigmacomputing.com/api/v1/organizations/$1/$2\""
+ 
+## sigma service config ########################################################
+
+# should come before tooling setup, as some variables (i.e.: CLOUDSDK_PYTHON) get overwritten when we source this
+source "$HOME/.sigmarc"
 
 ## git #########################################################################
 
@@ -62,12 +67,13 @@ source ~/.git-completion.bash
 
 alias pr-create="gh pr create -a \"@me\" -r \"sigmacomputing/infra\""
 
+## python ######################################################################
+
+eval "$(pyenv init -)"
+
 ## gcloud ######################################################################
 
 ## configure
-
-# to ensure python3 executable is picked up w/ python virtualenv
-export CLOUDSDK_PYTHON="/Users/austinsherron/.pyenv/shims/python3"
 
 # add to path 
 source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.inc"
@@ -75,9 +81,8 @@ source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.bash.i
 # add autocompletions
 source "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.bash.inc"
 
-## sigma service config ########################################################
-
-source "$HOME/.sigmarc"
+# to ensure python3 executable is picked up w/ python virtualenv
+export CLOUDSDK_PYTHON="/Users/austinsherron/.pyenv/shims/python3"
 
 ## kube* #######################################################################
 
@@ -104,10 +109,6 @@ alias ska="sig-kubeapply"
 # for kubetcl
 source <(kubectl completion bash)
 complete -F __start_kubectl kc
-
-## python ######################################################################
-
-eval "$(pyenv init -)"
 
 ## functions  ##################################################################
 
