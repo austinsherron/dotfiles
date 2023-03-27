@@ -5,10 +5,10 @@ export OSH="${HOME}/.oh-my-bash"
 
 # set the theme; available themse are in ~/.oh-my-bash/themse; we can otionally set 
 # this to "random" ind t'll load a random theme each time that oh-my-bash is loaded
-OSH_THEME="modern"
+# OSH_THEME="modern"
 
 # prompt config
-POWERLINE_PROMPT="user_info scm python_venv ruby cwd"
+# POWERLINE_PROMPT="user_info scm python_venv ruby cwd"
 
 # the completions to load (completions can be found in ~/.oh-my-bash/completions/*);
 # custom completions may be added to ~/.oh-my-bash/custom/completions/ 

@@ -302,3 +302,7 @@ alias btc-qr="bitcoin-qr"
 
 source ${SHELL_ROOT}/extensions/oh-my-bash.sh
 
+## starship
+
+source ${SHELL_ROOT}/extensions/starship.sh
+
