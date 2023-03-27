@@ -10,6 +10,24 @@ Note: it's possible I'll run into a circular dependency issue here: something in
 comment
 
 
+## constants ###################################################################
+
+## identifiers
+
+export readonly MACHINE="StarBook"
+export readonly MACHINE_NICKNAME="⭐📖"
+
+## important paths ###########################################################
+ 
+## external storage
+
+export readonly VOLUME_ROOT="/media"
+export readonly MOUNT_POINT="${VOLUME_ROOT}/${USER}"
+
+## home dir
+
+export readonly VIDEOS="${HOME}/Videos"
+
 ## aliases #####################################################################
 
 ## rename

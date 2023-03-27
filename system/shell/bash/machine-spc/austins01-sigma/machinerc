@@ -1,11 +1,26 @@
 #!/bin/bash
 
+## constants ###################################################################
+
+## identifiers
+
+export readonly MACHINE="MacBook"
+export readonly MACHINE_NICKNAME="🍎📖"
 
 ## important paths #############################################################
 
 ## development
 
 export readonly SIGMA_ROOT="${HOME}/sigma"
+
+## external storage
+
+export readonly VOLUME_ROOT="/Volumes"
+export readonly MOUNT_POINT="${VOLUME_ROOT}"
+
+## home dir
+ 
+export readonly VIDEOS="${HOME}/Movies"
 
 ## path manipulations ##########################################################
 

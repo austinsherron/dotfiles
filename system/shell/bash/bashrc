@@ -1,13 +1,15 @@
+#!/bin/bash
+
 ## TODO: extract pieces of this file into standalone scripts, config files, etc.
 
 ## constants ###################################################################
 
+## identifiers
+
 export readonly ME="austinsherron"
 export readonly MY_NICKNAME="austin"
-export readonly MACHINE="StarBook"
-export readonly MACHINE_NICKNAME="⭐📖"
-# dangerously close to colliding w/ $HOSTNAME
-export readonly HOST_NAME="$(hostname -s)"  
+
+## editors
 
 export readonly EDITOR="nvim"
 export readonly LEGACY_EDITOR="vim"
@@ -64,14 +66,13 @@ export readonly TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
 export readonly REMOTE_ROOT="${HOME}/Remote"
 export readonly DROPBOX_ROOT="${REMOTE_ROOT}/Dropbox"
 
-## external storage
-
-export readonly VOLUME_ROOT="/media"
-export readonly MOUNT_POINT="${VOLUME_ROOT}/${USER}"
-
 ## machine specific configs ####################################################
 
-source ${SHELL_ROOT}/machine-spc/${HOST_NAME}
+MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/${HOST_NAME}"
+
+source ${MACHINE_SPC_ROOT}/machinerc
+
+[[ -f ${MACHINE_SPC_ROOT}/appearance.sh ]] && source ${MACHINE_SPC_ROOT}/appearance.sh
 
 ## path manipulations ##########################################################
 
@@ -115,6 +116,7 @@ export PROMPT_COMMAND="history -a; history -n"
 
 alias og-vim="vim"
 alias nv="nvim"       
+alias rm="trash-cli"
 alias ss="s-search"    
 alias tx="tmux"
 alias vim="nvim"
@@ -130,7 +132,7 @@ alias drop="cd ${DROPBOX_ROOT}"
 alias pics="cd ${HOME}/Pictures"
 alias proj="cd ${PROJECTS_ROOT}"
 alias scr="cd ${SCRATCH_ROOT}"
-alias vid="cd ${HOME}/Videos"
+alias vid="cd ${VIDEOS}"
 alias vol="cd ${VOLUME_ROOT}"
 alias wk="cd ${DEV_ROOT}"
 
@@ -231,133 +233,6 @@ git-root() {
 git-ignore() {
     ${EDITOR} `get-git-root`/.gitignore
 }
-
-## mounts/veracrypt
-
-VC_MOUNT_POINT="${VOLUME_ROOT}/veracrypt"
-
-alias veracrypt="veracrypt --text"
-
-vc-mount() {
-    veracrypt --mount "${1}" --mount "${2}" --pim "${3}" --keyfiles "" --protect-hidden no --verbose
-}
-
-vc-dismount() {
-    veracrypt --dismount "${1}"
-}
-
-vc-dismount-all() {
-    vc-dismount
-}
-
-## known volumes
-
-vc-mount-vlt() {
-    vc-mount "${MOUNT_POINT}/DukeOfMoles/Encrypted" "${VC_MOUNT_POINT}1/" "0"
-#     vc-mount "${DROPBOX_ROOT}/Storage/DukeOfMoles-Encrypted" "${VC_MOUNT_POINT}1/" "0"
-}
- 
-vc-dismount-vlt() {
-    vc-dismount "${VC_MOUNT_POINT}1" 
-}
-
-vc-mount-bkup() {
-    vc-mount "${MOUNT_POINT}/VcntOfVoles/Encrypted" "${VC_MOUNT_POINT}2/" "0"
-}
-
-vc-dismount-bkup() {
-    vc-dismount "${VC_MOUNT_POINT}2" 
-}
-
-vc-mount-dp-frz() {
-#     vc-mount "${MOUNT_POINT}/DaneOfDucks/Encrypted" "${VC_MOUNT_POINT}3/" "0"
-    vc-mount "${DROPBOX_ROOT}/Storage/DaneOfDucks-Encrypted" "${VC_MOUNT_POINT}1/" "0"
-}
-
-vc-dismount-dp-frz() {
-    vc-dismount "${VC_MOUNT_POINT}3" 
-}
-
-vc-mount-keys() {
-    vc-mount "${MOUNT_POINT}/BreakGlass/Encrypted" "${VC_MOUNT_POINT}4/" "0"
-}
-
-vc-dismount-keys() {
-    vc-dismount "${VC_MOUNT_POINT}4" 
-}
-
-### encrypted volumes
-
-init-vlt() {
-    vc-mount-vlt
-}
-
-term-vlt() {
-    vc-dismount-vlt
-    sudo eject "${MOUNT_POINT}/DukeOfMoles"
-}
- 
-init-bkup() {
-    vc-mount-bkup
-}
-
-term-bkup() {
-    vc-dismount-bkup
-    sudo eject "${MOUNT_POINT}/VcntOfVoles"
-}
-
-init-dp-frz() {
-    vc-mount-dp-frz
-}
-
-term-dp-frz() {
-    vc-dismount-dp-frz
-    sudo eject "${MOUNT_POINT}/DaneOfDucks"
-}
-
-init-keys() {
-    vc-mount-keys
-}
-
-term-keys() {
-    vc-dismount-keys
-    sudo eject "${MOUNT_POINT}/BreakGlass"
-}
-
-init-all() {
-    fix-veracrypt
-    vc-mount-vlt
-    vc-mount-bkup
-    vc-mount-dp-frz
-    vc-mount-keys
-}
-
-term-all() {
-    vc-dismount-all
-    sudo eject "${MOUNT_POINT}/DukeOfMoles"
-    sudo eject "${MOUNT_POINT}/DaneOfDucks"
-    sudo eject "${MOUNT_POINT}/VcntOfVoles"
-    sudo eject "${MOUNT_POINT}/BreakGlass"
-}
-
-## keepassxc
-
-open-kp-vlt() {
-    kpdb=`find "${VC_MOUNT_POINT}" -path "${DROPBOX_ROOT}" -not -path "*/.*" -not -path "*/*-Locked.kdbx" -type f -name "*.kdbx" | fzf +i --height=1%`
-    xdg-open ${kpdb}
-}
-
-# open-vlt() {
-#     keepassxc open /home/the.vole.viscount/Documents/Security/Passwords.kdbx -y 2
-# }
-# 
-# open-vlt-gui() {
-#     open /Volumes/Vault/Secrets/Passwords.kdbx -a /Applications/KeePassXC.app
-# }
-# 
-# get-pw() {
-#     keepassxc clip /Volumes/Vault/Secrets/Passwords.kdbx "${1}" "${2}" -b -y 2    
-# }
 
 ## gpg
 
