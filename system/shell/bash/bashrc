@@ -6,8 +6,14 @@
 
 ## identifiers
 
+# me
 export readonly ME="austinsherron"
 export readonly MY_NICKNAME="austin"
+export readonly ME_FORMALLY="Austin Sherron"
+export readonly MY_EMAIL="austin@pryvate.email"
+export readonly MY_KEY="D55F49224387A57E0FDB80E1494E1B61A3505B41"
+
+# this machine
 # dangerously close to $HOSTNAME...
 export readonly HOST_NAME="$(hostname -s)"
 
@@ -191,6 +197,24 @@ alias repo-ls="gh repo ls --no-archived"
 
 ## functions ###################################################################
 
+## navigation
+
+dir-switch() {
+    cd $(switch $@)
+}
+
+dir-switch-1() {
+    cd $(switch ${1} -m 1)
+}
+
+dir-switch-n() {
+    cd $(switch ${1} -m ${2})
+}
+
+alias ds="dir-switch"
+alias dso="dir-switch-1"
+alias dsn="dir-switch-n"
+
 ## files
 
 scratch() {
@@ -222,6 +246,10 @@ pbpo() {
 
 pbcf() {
     cat $1 | pbcopy
+}
+
+clip-clear() {
+    pbc < /dev/null
 }
 
 ## git

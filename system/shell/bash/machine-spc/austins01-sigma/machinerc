@@ -112,13 +112,6 @@ complete -F __start_kubectl kc
 
 ## functions  ##################################################################
 
-## navigation
-
-switch() {
-    repo="$(ls ~/sigma | fzf +i +m -e)"
-    cd ~/sigma/${repo}
-}
-
 ## auth
 
 gcloud-auth() {

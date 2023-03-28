@@ -6,6 +6,7 @@ $hostname\
 $directory\
 $python\
 $git_branch\
+$git_metrics\
 $git_state\
 $git_status\
 $cmd_duration\
@@ -22,7 +23,8 @@ vimcmd_symbol = "[❮](green)"
 [directory]
 truncation_length = 3
 truncate_to_repo = true
-style = "green"
+style = "green bold"
+# style = "purple bold"
 
 # Configure the duration of the last command
 [cmd_duration]
@@ -36,7 +38,7 @@ style = "blue"
 
 # Configure the Git symbols
 [git_status]
-style = "yellow"
+style = "yellow bold"
 conflicted = "  "
 deleted = " 﫧"
 modified = "  "
@@ -55,8 +57,12 @@ untracked = "  "
 [python]
 symbol = " "
 
+[battery]
+disabled = false
+
 [time]
 use_12hr = true
+# style = "bold green"
 style = "bold purple"
 format = "[$time]($style) "
 disabled = false

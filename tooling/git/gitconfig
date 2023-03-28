@@ -1,15 +1,16 @@
 [user]
-    email = austin@pryvate.email
-    name  = Austin Sherron
+    email      = austin@pryvate.email
+    name       = Austin Sherron
     signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 
 [core]
-    editor = "${EDITOR}"
+    editor       = nvim
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
     clear       = !git reset head && git checkout -- .
-    diff        = diff -w -M
+    df          = diff 
+    diff        = diff -M
     hdiff       = diff HEAD 
     home        = checkout master
     in-branches = branch --contains
@@ -25,8 +26,12 @@
     rdel        = "!git push origin :\"$1\" #"
     rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\""
     squash      = rebase -i
+    st          = status
+    undo        = checkout -- .
+    unstage     = reset HEAD
+    wipeout     = !git unstage && git undo && git clean -fd
 
-    # stash aliases
+    # [stash] 
     sl  = stash list 
     sst = stash show -p stash@{0}
     ss  = "!git stash show -p stash@{\"$1\"} #"
@@ -37,7 +42,7 @@
     sdt = stash drop stash@{0}
     sd  = "!git stash drop stash@{\"$1\"} #"
     
-    # fuzzy commands
+    # [fuzzy] 
     fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | fzf +i +m -e` && git checkout ${BRANCH}
     fdel            = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -d ${BRANCH}
@@ -48,9 +53,13 @@
     frebase         = !BRANCH=`git ls $@ | fzf +i +m -e` && git rebase ${BRANCH}
     flog            = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}
     fdiff           = !BRANCH=`git ls $@ | fzf +i +m -e` && git diff ${BRANCH}
+    # what commits are in that branch that aren't in this one (includes merges)
     fcdiff          = !BRANCH=`git ls $@ | fzf +i +m -e` && git log head..${BRANCH}
+    # what commits are in this branch that aren't in that one (includes merges)
     frcdiff         = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}..head
+    # what commits are in that branch that aren't in this one
     fcinthatnotthis = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges head..${BRANCH}
+    # what commits are in this branch that aren't in that one
     fcinthisnotthat = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges ${BRANCH}..head 
 [push]
     default = upstream
@@ -71,6 +80,7 @@
 [url "https://x-access-token@127.0.0.1:56799"]
     insteadOf = ssh://git@127.0.0.1:56799
 
+# slighlty different configs for work (i.e.: user, branch name format, etc.)
 [includeIf "gitdir:~/sigma/**"]
     path = .gitconfig-sigma
 
