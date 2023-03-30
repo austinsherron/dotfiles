@@ -9,6 +9,7 @@
 [alias]
     checkoutr   = checkout
     clear       = !git reset head && git checkout -- .
+    clearp      = !git reset head \"$1\" && git checkout -- \"$1\"
     df          = diff 
     diff        = diff -M
     hdiff       = diff HEAD 
