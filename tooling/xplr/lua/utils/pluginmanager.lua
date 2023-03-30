@@ -1,40 +1,18 @@
--- move these to shared utils
-
-local function get_data_path()
-    return os.getenv('HOME' .. '/.local/share')
-end
-
-
-local function update_pkg_path(paths)
-    for _, path in ipairs(paths) do
-        package.path = package.path .. ';' .. path .. '/?.lua'
-    end
-end
-
-
-local function run(cmd)
-    return os.execute(cmd)
-end
-
-
-local function git_clone(url, path)
-    local cmd = string.format("[ -e '%s' ] || git clone '%s' '%s'", path, url, path)
-    return run(cmd)
-end
-
+require 'lib.lua.path'
+require 'lib.lua.run'
 
 local MGR_GIT_URL = 'https://github.com/dtomvan/xpm.xplr'
-local MGR_PATH = '/.local/share/xplr/dtomvan/xpm.xplr'
+local MGR_PATH = get_data_path('/xplr/dtomvan/xpm.xplr')
 
-local function init()
-    git_clone(MGR_GIT_URL, MGR_PATH)    
+add_module_to_lua_path(MGR_PATH)
+
+local function init(plugins)
+    all_plugins = table.combine_many(plugins)
+
+    table.insert(all_plugins, 'dtomvan/xpm.xplr') 
 
     require('xpm').setup({
-        plugins = {
-            -- Let xpm manage itself
-            'dtomvan/xpm.xplr',
-            { name = 'sayanarijit/fzf.xplr' },
-        },
+        plugins = all_plugins,
         auto_install = true,
         auto_cleanup = true,
     })
@@ -45,3 +23,4 @@ return {
     name = 'xpm',
     init = init
 }
+

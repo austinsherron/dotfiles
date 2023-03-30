@@ -1,4 +1,8 @@
 [user]
-	email = austin@sigmacomputing.com
-	name  = Austin Sherron
-	signingkey = A6C9EAFBA030A0CE
+    name       = Austin Sherron
+    email      = austin@sigmacomputing.com
+    signingkey = A6C9EAFBA030A0CE
+
+[alias]
+    new-branch = "!git checkout -b austinsherron/sig-\"$1\"-\"$2\" #"
+    rls        = "!git ls-remote | grep sherron"
