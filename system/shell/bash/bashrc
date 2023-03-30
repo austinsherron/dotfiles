@@ -22,6 +22,10 @@ export readonly HOST_NAME="$(hostname -s)"
 export readonly EDITOR="nvim"
 export readonly LEGACY_EDITOR="vim"
 
+## git
+
+export readonly TRUNK="master"
+
 ## important paths #############################################################
 
 ## development
@@ -91,11 +95,20 @@ source ${MACHINE_SPC_ROOT}/machinerc
 #       time of writing, however (03/14/2023 [pi day!]), I don't know a better solution to
 #       the problem of importing homegrown modules
 
-export LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?.lua"            # lua rocks
-export LUA_PATH="${LUA_PATH};${PROJECTS_ROOT}/?.lua"                    # custom libraries
-export LUA_PATH="${LUA_PATH};${EDITORS_ROOT}/?.lua"                     # nvim
-export LUA_PATH="${LUA_PATH};${NVUNDLE}/?.lua"                          # nvim plugins
-export LUA_PATH="${LUA_PATH};${NVUNDLE}/nvim-treesitter/lua/?.lua"      # treesitter
+export LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?.lua"                                # lua rocks
+export LUA_PATH="${LUA_PATH};${PROJECTS_ROOT}/?.lua"                                        # custom libraries
+export LUA_PATH="${LUA_PATH};${PROJECTS_ROOT}/?/init.lua"                                   # custom libraries
+export LUA_PATH="${LUA_PATH};${EDITORS_ROOT}/?.lua"                                         # nvim
+export LUA_PATH="${LUA_PATH};${EDITORS_ROOT}/?/init.lua"                                    # nvim
+export LUA_PATH="${LUA_PATH};${NVUNDLE}/?.lua"                                              # nvim plugins
+export LUA_PATH="${LUA_PATH};${NVUNDLE}/?/init.lua"                                         # nvim plugins
+export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/?.lua"                                  # xplr 
+export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/?/init.lua"                             # xplr 
+export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?.lua"                    # xplr plugins
+export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?/init.lua"               # xplr plugins
+export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?.lua"           # xplr plugins
+export LUA_PATH="${LUA_PATH};${NVUNDLE}/nvim-treesitter/lua/?.lua"                          # treesitter
+export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?/init.lua"      # xplr plugins manager
 
 ## shell #######################################################################
 
@@ -128,6 +141,7 @@ alias rm="trash-cli"
 alias ss="s-search"    
 alias tx="tmux"
 alias vim="nvim"
+alias zx="zoxide"
 
 ## navigation
 
@@ -264,6 +278,20 @@ git-ignore() {
     ${EDITOR} `get-git-root`/.gitignore
 }
 
+git-sync() {
+    branch="$(git rev-parse --abbrev-ref HEAD)"
+
+    if [[ "${branch}" = "${TRUNK}" ]]; then
+        echo "Branch is alrady on ${TRUNK}"
+        exit 1
+    fi
+
+    git home
+    git pull
+    git checkout "${branch}"
+    git mmerge
+}
+
 ## gpg
 
 gpg-export() {
@@ -336,3 +364,6 @@ source ${SHELL_ROOT}/extensions/oh-my-bash.sh
 
 source ${SHELL_ROOT}/extensions/starship.sh
 
+## zoxide
+
+eval "$(zoxide init bash)"
