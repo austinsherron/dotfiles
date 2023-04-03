@@ -25,6 +25,18 @@ function material_landscape_setup()
 end
 
 
+function nvim_ctrl_setup()
+  require('nvim-ctrl').setup({
+    bin = 'nvim-ctrl',
+    mode = 'default',
+    keys = {
+      ['ctrl-e'] = 'tabedit',
+      ['o'] = 'e',
+    }
+  })
+end
+
+
 function zentable_setup()
   require('zentable').setup()
 end
@@ -41,11 +53,12 @@ end
 
 return {
   -- package manager
-  'dtomvan/xpm.xplr',
+  'dtomvan/xpm.xplr',       
   { 'dtomvan/extra-icons.xplr', after = extra_icons_after },
-  { 'sayanarijit/find.xplr' }, -- TODO: , setup = find_setup },
+  { 'sayanarijit/find.xplr', setup = find_setup }, 
   { 'sayanarijit/fzf.xplr', setup = fzf_setup },
   -- { 'sayanarijit/material-landscape.xplr', setup = material_landscape_setup },
+  { 'sayanarijit/nvim-ctrl.xplr', setup = nvim_ctrl_setup },
   { 'sayanarijit/tri-pane.xplr', rev = 'a194ce5' },
   { 'sayanarijit/zoxide.xplr', setup = zoxide_setup },
   { 'sayanarijit/zentable.xplr', setup = zentable_setup },
