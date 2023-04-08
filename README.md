@@ -10,21 +10,21 @@ and of themselves. 🙃
 These files are shared across two laptops: my work computer, a 2019 MacBook Pro running Ventura, and my personal laptop, a StarBook Mk. VI 
 running Zorin OS. I do my best to keep my config platform agnostic, but there are some bits of config that are necessarily specific to specific
 machines. I try to handle that gracefully, but I'm sure there are better solutions I'll discover in the fullness of time. If you have suggesstions,
-pleae reach out!
+please reach out!
 
-## Active Work
+### Active Work
 
 * [Gitleaks](https://github.com/gitleaks/gitleaks-action)
 * [Neovim](editors/nvim/)
-* Tweaking my keymaps across all tools so that my hands hurt less 👴
+* Tweaking my keymaps across all tools so my hands hurt less 👴
 
-## Paused Work
+### Paused Work
 
-* [Xplr](https://github.com/sayanarijit/xplr) - love the concept, but haven't been able to devote enough time to really make it my own/incorporate daily workflows
-* Tmux - I've done a little tweaking/customization here, and I'm honestly pretty satisfied with what it does for me now
-* Further consolidation of work/personal dots - I got my shell rc more or less there, and that 90% of it 
+* [Xplr](https://github.com/sayanarijit/xplr) - love the concept, but haven't been able to devote enough time to really make it my own/incorporate into daily workflows
+* Tmux - I feel like I've only scratched the surface here, but I'm honestly pretty satisfied with what it does for me now
+* Further consolidation of work/personal dots - I got my shell rc more or less there, and that's 90% of it 
 
-## Future Work
+### Future Work
 
 All kinds of stuff! But in all seriousness: 
 
