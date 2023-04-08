@@ -35,6 +35,7 @@ export readonly CONFIG_ROOT="${DEV_ROOT}/dotfiles"
 export readonly EDITORS_ROOT="${CONFIG_ROOT}/editors"
 export readonly PROJECTS_ROOT="${DEV_ROOT}/projects"
 export readonly SCRATCH_ROOT="${DEV_ROOT}/scratch"
+export readonly TOOLING_ROOT="${CONFIG_ROOT}/tooling"
 
 ## shell
 
@@ -61,7 +62,7 @@ export readonly NVUNDLE="${NVIM_ROOT}/packages"
 
 # tmux
 
-export readonly TMUX_ROOT="${CONFIG_ROOT}/tooling/tmux"
+export readonly TMUX_ROOT="${TOOLING_ROOT}/tmux"
 export readonly TMUX_CONF="${TMUX_ROOT}/tmux.conf"
 export readonly TMUX_BUNDLE="${TMUX_ROOT}/plugins"
 
@@ -139,6 +140,7 @@ alias og-vim="vim"
 alias nv="nvim"       
 alias rm="trash-cli"
 alias ss="s-search"    
+alias tk="task"
 alias tx="tmux"
 alias vim="nvim"
 alias zx="zoxide"
@@ -181,7 +183,8 @@ alias nvundle="cd ${NVUNDLE}"
 alias vimrc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.vimrc"
 alias vundle="cd ${LEGACY_CONFIG_ROOT_PUB}/.vim"
 
-# misc (git, hyper, kube)
+# misc (task, git, hyper, kube)
+alias taskrc="${EDITOR} ${CONFIG_ROOT_PUB}/taskrc"
 alias gitconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.gitconfig"
 alias hyperconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.hyper.js"
 alias kubeconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.kube/config"
@@ -246,6 +249,14 @@ diff-clip() {
     tmp=`mktemp`    
     pbpaste >| $tmp
     diff $tmp $1 && rm $tmp
+}
+
+mv-to-bak() {
+    mv ${1} ${1}.bak
+}
+
+mv-from-bak() {
+    mv ${1} ${1%.bak}
 }
 
 ## clipboard

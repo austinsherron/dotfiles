@@ -4,7 +4,7 @@
     signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 
 [core]
-    editor       = nvim
+    editor       = vim
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
@@ -46,8 +46,9 @@
     # [fuzzy] 
     fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | fzf +i +m -e` && git checkout ${BRANCH}
+    frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf +i +m -e` && git diff ${BRANCH}
     fdel            = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -d ${BRANCH}
-    frdel           = !BRANCH=`git ls $@ | fzf +i +m -e` && git rdel ${BRANCH}
+    frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf +i +m -e` && git rdel ${BRANCH}
     ffdel           = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -D ${BRANCH}
     fmerge          = !BRANCH=`git ls $@ | fzf +i +m -e` && git merge ${BRANCH}
     fmerc           = !BRANCH=`git ls $@ | fzf +i +m -e` && git merc ${BRANCH}
