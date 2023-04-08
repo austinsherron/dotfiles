@@ -312,45 +312,9 @@ gpg-export() {
     cd -
 }
 
-## 2-fa 
-
-2-fa() {
-    pbpaste | gpg -d | grep "${1}" | cut -d ':' -f2 | xargs | pbcopy 
-}
-
-ab-2fa() {
-    2-fa "Your AlphaBay 2-FA Code: " 
-}
-
-bh-2fa() {
-    2-fa "Your authorization code is: "
-}
-
-ic-2fa() {
-    2-fa "Incognito Verification Token: "
-}
-
-## crypto
-
-as-qr() {
-   qrencode -o qr.png "$1:$2?amount=$3" 
-}
-
-monero-qr() {
-    as-qr "monero" $1 $2
-    open qr.png
-}
-
-bitcoin-qr() {
-    as-qr "bitcoin" $1 $2
-    open qr.png
-}
-
-alias xmr-qr="monero-qr"
-alias btc-qr="bitcoin-qr"
-
 ## plugins/extensions ##########################################################
 
+## TODO: why isn't this working (on macbook, at least)?
 ## fzf tab completion
 
 # source ${EXT_ROOT}/fzf-tab-completion/bash/fzf-bash-completion.sh
