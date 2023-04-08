@@ -11,7 +11,7 @@ export readonly ME="austinsherron"
 export readonly MY_NICKNAME="austin"
 export readonly ME_FORMALLY="Austin Sherron"
 export readonly MY_EMAIL="austin@pryvate.email"
-export readonly MY_KEY="D55F49224387A57E0FDB80E1494E1B61A3505B41"
+export readonly MY_KEY_ID="D55F49224387A57E0FDB80E1494E1B61A3505B41"
 
 # this machine
 # dangerously close to $HOSTNAME...
