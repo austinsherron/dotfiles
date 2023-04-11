@@ -4,7 +4,7 @@
     signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 
 [core]
-    editor       = vim
+    editor       = nvim
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
