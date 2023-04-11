@@ -184,7 +184,7 @@ alias vimrc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.vimrc"
 alias vundle="cd ${LEGACY_CONFIG_ROOT_PUB}/.vim"
 
 # misc (task, git, hyper, kube)
-alias taskrc="${EDITOR} ${CONFIG_ROOT_PUB}/taskrc"
+alias tkrc="${EDITOR} ${CONFIG_ROOT_PUB}/task/taskrc"
 alias gitconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.gitconfig"
 alias hyperconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.hyper.js"
 alias kubeconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.kube/config"
