@@ -32,7 +32,7 @@ aliases=(general)
 # the plugins to load (plugins can be found in ~/.oh-my-bash/plugins/*);
 # custom plugins may be added to ~/.oh-my-bash/custom/plugins/ 
 # note: add wisely, as too many plugins slow down shell startup
-plugins=(git)
+plugins=(kubectl)
 
 # load the configuration
 source $OSH/oh-my-bash.sh
