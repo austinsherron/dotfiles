@@ -41,6 +41,8 @@ alias eject="sudo diskutil eject"
 alias lsblk="diskutil list"
 alias pip="pip3"
 alias python="python3"
+alias tf="terraform"
+alias tg="terragrunt"
 
 ## sigma 
 

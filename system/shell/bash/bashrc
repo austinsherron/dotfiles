@@ -136,6 +136,7 @@ export PROMPT_COMMAND="history -a; history -n"
 
 ## rename
 
+alias g="z"
 alias og-vim="vim"
 alias nv="nvim"       
 alias rm="trash-cli"
@@ -301,6 +302,10 @@ git-sync() {
     git pull
     git checkout "${branch}"
     git mmerge
+
+    if [[ "${1}" = "-p" ]]; then
+        git push
+    fi
 }
 
 ## gpg
