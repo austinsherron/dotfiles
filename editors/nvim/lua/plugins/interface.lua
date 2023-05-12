@@ -6,6 +6,7 @@
 --]]
 
 require 'nvim.lua.plugins.config.alphanvim'
+require 'nvim.lua.plugins.config.bufferline'
 
 
 return {
@@ -19,14 +20,19 @@ return {
       require('alpha').setup(require('alpha.themes.startify').config)
     end,
   },
----- barbar: buffer bar
+---- bufferline: buffer bar
   {
-    'romgrk/barbar.nvim',
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    version = '^1.0.0',     -- optional: only update when a new 1.x version is released
+    'akinsho/bufferline.nvim',
+    opts = bufferline_opts(),
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    version = "v3.*",
+
+    config = function(_, opts)
+      require('bufferline').setup(opts)
+    end,
   },
 ---- TODO: cmp-cmdline: fuzzy completion of commands
-  { 
+  {
     'hrsh7th/cmp-cmdline',
     enabled = false,
   },
@@ -38,7 +44,15 @@ return {
       require('lualine').setup()
     end
   },
+---- nvim-navic: language aware bar interace elemnt
+  {
+    'SmiteshP/nvim-navic',
+
+    config = function()
+      require('nvim-navic')
+    end,
+  },
 ---- undotree: visualize a file/buffer's change history
-  {'mbbill/undotree'},
+  { 'mbbill/undotree' },
 }
 

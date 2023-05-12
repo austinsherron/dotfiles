@@ -18,15 +18,17 @@ end
 
 
 local function get_include_pattern()
-    return '>' .. env.sigma_root() 
+    return '>/Users/austinsherron/sigma'
 end
 
 
 local function get_patterns()
-  local patterns = get_exclude_patterns()
-  table.insert(patterns, get_include_pattern())
+  -- local patterns = get_exclude_patterns()
+  -- table.insert(patterns, get_include_pattern())
+  --
+  -- return patterns
 
-  return patterns
+  return { get_include_pattern() }
 end
 
 

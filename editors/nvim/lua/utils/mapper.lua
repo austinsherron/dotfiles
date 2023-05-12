@@ -25,7 +25,6 @@ local MAP = 'map'
 local KeyMapper = {}
 KeyMapper.__index = {}
 
-
 local function KeyMapper_new()
     local this = {}
     setmetatable(this, KeyMapper)
@@ -43,7 +42,7 @@ local function do_mapping(mode, lhs, rhs, noremap, silent, buffer)
     if (type(rhs) == 'string') then
         vim.api.nvim_set_keymap(mode, lhs, rhs, options)
     elseif (type(rhs) == 'function') then
-	vim.keymap.set(mode, lhs, rhs, options)
+        vim.keymap.set(mode, lhs, rhs, options)
     else
         error('rhs = ' .. tostring(rhs) .. ' is of an unrecognized type ' .. type(rhs))
     end

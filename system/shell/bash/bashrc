@@ -82,6 +82,7 @@ export readonly DROPBOX_ROOT="${REMOTE_ROOT}/Dropbox"
 ## machine specific configs ####################################################
 
 MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/${HOST_NAME}"
+MACHINE_SPC_RC="${SHELL_ROOT}/machine-spc/${HOST_NAME}/machinerc"
 
 source ${MACHINE_SPC_ROOT}/machinerc
 
@@ -97,6 +98,9 @@ source ${MACHINE_SPC_ROOT}/machinerc
 #       the problem of importing homegrown modules
 
 export LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?.lua"                                # lua rocks
+export LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?/init.lua"                           # lua rocks
+export LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.4/?.lua"                                # lua rocks
+export LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.4/?/init.lua"                           # lua rocks
 export LUA_PATH="${LUA_PATH};${PROJECTS_ROOT}/?.lua"                                        # custom libraries
 export LUA_PATH="${LUA_PATH};${PROJECTS_ROOT}/?/init.lua"                                   # custom libraries
 export LUA_PATH="${LUA_PATH};${EDITORS_ROOT}/?.lua"                                         # nvim
@@ -169,7 +173,8 @@ alias txload="tmux source-file ${TMUX_CONF_PUB}"
 
 # shell + tmux
 alias rc="${EDITOR} ${RC}; rcload"
-alias tmuxconf="${EDITOR} ${TMUX_CONF} ; txload "
+alias thisrc="${EDITOR} ${RC}; rcload"
+alias tmuxconf="${EDITOR} ${TMUX_CONF}; txload"
 alias tmuxroot="cd ${TMUX_ROOT}"
 alias tmuxrootpub="cd ${TMUX_ROOT_PUB}"
 
@@ -212,6 +217,9 @@ alias pr-todo="gh pr ls --search 'is:open is:pr review-requested:austinsherron a
 
 # for repos 
 alias repo-ls="gh repo ls --no-archived"
+
+# convenience
+alias pr-url="gh pr view --json url | jq .url | xargs | pbcopy"
 
 ## functions ###################################################################
 
@@ -280,6 +288,7 @@ clip-clear() {
 
 ## git
 
+alias get-git-branch="git rev-parse --abbrev-ref HEAD"
 alias get-git-root="git rev-parse --show-toplevel"
 
 git-root() {
@@ -288,24 +297,6 @@ git-root() {
 
 git-ignore() {
     ${EDITOR} `get-git-root`/.gitignore
-}
-
-git-sync() {
-    branch="$(git rev-parse --abbrev-ref HEAD)"
-
-    if [[ "${branch}" = "${TRUNK}" ]]; then
-        echo "Branch is alrady on ${TRUNK}"
-        exit 1
-    fi
-
-    git home
-    git pull
-    git checkout "${branch}"
-    git mmerge
-
-    if [[ "${1}" = "-p" ]]; then
-        git push
-    fi
 }
 
 ## gpg
@@ -347,3 +338,11 @@ source ${SHELL_ROOT}/extensions/starship.sh
 ## zoxide
 
 eval "$(zoxide init bash)"
+
+
+# export QT_PKG_CONFIG_QT5CORE="/usr/local/Cellar/qt@5/5.15.8_1/lib/pkgconfig/Qt5Core.pc"  
+export QT_PKG_CONFIG_QT5CORE=$(find /usr -name Qt5Core.pc 2>/dev/null)
+chmod 666 $QT_PKG_CONFIG_QT5CORE
+echo "moc_location=\${prefix}/bin/moc" >> $QT_PKG_CONFIG_QT5CORE
+chmod 444 $QT_PKG_CONFIG_QT5CORE
+

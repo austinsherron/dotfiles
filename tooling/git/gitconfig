@@ -8,8 +8,6 @@
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
-    clear       = !git reset head && git checkout -- .
-    clearp      = !git reset head \"$1\" && git checkout -- \"$1\"
     df          = diff 
     diff        = diff -M
     hdiff       = diff HEAD 
@@ -20,16 +18,20 @@
     merc        = merge --log --no-ff
     mmerge      = merge master
     mrebase     = rebase master
+    murc        = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git rdel && git home && git merc ${BRANCH} && git branch -d ${BRANCH}
+    murge       = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git rdel && git home && git merge ${BRANCH} && git branch -d ${BRANCH}
     mylog       = log --author austin.sherron
     new-branch  = "!git checkout -b \"$1\"\\/\"$2\" #"
     publish     = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH} 
+    purge       = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git rdel && git home && git branch -d ${BRANCH}
     radd        = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
     rdel        = "!git push origin :\"$1\" #"
     rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\""
     squash      = rebase -i
     st          = status
+    sync        = "!git-sync \"$@\""
     undo        = checkout -- .
-    unstage     = reset HEAD
+    nstage     = reset HEAD
     wipeout     = !git unstage && git undo && git clean -fd
 
     # [stash] 
@@ -42,7 +44,7 @@
     sp  = "!git stash pop stash@{\"$1\"} #"
     sdt = stash drop stash@{0}
     sd  = "!git stash drop stash@{\"$1\"} #"
-    
+
     # [fuzzy] 
     fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | fzf +i +m -e` && git checkout ${BRANCH}

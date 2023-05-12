@@ -69,6 +69,14 @@ source ~/.git-completion.bash
 
 alias pr-create="gh pr create -a \"@me\" -r \"sigmacomputing/infra\""
 
+# atlantis commands via pr comments
+alias tf-pr-apply="gh pr comment -b 'atlantis apply'"
+alias tf-pr-diff="gh pr comment -b 'atlantis plan'"
+
+# kubeapply commands via pr comments
+alias k8s-pr-apply="gh pr comment -b 'kubeapply apply'"
+alias k8s-pr-diff="gh pr comment -b 'kubeapply diff'"
+
 ## python ######################################################################
 
 eval "$(pyenv init -)"
