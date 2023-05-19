@@ -55,3 +55,7 @@ switch() {
     cd ${PROJECTS_ROOT}/${repo}
 }
 
+## plugins/extensions ##########################################################
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
