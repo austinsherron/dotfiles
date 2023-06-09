@@ -3,6 +3,7 @@ editors/vim/archive/
 editors/nvim/packages/
 system/terminal/hyper_plugins/
 tooling/tmux/plugins/
+tooling/tmux/resurrect/
 tooling/xplr/packages/
 *.netrwhist
 
