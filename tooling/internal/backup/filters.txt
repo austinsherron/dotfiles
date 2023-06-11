@@ -1,0 +1,9 @@
++ /usr/
++ /usr/**
+- /home/austin/Remote/
+- /home/austin/Remote/**
+- /home/austin/.cache/
+- /home/austin/.cache/**
++ /home/
++ /home/**
+- /**

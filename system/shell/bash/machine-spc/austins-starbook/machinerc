@@ -18,7 +18,7 @@ export readonly MACHINE="StarBook"
 export readonly MACHINE_NICKNAME="⭐📖"
 
 ## important paths ###########################################################
- 
+
 ## external storage
 
 export readonly VOLUME_ROOT="/media"
@@ -33,14 +33,20 @@ export readonly VIDEOS="${HOME}/Videos"
 ## rename
 
 alias dbc="dbxcli"
-alias dp2="devilspie2"  
-alias open="xdg-open"
+alias dp2="devilspie2"
+alias userctl="systemctl --user"
 
 ## utils
 
 # copy/paste
 alias pbcopy='xsel --clipboard'
 alias pbpaste='xsel --clipboard'
+
+# customization
+alias gogh='bash -c "$(wget -qO- https://git.io/vQgMr)"'
+
+# system
+alias reboot="sudo systemctl reboot -i"
 
 ## github ######################################################################
 
@@ -55,7 +61,15 @@ switch() {
     cd ${PROJECTS_ROOT}/${repo}
 }
 
+## utils
+
+open() {
+    xdg-open "${1}" > /dev/null 2>&1
+}
+
 ## plugins/extensions ##########################################################
 
+# linuxbrew (for installing more up to date packages than those from apt)
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+export HOMEBREW_NO_AUTO_UPDATE=1        # disable auto-update
 
