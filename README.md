@@ -39,7 +39,7 @@ All kinds of stuff! But in all seriousness:
 ## Structure
 
 ```
-.
+
 ├── editors
 │   ├── nvim
 │   └── vim
