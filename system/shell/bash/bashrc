@@ -34,6 +34,7 @@ export readonly DEV_ROOT="${HOME}/Workspace"
 export readonly CONFIG_ROOT="${DEV_ROOT}/dotfiles"
 export readonly EDITORS_ROOT="${CONFIG_ROOT}/editors"
 export readonly PROJECTS_ROOT="${DEV_ROOT}/projects"
+export readonly TOOLS_ROOT="${PROJECTS_ROOT}/tools"
 export readonly SCRATCH_ROOT="${DEV_ROOT}/scratch"
 export readonly TOOLING_ROOT="${CONFIG_ROOT}/tooling"
 
@@ -78,6 +79,10 @@ export readonly TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
 
 export readonly REMOTE_ROOT="${HOME}/Remote"
 export readonly DROPBOX_ROOT="${REMOTE_ROOT}/Dropbox"
+
+## tools
+
+export readonly TOOLS_ROOT="${TOOLING_ROOT}"
 
 ## machine specific configs ####################################################
 

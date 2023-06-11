@@ -1,9 +1,13 @@
-searxng
-
 customProviders [
   {
     name: searxng
     url: "http://searx.be?q=%s"
     tags: [private]
   }
+  {
+    name: startpage
+    url: "https://www.startpage.com/sp/search?query=%s"
+    tags: [private]
+  }
 ]
+

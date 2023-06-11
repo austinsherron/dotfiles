@@ -1,0 +1,8 @@
+path: "/home/austin/Workspace/projects/tools/system/backup/incremental-backup"
+src: "/"
+dst: "/media/austin/6eb4492c-85e6-450f-852f-32cef9125a75/backups/austins-starbook"
+filters:
+  type: "merge"
+  file: "/home/austin/.config/backup/filters.txt"
+# args: "v"
+keep: 30

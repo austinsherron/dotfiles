@@ -8,8 +8,8 @@
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
-    clear       = !git reset head && git checkout -- .
-    clearp      = !git reset head \"$1\" && git checkout -- \"$1\"
+    clear       = !git reset HEAD && git checkout -- .
+    clearp      = !git reset HEAD \"$1\" && git checkout -- \"$1\"
     df          = diff 
     diff        = diff -M
     hdiff       = diff HEAD 
@@ -32,8 +32,8 @@
     unstage     = reset HEAD
     wipeout     = !git unstage && git undo && git clean -fd
 
-    # [stash] 
-    sl  = stash list 
+    # [stash]
+    sl  = stash list
     sst = stash show -p stash@{0}
     ss  = "!git stash show -p stash@{\"$1\"} #"
     sat = stash apply stash@{0}
@@ -42,7 +42,7 @@
     sp  = "!git stash pop stash@{\"$1\"} #"
     sdt = stash drop stash@{0}
     sd  = "!git stash drop stash@{\"$1\"} #"
-    
+
     # [fuzzy] 
     fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | fzf +i +m -e` && git checkout ${BRANCH}
@@ -56,13 +56,13 @@
     flog            = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}
     fdiff           = !BRANCH=`git ls $@ | fzf +i +m -e` && git diff ${BRANCH}
     # what commits are in that branch that aren't in this one (includes merges)
-    fcdiff          = !BRANCH=`git ls $@ | fzf +i +m -e` && git log head..${BRANCH}
+    fcdiff          = !BRANCH=`git ls $@ | fzf +i +m -e` && git log HEAD..${BRANCH}
     # what commits are in this branch that aren't in that one (includes merges)
-    frcdiff         = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}..head
+    frcdiff         = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}..HEAD
     # what commits are in that branch that aren't in this one
-    fcinthatnotthis = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges head..${BRANCH}
+    fcinthatnotthis = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges HEAD..${BRANCH}
     # what commits are in this branch that aren't in that one
-    fcinthisnotthat = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges ${BRANCH}..head 
+    fcinthisnotthat = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges ${BRANCH}..HEAD 
 [push]
     default = upstream
 [pull]

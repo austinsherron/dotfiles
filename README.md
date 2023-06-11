@@ -31,27 +31,34 @@ All kinds of stuff! But in all seriousness:
 * I'd like to play around with [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) and [Timewarrior](https://github.com/GothenburgBitFactory/timewarrior)
 * I like keeping the "source of truth" of my dotfiles outside of their natural structure in the system, i.e.: `~/Workspace/dotfiles/*` instead of `~/.config/*` or `~/.*`, but I also want some system to keep them deployed, synced, and up to date across systems
   * I'm looking at [dotsync](https://github.com/dotphiles/dotsync), but that's only one piece of the puzzle
-  * Keep your eye on TODO for an evolving idea I have involing symlinks and a cron
+  * Keep your eye on TODO for an evolving idea I have involing symlinks and a cron (or a new tool I've found called [entr](https://github.com/eradman/entr))
+  * Another potential idea for the
+* After I had to wipe my personal laptop due to a bad linux install, it occurred to me that my process for setting up a new system is painfully manual (also an issue when trying to sync installed software b/w multiple laptops)
+  * I'm thinking of exploring [Nix](https://github.com/NixOS/nix) to make this significantly (I think...) easier
 
 ## Structure
 
 ```
-.
+
 ├── editors
-│   ├── nvim
-│   └── vim
+│   ├── nvim
+│   └── vim
 ├── system
-│   ├── shell
-│   │   └── bash
-│   └── terminal
+│   ├── shell
+│   │   └── bash
+│   │       ├── extensions
+│   │       └── machine-spc
+│   └── terminal
 ├── tooling
-│   ├── git
-│   ├── s-search
-│   ├── tmux
-│   └── xplr
+│   ├── git
+│   ├── internal
+│   │   └── backup
+│   ├── s-search
+│   ├── tmux
+│   └── xplr
 └── work
     ├── editors
-    │   └── vim
+    │   └── vim
     └── tooling
         ├── git
         └── tmux
