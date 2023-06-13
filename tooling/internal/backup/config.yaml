@@ -5,4 +5,4 @@ filters:
   type: "merge"
   file: "/usr/local/etc/backup/filters.txt"
 # flags: "v"
-keep: 7
+keep: 14

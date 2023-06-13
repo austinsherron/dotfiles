@@ -34,7 +34,6 @@ export readonly VIDEOS="${HOME}/Videos"
 
 alias dbc="dbxcli"
 alias dp2="devilspie2"
-alias userctl="systemctl --user"
 
 ## utils
 
