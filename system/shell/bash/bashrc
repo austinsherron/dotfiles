@@ -2,6 +2,10 @@
 
 ## TODO: extract pieces of this file into standalone scripts, config files, etc.
 
+## imports #####################################################################
+
+source /etc/profile.d/shared_paths.sh
+
 ## constants ###################################################################
 
 ## identifiers
@@ -28,22 +32,6 @@ export readonly TRUNK="master"
 
 ## important paths #############################################################
 
-## shared
-
-# admin (i.e.: me); src of shared execs, config, etc.
-export readonly ADMIN_HOME="/home/austin"
-export readonly DEV_ROOT="${ADMIN_HOME}/Workspace"
-export readonly CONFIG_ROOT="${DEV_ROOT}/dotfiles"
-export readonly PROJECTS_ROOT="${DEV_ROOT}/projects"
-export readonly TOOLS_ROOT="${PROJECTS_ROOT}/tools"
-export readonly TOOLING_ROOT="${CONFIG_ROOT}/tooling"
-export readonly INT_TOOLING_ROOT="${TOOLING_ROOT}/internal"
-
-# dest for shared execs, config, etc.
-export readonly SHARED_ROOT="/usr/local"
-export readonly SHARED_BINS="/usr/local/bin"
-export readonly SHARED_CONFIG_ROOT="/usr/local/etc"
-
 ## development
 
 export readonly EDITORS_ROOT="${CONFIG_ROOT}/editors"
@@ -51,7 +39,7 @@ export readonly SCRATCH_ROOT="${DEV_ROOT}/scratch"
 
 ## shell
 
-export readonly SHELL_NAME=$(basename ${SHELL})
+export readonly SHELL_NAME="$(basename ${SHELL})"
 export readonly SHELL_ROOT="${CONFIG_ROOT}/system/shell/${SHELL_NAME}"
 export readonly RC_NAME="${SHELL_NAME}rc"
 export readonly RC="${HOME}/.${RC_NAME}"
@@ -91,12 +79,6 @@ export readonly TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
 export readonly REMOTE_ROOT="${HOME}/Remote"
 export readonly DROPBOX_ROOT="${REMOTE_ROOT}/Dropbox"
 
-## tools
-
-export readonly TOOLS_ROOT="${TOOLING_ROOT}"
-
-## machine specific configs ####################################################
-
 MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/${HOST_NAME}"
 
 source ${MACHINE_SPC_ROOT}/machinerc
@@ -104,6 +86,9 @@ source ${MACHINE_SPC_ROOT}/machinerc
 [[ -f ${MACHINE_SPC_ROOT}/appearance.sh ]] && source ${MACHINE_SPC_ROOT}/appearance.sh
 
 ## path manipulations ##########################################################
+
+# golang
+export GOPATH="${HOME}/.go"
 
 ## lua
 
@@ -131,9 +116,6 @@ export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?/ini
 
 ## behavior
 
-# don't try to tab-complete hidden files
-bind 'set match-hidden-files off'
-
 # append to + reload history = history shared b/w tmux panes, amongst other things
 export PROMPT_COMMAND="history -a; history -n"
 
@@ -141,29 +123,26 @@ export PROMPT_COMMAND="history -a; history -n"
 
 [[ -f ${SHELL_ROOT}/core/colors.sh ]] && source ${SHELL_ROOT}/core/colors.sh
 
-## tmux ########################################################################
-
-# auto start tmux when shell starts
-# if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-#     exec tmux
-# fi
-
 ## aliases #####################################################################
 
 ## rename
 
+alias db="dropbox"
 alias g="z"
 alias og-vim="vim"
-alias nv="nvim"       
+alias nv="nvim"
 # alias rm="trash-cli"
-alias ss="s-search"    
+alias sc="systemctl"
+alias ss="s-search"
 alias tk="task"
 alias tx="tmux"
+alias uc="systemctl --user"     # "userctl"
 alias vim="nvim"
 alias zx="zoxide"
 
 ## navigation
 
+alias apps="cd ${HOME}/Applications"
 alias cst="cd ${HOME}/Customization"
 alias desk="cd ${HOME}/Desktop"
 alias docs="cd ${HOME}/Documents"
@@ -185,9 +164,10 @@ alias txload="tmux source-file ${TMUX_CONF_PUB}"
 
 # shell + tmux
 alias rc="${EDITOR} ${RC}; rcload"
-alias tmuxconf="${EDITOR} ${TMUX_CONF} ; txload "
-alias tmuxroot="cd ${TMUX_ROOT}"
-alias tmuxrootpub="cd ${TMUX_ROOT_PUB}"
+alias spc-rc="${EDITOR} ${MACHINE_SPC_ROOT}/machinerc; rcload"
+alias txconf="${EDITOR} ${TMUX_CONF}; txload"
+alias txroot="cd ${TMUX_ROOT}"
+alias txrootpub="cd ${TMUX_ROOT_PUB}"
 
 # nvim
 alias nvimrc="${EDITOR} ${NVIM_ROOT_PUB}/init.lua"
@@ -216,6 +196,23 @@ alias diffw="diff -w"
 # copy/paste
 alias pbc="pbcopy"
 alias pbp="pbpaste"
+
+# search
+alias brv="s -p searxng"
+alias ddg="s -p duckduckgo"
+alias goog="s -p google"
+alias qwnt="s -p qwant"
+alias sp="s -p startpage"
+alias sanon="s -p google -b \"chromium --incognito\""
+
+# mouse/screen focus
+alias ltap="xdotool mousemove 3066 1675 click 1 sleep 0.01 mousemove restore"
+alias rtap="xdotool mousemove 7579 1675 click 1 sleep 0.01 mousemove restore"
+alias lmv="xdotool mousemove 3066 1675 click 1"
+alias rmv="xdotool mousemove 7579 1675 click 1"
+
+# misc
+alias sush="sudo -i -- bash -c \"cd `pwd`; /bin/bash\""
 
 ## github ######################################################################
 
@@ -263,7 +260,7 @@ unhide() {
 }
 
 diff-clip() {
-    tmp=`mktemp`    
+    tmp=`mktemp`
     pbpaste >| $tmp
     diff $tmp $1 && rm $tmp
 }
@@ -346,11 +343,17 @@ gpg-export() {
 
 ## plugins/extensions ##########################################################
 
-## TODO: why isn't this working (on macbook, at least)?
-## fzf tab completion
+## fzf tab completion (TODO: why isn't this working on intel macbook?)
 
-# source ${EXT_ROOT}/fzf-tab-completion/bash/fzf-bash-completion.sh
-# bind -x '"\t": fzf_bash_completion'
+source ${DEV_ROOT}/external/fzf-tab-completion/bash/fzf-bash-completion.sh
+bind -x '"\t": fzf_bash_completion'
+
+# configure when fzf auto-completion actually kicks in
+# FZF_COMPLETION_AUTO_COMMON_PREFIX="true"            # true makes activation more conservative
+# FZF_COMPLETION_AUTO_COMMON_PREFIX_PART="true"       # ...and even more so
+
+# to reduce flickering on activation (I'm convinced it actually made it worse...)
+_fzf_bash_completion_loading_msg() { echo "${PS1@P}${READLINE_LINE}" | tail -n1; }
 
 ## oh-my-bash
 
@@ -363,3 +366,8 @@ source ${SHELL_ROOT}/extensions/starship.sh
 ## zoxide
 
 eval "$(zoxide init bash)"
+
+## for linuxbrew
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
