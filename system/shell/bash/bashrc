@@ -28,15 +28,26 @@ export readonly TRUNK="master"
 
 ## important paths #############################################################
 
-## development
+## shared
 
-export readonly DEV_ROOT="${HOME}/Workspace"
+# admin (i.e.: me); src of shared execs, config, etc.
+export readonly ADMIN_HOME="/home/austin"
+export readonly DEV_ROOT="${ADMIN_HOME}/Workspace"
 export readonly CONFIG_ROOT="${DEV_ROOT}/dotfiles"
-export readonly EDITORS_ROOT="${CONFIG_ROOT}/editors"
 export readonly PROJECTS_ROOT="${DEV_ROOT}/projects"
 export readonly TOOLS_ROOT="${PROJECTS_ROOT}/tools"
-export readonly SCRATCH_ROOT="${DEV_ROOT}/scratch"
 export readonly TOOLING_ROOT="${CONFIG_ROOT}/tooling"
+export readonly INT_TOOLING_ROOT="${TOOLING_ROOT}/internal"
+
+# dest for shared execs, config, etc.
+export readonly SHARED_ROOT="/usr/local"
+export readonly SHARED_BINS="/usr/local/bin"
+export readonly SHARED_CONFIG_ROOT="/usr/local/etc"
+
+## development
+
+export readonly EDITORS_ROOT="${CONFIG_ROOT}/editors"
+export readonly SCRATCH_ROOT="${DEV_ROOT}/scratch"
 
 ## shell
 
