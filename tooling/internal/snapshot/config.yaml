@@ -1,8 +1,8 @@
-path: "/usr/local/bin/incremental-backup"
+path: "/usr/local/bin/take-snapshot"
 src: "/"
 dst: "/media/austin/LinuxBackups/backups/austins-starbook"
 filters:
   type: "merge"
-  file: "/usr/local/etc/backup/filters.txt"
+  file: "/usr/local/etc/snapshot/filters.txt"
 # flags: "v"
 keep: 14
