@@ -21,7 +21,10 @@ vimcmd_symbol = "[❮](green)"
 
 # Configure the number of directories to truncate in the current path
 [directory]
-truncation_length = 3
+# previously had this set to 3, but but looks kinda messy and doesn't add
+# informational value now that tmux panes are configured w/ headers that
+# display the cwd
+truncation_length = 1
 truncate_to_repo = true
 style = "green bold"
 # style = "purple bold"
@@ -93,7 +96,7 @@ discharging_symbol = " "
 # [dotnet]
 # symbol = " "
 # style = "dimmed blue"
-#   
+#
 # # Configure the Rust module
 # [rust]
 # symbol = " "

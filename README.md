@@ -7,7 +7,7 @@ and of themselves. 🙃
 
 ## My Setup
 
-These files are shared across two laptops: my work computer, a 2019 MacBook Pro running Ventura, and my personal laptop, a StarBook Mk. VI 
+These files are shared across two laptops: my work computer, a 2019 MacBook Pro running Ventura, and my personal laptop, a StarBook Mk. VI
 running Zorin OS. I do my best to keep my config platform agnostic, but there are some bits of config that are necessarily specific to specific
 machines. I try to handle that gracefully, but I'm sure there are better solutions I'll discover in the fullness of time. If you have suggesstions,
 please reach out!
@@ -22,11 +22,11 @@ please reach out!
 
 * [Xplr](https://github.com/sayanarijit/xplr) - love the concept, but haven't been able to devote enough time to really make it my own/incorporate into daily workflows
 * Tmux - I feel like I've only scratched the surface here, but I'm honestly pretty satisfied with what it does for me now
-* Further consolidation of work/personal dots - I got my shell rc more or less there, and that's 90% of it 
+* Further consolidation of work/personal dots - I got my shell rc more or less there, and that's 90% of it
 
 ### Future Work
 
-All kinds of stuff! But in all seriousness: 
+All kinds of stuff! But in all seriousness:
 
 * I'd like to play around with [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) and [Timewarrior](https://github.com/GothenburgBitFactory/timewarrior)
 * I like keeping the "source of truth" of my dotfiles outside of their natural structure in the system, i.e.: `~/Workspace/dotfiles/*` instead of `~/.config/*` or `~/.*`, but I also want some system to keep them deployed, synced, and up to date across systems
@@ -53,7 +53,7 @@ All kinds of stuff! But in all seriousness:
 ├── tooling
 │   ├── git
 │   ├── internal
-│   │   └── backup
+│   │   └── snaphot
 │   ├── s-search
 │   ├── tmux
 │   └── xplr
