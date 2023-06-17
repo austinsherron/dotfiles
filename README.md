@@ -14,8 +14,8 @@ please reach out!
 
 ### Active Work
 
-* [Gitleaks](https://github.com/gitleaks/gitleaks-action)
-* [Neovim](editors/nvim/)
+* Adding [Gitleaks](https://github.com/gitleaks/gitleaks-action) to my personal git workflows
+* Implementing my ideal [Neovim](editors/nvim/) setup
 * Tweaking my keymaps across all tools so my hands hurt less 👴
 
 ### Paused Work
@@ -33,6 +33,7 @@ All kinds of stuff! But in all seriousness:
   * I'm looking at [dotsync](https://github.com/dotphiles/dotsync), but that's only one piece of the puzzle
   * Keep your eye on TODO for an evolving idea I have involing symlinks and a cron (or a new tool I've found called [entr](https://github.com/eradman/entr))
   * Another potential idea for the
+* I'm pretty comfortable in the Bash universe, but I've heard good things about [Zsh](https://www.zsh.org), and I've always had a fascination with [Fish](https://fishshell.com). I may try my experiment with some other shells in the near-mid term, but a wholesale shell migration *feels* like it would be a large undertaking.
 * After I had to wipe my personal laptop due to a bad linux install, it occurred to me that my process for setting up a new system is painfully manual (also an issue when trying to sync installed software b/w multiple laptops)
   * I'm thinking of exploring [Nix](https://github.com/NixOS/nix) to make this significantly (I think...) easier
 

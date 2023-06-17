@@ -228,24 +228,6 @@ alias repo-ls="gh repo ls --no-archived"
 
 ## functions ###################################################################
 
-## navigation
-
-dir-switch() {
-    cd $(switch $@)
-}
-
-dir-switch-1() {
-    cd $(switch ${1} -m 1)
-}
-
-dir-switch-n() {
-    cd $(switch ${1} -m ${2})
-}
-
-alias ds="dir-switch"
-alias dso="dir-switch-1"
-alias dsn="dir-switch-n"
-
 ## files
 
 scratch() {
@@ -288,7 +270,7 @@ pbcf() {
 }
 
 clip-clear() {
-    pbc < /dev/null
+    pbcopy < /dev/null
 }
 
 ## git

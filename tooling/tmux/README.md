@@ -8,11 +8,11 @@
 
 - [x] Install and configure resurrect
 - [x] Install and configure continuum
-- [ ] Make status bar even slightly useful, and please, for the love of god, 
+- [ ] Make status bar even slightly useful, and please, for the love of god,
       make it prettier 🤬
 
 ### Tasks/Fixes
 
 - [ ] Fix resizing shortcuts
-- [ ] Add shortcut for re-"naming" panes
+- [x] Add shortcut for "renaming" panes
 
