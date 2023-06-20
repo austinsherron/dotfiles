@@ -26,7 +26,7 @@ export readonly MOUNT_POINT="${VOLUME_ROOT}/${USER}"
 
 ## home dir
 
-export readonly VIDEOS="${HOME}/Videos"
+export readonly VIDEOS_DIR="Videos"
 
 ## aliases #####################################################################
 
@@ -46,6 +46,13 @@ alias gogh='bash -c "$(wget -qO- https://git.io/vQgMr)"'
 
 # system
 alias reboot="sudo systemctl reboot -i"
+
+## tools
+
+# tmp: disables the laptop keyboard so I can put a keyboard on top of it while 
+#      my laptop keyboard is broken
+alias float-keyboard="xinput float $(xinput list --id-only 'AT Translated Set 2 keyboard')"
+alias xls="xinput list"
 
 ## github ######################################################################
 

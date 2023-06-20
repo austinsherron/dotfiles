@@ -33,6 +33,7 @@
     wipeout     = !git unstage && git undo && git clean -fd
 
     # [stash]
+    stsh  = stash
     sl  = stash list
     sst = stash show -p stash@{0}
     ss  = "!git stash show -p stash@{\"$1\"} #"
@@ -44,25 +45,25 @@
     sd  = "!git stash drop stash@{\"$1\"} #"
 
     # [fuzzy] 
-    fcheckout       = !BRANCH=`git ls $@ | fzf +i +m -e` && git checkout ${BRANCH}
-    frcheckout      = !BRANCH=`git ls-remote | fzf +i +m -e` && git checkout ${BRANCH}
-    frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf +i +m -e` && git diff ${BRANCH}
-    fdel            = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -d ${BRANCH}
-    frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf +i +m -e` && git rdel ${BRANCH}
-    ffdel           = !BRANCH=`git ls $@ | fzf +i +m -e` && git branch -D ${BRANCH}
-    fmerge          = !BRANCH=`git ls $@ | fzf +i +m -e` && git merge ${BRANCH}
-    fmerc           = !BRANCH=`git ls $@ | fzf +i +m -e` && git merc ${BRANCH}
-    frebase         = !BRANCH=`git ls $@ | fzf +i +m -e` && git rebase ${BRANCH}
-    flog            = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}
-    fdiff           = !BRANCH=`git ls $@ | fzf +i +m -e` && git diff ${BRANCH}
+    fcheckout       = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git checkout ${BRANCH}
+    frcheckout      = !BRANCH=`git ls-remote | fzf --height=5 +i +m -e` && git checkout ${BRANCH}
+    frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=5 +i +m -e` && git diff ${BRANCH}
+    fdel            = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git branch -d ${BRANCH}
+    frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=5 +i +m -e` && git rdel ${BRANCH}
+    ffdel           = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git branch -D ${BRANCH}
+    fmerge          = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git merge ${BRANCH}
+    fmerc           = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git merc ${BRANCH}
+    frebase         = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git rebase ${BRANCH}
+    flog            = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git log ${BRANCH}
+    fdiff           = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git diff ${BRANCH}
     # what commits are in that branch that aren't in this one (includes merges)
-    fcdiff          = !BRANCH=`git ls $@ | fzf +i +m -e` && git log HEAD..${BRANCH}
+    fcdiff          = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git log HEAD..${BRANCH}
     # what commits are in this branch that aren't in that one (includes merges)
-    frcdiff         = !BRANCH=`git ls $@ | fzf +i +m -e` && git log ${BRANCH}..HEAD
+    frcdiff         = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git log ${BRANCH}..HEAD
     # what commits are in that branch that aren't in this one
-    fcinthatnotthis = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges HEAD..${BRANCH}
+    fcinthatnotthis = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git log --no-merges HEAD..${BRANCH}
     # what commits are in this branch that aren't in that one
-    fcinthisnotthat = !BRANCH=`git ls $@ | fzf +i +m -e` && git log --no-merges ${BRANCH}..HEAD 
+    fcinthisnotthat = !BRANCH=`git ls $@ | fzf --height=5 +i +m -e` && git log --no-merges ${BRANCH}..HEAD 
 [push]
     default = upstream
 [pull]
