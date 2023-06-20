@@ -1,6 +1,7 @@
-editors/vim/.vim/
-editors/vim/archive/
 editors/nvim/packages/
+editors/nvim/.spell/
+editors/vim/vim/
+editors/vim/archive/
 system/terminal/hyper_plugins/
 tooling/tmux/plugins/
 tooling/tmux/resurrect/
