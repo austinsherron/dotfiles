@@ -1,45 +1,57 @@
 format = """
 $battery\
 $time\
-$username\
-$hostname\
 $directory\
 $python\
+$git_status\
 $git_branch\
 $git_metrics\
 $git_state\
-$git_status\
 $cmd_duration\
 $line_break\
 $character"""
 
-# Replace the "❯" symbol in the prompt with "➜"
+# battery
+[battery]
+full_symbol = " "
+charging_symbol = " "
+discharging_symbol = " "
+
+[time]
+format = "[$time]($style) "
+time_format = "%I:%M"
+disabled = false
+style = "bold purple"
+# style = "bold green"
+use_12hr = true
+
+# the actual prompt
 [character]
 success_symbol = "[❯](purple)"
 error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
 
-# Configure the number of directories to truncate in the current path
-[directory]
-# previously had this set to 3, but but looks kinda messy and doesn't add
-# informational value now that tmux panes are configured w/ headers that
-# display the cwd
-truncation_length = 1
-truncate_to_repo = true
-style = "green bold"
-# style = "purple bold"
-
-# Configure the duration of the last command
+# min time to trigger slow cmd warning
 [cmd_duration]
 min_time = 100
 style = "dimmed white"
 disabled = true
 
-# Configure the Git prompt
+# current directory
+[directory]
+truncate_to_repo = true
+truncation_length = 3
+home_symbol = "~"
+style = "green"
+repo_root_style = "green bold"
+# truncation_symbol=".../"
+# style = "purple bold"
+
+# current git branch 
 [git_branch]
 style = "blue"
 
-# Configure the Git symbols
+# git symbols
 [git_status]
 style = "yellow bold"
 conflicted = "  "
@@ -57,57 +69,12 @@ untracked = "  "
 # renamed_count.enabled = true
 # untracked_count.enabled = true
 
+# # TODO: ssh prompt
+# [hostname]
+# prefix = "⟪"
+# ssh_only = true
+# suffix = "⟫"
+
 [python]
 symbol = " "
 
-# [battery]
-# disabled = false
-
-[time]
-use_12hr = true
-# style = "bold green"
-style = "bold purple"
-format = "[$time]($style) "
-disabled = false
-time_format = "%I:%M"
-
-# # Configure the SSH prompt
-# [hostname]
-# ssh_only = true
-# prefix = "⟪"
-# suffix = "⟫"
-
-# Configure the battery display
-[battery]
-full_symbol = " "
-charging_symbol = " "
-discharging_symbol = " "
-
-# # Configure the background jobs
-# [jobs]
-# symbol = ""
-#
-# # Configure the package version
-# [package]
-# symbol = " "
-# style = "dimmed white"
-#
-# # Configure the .NET module
-# [dotnet]
-# symbol = " "
-# style = "dimmed blue"
-#
-# # Configure the Rust module
-# [rust]
-# symbol = " "
-# style = "dimmed red"
-#
-# # Configure the Node.js module
-# [nodejs]
-# symbol = " "
-# style = "dimmed green"
-#
-# # Configure the Java module
-# [java]
-# symbol = " "
-# style = "dimmed purple"

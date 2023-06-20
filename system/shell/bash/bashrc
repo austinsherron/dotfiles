@@ -143,6 +143,8 @@ alias zx="zoxide"
 
 ### navigation
 
+export readonly MEDIA_ROOT="${HOME}/Media"
+
 alias apps="cd ${HOME}/Applications"
 alias cst="cd ${HOME}/Customization"
 alias desk="cd ${HOME}/Desktop"
@@ -150,9 +152,9 @@ alias docs="cd ${HOME}/Documents"
 alias dots="cd ${CONFIG_ROOT}"
 alias down="cd ${HOME}/Downloads"
 alias drop="cd ${DROPBOX_ROOT}"
-alias pics="cd ${HOME}/Pictures"
+alias pics="cd ${MEDIA_ROOT}/Pictures"
 alias proj="cd ${PROJECTS_ROOT}"
-alias vid="cd ${VIDEOS}"
+alias vids="cd ${MEDIA_ROOT}/${VIDEOS_DIR}"
 alias vol="cd ${VOLUME_ROOT}"
 alias wk="cd ${DEV_ROOT}"
 
@@ -363,4 +365,11 @@ source ${SHELL_ROOT}/extensions/starship.sh
 ### zoxide
 
 eval "$(zoxide init bash)"
+
+### nix
+
+# added by Nix installer
+if [ -e /home/austin/.nix-profile/etc/profile.d/nix.sh ]; then 
+    . /home/austin/.nix-profile/etc/profile.d/nix.sh; 
+fi
 
