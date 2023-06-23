@@ -28,14 +28,16 @@
     rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\""
     squash      = rebase -i
     st          = status
-    undo        = checkout -- .
+    undo        = checkout --
     unstage     = reset HEAD
     wipeout     = !git unstage && git undo && git clean -fd
 
     # [stash]
-    stsh  = stash
+    s   = stash
     sl  = stash list
+    sft = stash show stash@{0}
     sst = stash show -p stash@{0}
+    sf  = "!git stash show stash@{\"$1\"} #"
     ss  = "!git stash show -p stash@{\"$1\"} #"
     sat = stash apply stash@{0}
     sa  = "!git stash apply stash@{\"$1\"} #"
@@ -83,7 +85,7 @@
 [url "https://x-access-token@127.0.0.1:56799"]
     insteadOf = ssh://git@127.0.0.1:56799
 
-# slighlty different configs for work (i.e.: user, branch name format, etc.)
+# slightly different configs for work (i.e.: user, branch name format, etc.)
 [includeIf "gitdir:~/sigma/**"]
     path = .gitconfig-sigma
 
