@@ -1,6 +1,6 @@
 path: "/usr/local/bin/take-snapshot"
 src: "/"
-dst: "/media/austin/Backups/austins-starbook/snapshots"
+dst: "/media/austin/LinuxBackups/snapshots/austins-starbook"
 filters:
   type: "merge"
   file: "/usr/local/etc/snapshot/filters.txt"
