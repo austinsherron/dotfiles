@@ -130,7 +130,7 @@ export PROMPT_COMMAND="history -a; history -n"
 
 alias db="dropbox"
 alias g="z"
-alias og-vim="vim"
+alias og-vim="/usr/bin/vim"
 alias nv="nvim"
 # alias rm="trash-cli"
 alias sc="systemctl"

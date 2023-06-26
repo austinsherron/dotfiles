@@ -45,12 +45,7 @@ nmap <C-L><C-L> :set invrelativenumber<CR>
 "" plugin mgmt. (pathogen)
 
 " disabled plugins
-let g:pathogen_disabled = [
-    'auto-pairs', 
-    'syntastic',
-    'VimCompletesMe',
-    'delimitMate'
-]
+let g:pathogen_disabled = ['auto-pairs', 'syntastic', 'VimCompletesMe', 'delimitMate']
 
 " init pathogen
 execute pathogen#infect()
