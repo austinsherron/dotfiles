@@ -6,3 +6,4 @@
 [alias]
     new-branch = "!git checkout -b austinsherron/sig-\"$1\"-\"$2\" #"
     rls        = "!git ls-remote | grep sherron"
+
