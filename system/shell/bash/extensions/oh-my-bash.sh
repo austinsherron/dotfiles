@@ -35,7 +35,7 @@ aliases=(general)
 plugins=(kubectl)
 
 # load the configuration
-source $OSH/oh-my-bash.sh
+source "${OSH}/oh-my-bash.sh"
 
 
 ################################################################################

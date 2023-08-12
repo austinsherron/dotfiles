@@ -1,80 +1,179 @@
+
+## prompt ######################################################################
+
 format = """
-$battery\
-$time\
-$directory\
-$python\
-$git_status\
-$git_branch\
-$git_metrics\
-$git_state\
+($git_branch$git_status$git_metrics$git_state$line_break)\
+$time $directory$lua$python$golang$java \
 $cmd_duration\
+$sudo\
 $line_break\
 $character"""
 
-# battery
-[battery]
-full_symbol = " "
-charging_symbol = " "
-discharging_symbol = " "
+## core ########################################################################
 
-[time]
-format = "[$time]($style) "
-time_format = "%I:%M"
-disabled = false
-style = "bold purple"
-# style = "bold green"
-use_12hr = true
-
-# the actual prompt
-[character]
+[character] # -> the actual prompt
 success_symbol = "[❯](purple)"
 error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
 
-# min time to trigger slow cmd warning
-[cmd_duration]
+
+[cmd_duration] # -> displays slow cmd warnings
 min_time = 100
 style = "dimmed white"
 disabled = true
 
-# current directory
-[directory]
+
+[directory] # -> mini path/repo base
 truncate_to_repo = true
 truncation_length = 3
+style = "bold cyan"
+repo_root_style = "bold purple"
 home_symbol = "~"
+
+
+[sudo] # -> only visible if sudo creds are cached
+disabled = false
+
+## informational ###############################################################
+
+[battery] # -> gives us info about battery state
+disabled = true
+format = "[$symbol $percentage]($style) "
+
+[[battery.display]]
+threshold = 100
+style = "bold green"
+charging_symbol = "󰂅"
+discharging_symbol = "󰁹"
+
+[[battery.display]]
+threshold = 90
 style = "green"
-repo_root_style = "green bold"
-# truncation_symbol=".../"
-# style = "purple bold"
+charging_symbol = "󰂋"
+discharging_symbol = "󰂂"
 
-# current git branch 
+[[battery.display]]
+threshold = 80
+style = "light green"
+charging_symbol = "󰂊"
+discharging_symbol = "󰂁"
+
+[[battery.display]]
+threshold = 70
+style = "light green"
+charging_symbol = "󰢞"
+discharging_symbol = "󰂀"
+
+[[battery.display]]
+threshold = 60
+style = "light yellow"
+charging_symbol = "󰂉"
+discharging_symbol = "󰁿"
+
+[[battery.display]]
+threshold = 50
+style = "yellow"
+charging_symbol = "󰢝"
+discharging_symbol = "󰁾"
+
+[[battery.display]]
+threshold = 40
+style = "bold yellow"
+charging_symbol = "󰂈"
+discharging_symbol = "󰁽"
+
+[[battery.display]]
+threshold = 30
+style = "light red"
+charging_symbol = "󰂇"
+discharging_symbol = "󰁼"
+
+[[battery.display]]
+threshold = 20
+style = "red"
+charging_symbol = "󰂆"
+discharging_symbol = "󰁻"
+
+[[battery.display]]
+threshold = 10
+style = "bold red"
+charging_symbol = "󰢜"
+discharging_symbol = "󰁺"
+
+[[battery.display]]
+threshold = 5
+style = "bold red"
+charging_symbol = "󰢟"
+discharging_symbol = "󰂎"
+
+[[battery.display]] 
+threshold = 2
+style = "bold red"
+charging_symbol = "󰚌"
+discharging_symbol = "󰯈"
+
+
+[time]
+format = "[$time]($style)"
+time_format = "%I:%M"
+disabled = false
+style = "bold green"
+use_12hr = true
+
+## git #########################################################################
+
 [git_branch]
-style = "blue"
+format = "[$symbol$branch(:$remote_branch)]($style) "
+style = "bold cyan"
 
-# git symbols
+
+[git_metrics]
+disabled = false
+added_style = "green"
+deleted_style = "red"
+format = "[$added]($added_style) [$deleted]($deleted_style)"
+
+
 [git_status]
-style = "yellow bold"
-conflicted = "  "
-deleted = " 﫧"
-modified = "  "
-stashed = "  "
-staged = "  "
-renamed = "  "
-untracked = "  "
-# conflicted_count.enabled = true
-# deleted_count.enabled = true
-# modified_count.enabled = true
-# stashed_count.enabled = true
-# staged_count.enabled = true
-# renamed_count.enabled = true
-# untracked_count.enabled = true
+format = "([$all_status$ahead_behind]($style))"
+style = "yellow"
+conflicted = "󰓡 "
+deleted = " "
+modified = " "
+renamed = " "
+staged = " "
+stashed = " "
+untracked = " "
 
-# # TODO: ssh prompt
-# [hostname]
-# prefix = "⟪"
-# ssh_only = true
-# suffix = "⟫"
+## languages ###################################################################
+
+[golang]
+symbol = "🐹 "
+version_format = "v${major}.${minor}"
+format = "[$symbol($version )]($style)"
+
+
+[java]
+symbol = "☕ "
+version_format = "v${major}.${minor}"
+format = "[$symbol($version )]($style)"
+
+
+[lua]
+symbol = "🌙 "
+version_format = "v${major}.${minor}"
+format = "[$symbol($version )]($style)"
+
 
 [python]
-symbol = " "
+symbol = "🐍 "
+version_format = "v${major}.${minor}"
+format = "[$symbol($version )]($style)"
+
+## TODO ########################################################################
+
+[hostname] # -> ssh prompt
+prefix = "⟪"
+ssh_only = true
+suffix = "⟫"
 
