@@ -1,21 +1,26 @@
 #!/bin/bash
 
 
-<<comment
-Note: it's possible I'll run into a circular dependency issue here: something in
-      this file depends on something in the main file, which in turn depends on
-      something here. It's mostly an issue of order, so the problem could be 
-      solved by breaking this up into it's constituent parts. That seems like 
-      overkill at this point though.
-comment
+warning() {
+cat <<warning
+================================================================================
+!                              !!!! WARNING !!!!                               !
+!                                                                              !
+!                                                                              !
+! It appears this is a new system. Good going there good buddy. Do yourself a  !
+! favor and configure this fucker the way it's supposed to be. Get on it!!     !
+================================================================================
+warning
+}
 
+warning
 
 ## constants ###################################################################
 
 ## identifiers
 
-export readonly MACHINE="StarBook"
-export readonly MACHINE_NICKNAME="⭐📖"
+export readonly MACHINE="Unknown Linux Machine"
+export readonly MACHINE_NICKNAME="❓🐧🤖"
 
 ## important paths ###########################################################
 
@@ -32,6 +37,7 @@ export readonly VIDEOS_DIR="Videos"
 
 ## rename
 
+alias bat="batcat"
 alias dbc="dbxcli"
 alias dp2="devilspie2"
 
@@ -59,13 +65,6 @@ alias xls="xinput list"
 alias pr-create="gh pr create -a \"@me\""
 
 ## functions ###################################################################
-
-## navigation
-
-switch() {
-    repo="$(ls ${CODE_ROOT} | fzf +i +m -e --height=1%)"
-    cd ${CODE_ROOT}/${repo}
-}
 
 ## utils
 

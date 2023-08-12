@@ -1,10 +1,13 @@
 #!/bin/bash
 
+
 ## TODO: extract pieces of this file into standalone scripts, config files, etc.
 
 ## imports #####################################################################
 
 source /etc/profile.d/shared_paths.sh
+source "${CODE_ROOT}/lib/bash/utils.sh"
+
 
 ## constants ###################################################################
 
@@ -17,9 +20,6 @@ export readonly MY_NICKNAME="austin"
 export readonly ME_FORMALLY="Austin Sherron"
 export readonly MY_EMAIL="austin@pryvate.email"
 export readonly MY_KEY_ID="D55F49224387A57E0FDB80E1494E1B61A3505B41"
-
-# this machine (dangerously close to $HOSTNAME...)
-export readonly HOST_NAME="$(hostname -s)"
 
 ## editors
 
@@ -49,13 +49,15 @@ export readonly PROFILE="${HOME}/.${SHELL_NAME}_profile"
 
 ## vim
 
-export readonly VIM_ROOT="${EDITORS_ROOT}/vim"
+export readonly VIM_PARENT="${EDITORS_ROOT}"
+export readonly VIM_ROOT="${VIM_PARENT}/vim"
 export readonly VIMRC="${VIM_ROOT}/.vimrc"
 export readonly VUNDLE="${VIM_ROOT}/.vim"
 
 ## nvim
 
-export readonly NVIM_ROOT="${EDITORS_ROOT}/nvim"
+export readonly NVIM_PARENT="${DEV_ROOT}"
+export readonly NVIM_ROOT="${NVIM_PARENT}/nvim"
 export readonly NVIMRC="${NVIM_ROOT}/init.lua"
 export readonly NVUNDLE="${NVIM_ROOT}/packages"
 
@@ -72,23 +74,37 @@ export readonly LEGACY_CONFIG_ROOT_PUB="${HOME}"
 export readonly NVIM_ROOT_PUB="${CONFIG_ROOT_PUB}/nvim"
 export readonly TMUX_ROOT_PUB="${CONFIG_ROOT_PUB}/tmux"
 export readonly TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
+export readonly EXTERNAL_PKGS="${DEV_ROOT}/external"
+export readonly INSTALL_SCRIPTS="${CODE_ROOT}/scripts/install"
 
 ### remote storage
 
 export readonly REMOTE_ROOT="${HOME}/Remote"
 export readonly DROPBOX_ROOT="${REMOTE_ROOT}/Dropbox"
 
-MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/${HOST_NAME}"
+## machine specific config #####################################################
 
-source ${MACHINE_SPC_ROOT}/machinerc
+MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/${HOSTNAME}"
 
-[[ -f ${MACHINE_SPC_ROOT}/appearance.sh ]] && source ${MACHINE_SPC_ROOT}/appearance.sh
+# this machine's config
+if [[ -d "${SHELL_ROOT}/machine-spc/${HOSTNAME}" ]]; then
+    MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/${HOSTNAME}"
+# fallback to os specific config
+elif [[ -d "${SHELL_ROOT}/machine-spc/$(to_lower "$(uname)")" ]]; then
+    MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/$(to_lower "$(uname)")"
+# fallback to default "unknown" config
+else
+    MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/unknown"
+fi
+
+[[ -f "${MACHINE_SPC_ROOT}/machinerc" ]] && source "${MACHINE_SPC_ROOT}/machinerc"
+[[ -f "${MACHINE_SPC_ROOT}/appearance.sh" ]] && source "${MACHINE_SPC_ROOT}/appearance.sh"
 
 ## path manipulations ##########################################################
 
 ### shell path
 
-export PATH="${PATH}:/usr/local/go/bin"             # golang
+export PATH="${PATH}:${GO_ROOT}/bin"                # golang
 export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"     # java
 
 ### go path
@@ -102,20 +118,13 @@ export GOPATH="${HOME}/.go"
 #       time of writing, however (03/14/2023 [pi day!]), I don't know a better solution to
 #       the problem of importing homegrown modules
 
-export LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?.lua"                                # lua rocks
-export LUA_PATH="${LUA_PATH};${PROJECTS_ROOT}/?.lua"                                        # custom libraries
-export LUA_PATH="${LUA_PATH};${PROJECTS_ROOT}/?/init.lua"                                   # custom libraries
-export LUA_PATH="${LUA_PATH};${EDITORS_ROOT}/?.lua"                                         # nvim
-export LUA_PATH="${LUA_PATH};${EDITORS_ROOT}/?/init.lua"                                    # nvim
-export LUA_PATH="${LUA_PATH};${NVUNDLE}/?.lua"                                              # nvim plugins
-export LUA_PATH="${LUA_PATH};${NVUNDLE}/?/init.lua"                                         # nvim plugins
-export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/?.lua"                                  # xplr
-export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/?/init.lua"                             # xplr
-export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?.lua"                    # xplr plugins
-export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?/init.lua"               # xplr plugins
-export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?.lua"           # xplr plugins
-export LUA_PATH="${LUA_PATH};${NVUNDLE}/nvim-treesitter/lua/?.lua"                          # treesitter
-export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?/init.lua"      # xplr plugins manager
+lua-path -d "${NVIM_ROOT}" -d "${CODE_ROOT}" -d "${CONFIG_ROOT}" -e
+
+# TODO: address these when/if I re-start adoption of xplr
+# export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?.lua"                    # xplr plugins
+# export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?/init.lua"               # xplr plugins
+# export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?.lua"           # xplr plugins
+# export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?/init.lua"      # xplr plugins manager
 
 ## shell #######################################################################
 
@@ -128,17 +137,18 @@ export PROMPT_COMMAND="history -a; history -n"
 
 ### rename
 
+alias cl="clear"
 alias db="dropbox"
-alias g="z"
+alias g="git"
 alias og-vim="/usr/bin/vim"
 alias nv="nvim"
-# alias rm="trash-cli"
 alias sc="systemctl"
 alias ss="s-search"
 alias tk="task"
 alias tx="tmux"
-alias uc="systemctl --user"     # "userctl"
+alias uc="systemctl --user"
 alias vim="nvim"
+alias zd="z"
 alias zx="zoxide"
 
 ### navigation
@@ -146,6 +156,7 @@ alias zx="zoxide"
 export readonly MEDIA_ROOT="${HOME}/Media"
 
 alias apps="cd ${HOME}/Applications"
+alias code="cd ${CODE_ROOT}"
 alias cst="cd ${HOME}/Customization"
 alias desk="cd ${HOME}/Desktop"
 alias docs="cd ${HOME}/Documents"
@@ -153,10 +164,14 @@ alias dots="cd ${CONFIG_ROOT}"
 alias down="cd ${HOME}/Downloads"
 alias drop="cd ${DROPBOX_ROOT}"
 alias pics="cd ${MEDIA_ROOT}/Pictures"
-alias proj="cd ${PROJECTS_ROOT}"
 alias vids="cd ${MEDIA_ROOT}/${VIDEOS_DIR}"
 alias vol="cd ${VOLUME_ROOT}"
+alias wrk="cd ${CODE_ROOT}"
 alias wk="cd ${DEV_ROOT}"
+
+### quick access
+
+alias nvlog="vim ${HOME}/.local/state/nvim/nvim-user.log"
 
 ### config
 
@@ -169,9 +184,9 @@ alias txload="tmux source-file ${TMUX_CONF_PUB}"
 
 alias rc="${EDITOR} ${RC}; rcload"
 alias spc-rc="${EDITOR} ${MACHINE_SPC_ROOT}/machinerc; rcload"
-alias txconf="${EDITOR} ${TMUX_CONF}; txload"
-alias txroot="cd ${TMUX_ROOT}"
-alias txrootpub="cd ${TMUX_ROOT_PUB}"
+alias txc="${EDITOR} ${TMUX_CONF}; txload"
+alias txrt="cd ${TMUX_ROOT}"
+alias txrtpub="cd ${TMUX_ROOT_PUB}"
 
 ## nvim
 
@@ -189,9 +204,9 @@ alias vundle="cd ${LEGACY_CONFIG_ROOT_PUB}/.vim"
 ## misc (task, git, hyper, kube)
 
 alias tkrc="${EDITOR} ${CONFIG_ROOT_PUB}/task/taskrc"
-alias gitconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.gitconfig"
+alias gc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.gitconfig"
 alias hyperconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.hyper.js"
-alias kubeconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.kube/config"
+alias kc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.kube/config"
 
 ### utils
 
@@ -215,26 +230,25 @@ alias qwnt="s -p qwant"
 alias sp="s -p startpage"
 alias sanon="s -p google -b \"chromium --incognito\""
 
-## move mouse (assumes monitor configurationo similar to home office on 06/17/2023)
+## move mouse (assumes monitor configurations similar to home office on 06/17/2023)
+##
+## TODO: mouse movement to specific monitors doesn't work when resolution changes; figure
+##       out how to deal w/ this (xdotool getwindowgeometry isn't being cooperative)
 
 # to spc monitors
 
 # to ~ center of left; click
-alias lmv="xdotool mousemove 7579 1675 click 1"     # `sleep 0.01 mousemove restore` = + move back
+alias lmv="xdotool mousemove 3001 2289 click 1"     # `sleep 0.01 mousemove restore` = + move back
 # to ~ center of right; click
-alias rmv="xdotool mousemove 3066 1675 click 1"     # `sleep 0.01 mousemove restore` = + move back
-
-# to spc points
-alias mv1plw="xdotool mousemove 5555 201 click 1"   # to 1password toolbar ext. in librewolf
-alias mv1pch="xdotool mousemove 5911 18 click 1"    # to 1password toolbar ext. in chrome
+alias rmv="xdotool mousemove 7509 1938 click 1"     # `sleep 0.01 mousemove restore` = + move back
 
 ## misc
 
-alias sush="sudo -i -- bash -c \"cd `pwd`; /bin/bash\""
+alias sush="sudo -i -- bash -c \"cd $(pwd); /bin/bash\""
 
 ## github ######################################################################
 
-### gh cli alises
+### gh cli aliases
 
 ## for prs
 
@@ -265,6 +279,13 @@ unhide() {
   done
 }
 
+uz() {
+  filename="${1}" 
+  wo_extension="${filename%.*}"
+
+  unzip "$filename" -d "${wo_extension}"
+}
+
 ### clipboard
 
 clip-clear() {
@@ -272,21 +293,21 @@ clip-clear() {
 }
 
 diff-clip() {
-    tmp=`mktemp`
-    pbpaste >| $tmp
-    diff $tmp $1 && rm $tmp
+    tmp="$(mktemp)"
+    pbpaste >| "${tmp}"
+    diff "${tmp}" "${1}" && rm "${tmp}"
 }
 
 pbcf() {
-    cat $1 | pbcopy
+    cat "${1}" | pbcopy
 }
 
 pbpf() {
-    pbpaste > $1
+    pbpaste > "${1}"
 }
 
 pbpo() {
-    pbpaste > $1 && ${EDITOR} $1
+    pbpaste > "${1}" && ${EDITOR} "${1}"
 }
 
 ### git
@@ -294,36 +315,25 @@ pbpo() {
 alias get-git-root="git rev-parse --show-toplevel"
 
 git-root() {
-    cd `get-git-root`
+    cd "$(get-git-root)" || exit
 }
 
 git-ignore() {
-    ${EDITOR} `get-git-root`/.gitignore
+    ${EDITOR} "$(get-git-root)/.gitignore"
 }
 
-git-sync() {
-    branch="$(git rev-parse --abbrev-ref HEAD)"
+clone-external() {
+    local readonly repo="${1}"
+    local readonly repo_name="$(basename "${repo}")"
 
-    if [[ "${branch}" = "${TRUNK}" ]]; then
-        echo "Branch is alrady on ${TRUNK}"
-        exit 1
-    fi
-
-    git home
-    git pull
-    git checkout "${branch}"
-    git mmerge
-
-    if [[ "${1}" = "-p" ]]; then
-        git push
-    fi
+    git clone "https://github.com/${repo}" "${EXTERNAL_PKGS}/${repo_name}"
 }
 
 ### gpg
 
 gpg-export() {
     mkdir gpg-keychain
-    cd gpg-keychain
+    cd gpg-keychain || exit
 
     gpg --armor --export-secret-keys > priv.asc
     gpg --armor --export > pub.asc
@@ -336,14 +346,36 @@ gpg-export() {
     cp ~/.gnupg/dirmngr.conf .
     cp ~/.gnupg/gpg-agent.conf .
     cp ~/.gnupg/gpg.conf .
-    cd -
+    cd - || exit
+}
+
+### tmux
+
+make-ide() {
+    local readonly dir="${1}"
+    local readonly dir_name="$(basename "${dir}")"
+
+    tmux new-window -c "${dir}" -n "${dir_name}"
+    tmux select-pane -T "editor"
+    tmux split-window -c "${dir}"
+    tmux select-pane -T "exec"
+    tmux resize-pane -y 28%
+}
+
+fix-ide-dimensions() {
+    echo "TODO"
+}
+
+shift-left() {
+    local readonly idx="${1}"
 }
 
 ## plugins/extensions ##########################################################
 
 ### fzf tab completion (TODO: why isn't this working on intel macbook?)
 
-source ${DEV_ROOT}/external/fzf-tab-completion/bash/fzf-bash-completion.sh
+# shellcheck source=/home/austin/Workspace/external/fzf-tab-completion/bash/fzf-bash-completion.sh
+source "${EXTERNAL_PKGS}/fzf-tab-completion/bash/fzf-bash-completion.sh"
 # TODO: bind seems to cause problems on startup; figure out a workaround
 bind -x '"\t": fzf_bash_completion'
 
@@ -356,11 +388,13 @@ _fzf_bash_completion_loading_msg() { echo "${PS1@P}${READLINE_LINE}" | tail -n1;
 
 ### oh-my-bash
 
-source ${SHELL_ROOT}/extensions/oh-my-bash.sh
+# shellcheck source=/home/austin/Workspace/dotfiles/system/shell/bash/extensions/oh-my-bash.sh
+source "${SHELL_ROOT}/extensions/oh-my-bash.sh"
 
 ### starship
 
-source ${SHELL_ROOT}/extensions/starship.sh
+# shellcheck source=/home/austin/Workspace/dotfiles/system/shell/bash/extensions/starship.sh
+source "${SHELL_ROOT}/extensions/starship.sh"
 
 ### zoxide
 

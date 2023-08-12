@@ -14,8 +14,8 @@ comment
 
 ## identifiers
 
-export readonly MACHINE="StarBook"
-export readonly MACHINE_NICKNAME="⭐📖"
+export readonly MACHINE="Backup"
+export readonly MACHINE_NICKNAME="⬅️ ⬆️"
 
 ## important paths ###########################################################
 

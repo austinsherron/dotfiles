@@ -14,8 +14,8 @@ comment
 
 ## identifiers
 
-export readonly MACHINE="StarBook"
-export readonly MACHINE_NICKNAME="⭐📖"
+export readonly MACHINE="Darter"
+export readonly MACHINE_NICKNAME="🏎️"
 
 ## important paths ###########################################################
 
@@ -32,6 +32,7 @@ export readonly VIDEOS_DIR="Videos"
 
 ## rename
 
+alias bat="batcat"
 alias dbc="dbxcli"
 alias dp2="devilspie2"
 
@@ -59,13 +60,6 @@ alias xls="xinput list"
 alias pr-create="gh pr create -a \"@me\""
 
 ## functions ###################################################################
-
-## navigation
-
-switch() {
-    repo="$(ls ${CODE_ROOT} | fzf +i +m -e --height=1%)"
-    cd ${CODE_ROOT}/${repo}
-}
 
 ## utils
 
