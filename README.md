@@ -32,7 +32,7 @@ All kinds of stuff! But in all seriousness:
 * I like keeping the "source of truth" of my dotfiles outside of their natural structure in the system, i.e.: `~/Workspace/dotfiles/*` instead of `~/.config/*` or `~/.*`, but I also want some system to keep them deployed, synced, and up to date across systems
   * I'm looking at [dotsync](https://github.com/dotphiles/dotsync), but that's only one piece of the puzzle
   * Keep your eye on TODO for an evolving idea I have involving symlinks and a cron (or a new tool I've found called [entr](https://github.com/eradman/entr)) (or a systemd path unit)
-* I'm pretty comfortable in the Bash universe, but I've heard good things about [Zsh](https://www.zsh.org), and I've always had a fascination with [Fish](https://fishshell.com). I may try my experiment with some other shells in the near-mid term, but a wholesale shell migration *feels* like it would be a large undertaking.
+* I'm pretty comfortable in the Bash universe, but I've heard good things about [Zsh](https://www.zsh.org), and I've always had a fascination with [Fish](https://fishshell.com). I may try my experiment with some other shells in the near-mid term, but a wholesale shell migration *feels* like it would be a large undertaking
 * After I had to wipe my personal laptop due to a bad linux install, it occurred to me that my process for setting up a new system is painfully manual (also an issue when trying to sync installed software b/w multiple laptops)
   * I'm thinking of exploring [Nix](https://github.com/NixOS/nix) to make this significantly (I think...) easier
 * I'd like some mechanism to live sync b/w machines shared state not suitable for a git repo, i.e.: DBs for tools like zoxide, code templates, etc.
