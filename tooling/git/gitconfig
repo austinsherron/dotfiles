@@ -21,7 +21,6 @@
     mylog       = log --author austin.sherron
     new-branch  = "!git checkout -b \"$1\"\\/\"$2\" #"
     publish     = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
-    pull-sub    = submodule update --init --recursive
     radd        = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
     rdel        = "!git push origin :\"$1\" #"
     rename      = "!git branch -m \"$1\"\\/\"$2\" #"
@@ -85,12 +84,17 @@
     nb  = new-branch
     p   = push
     pb  = publish
+    pb  = pull-sub
     ra  = radd
     rh  = "reset --hard HEAD~"
     rs  = "reset --soft HEAD~"
     rv  = revert
     u   = undo
     us  = unstage
+
+     # [submodules]
+    init-sub = submodule update --recursive --init 
+    pull-sub = submodule update --recursive --remote
 [push]
     default = upstream
 [pull]
