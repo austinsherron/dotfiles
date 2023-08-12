@@ -1,28 +1,39 @@
 #!/bin/bash
 
+
+<<comment
+This script contains paths shared by the admin user (aka: me, Austin) and the 
+super user.
+comment
+
+
 ## administrator ###############################################################
 
-## source
+#### source
 
-# root
+# roots
 export readonly ADMIN_HOME="/home/austin"
 export readonly DEV_ROOT="${ADMIN_HOME}/Workspace"
 export readonly CONFIG_ROOT="${DEV_ROOT}/dotfiles"
-export readonly PROJECTS_ROOT="${DEV_ROOT}/projects"
+export readonly CODE_ROOT="${DEV_ROOT}/workspace"
 export readonly TOOLING_ROOT="${CONFIG_ROOT}/tooling"
 
-# exec
-export readonly TOOLS_ROOT="${PROJECTS_ROOT}/tools"
+# executables
+export readonly TOOLS_ROOT="${CODE_ROOT}/tools"
 
 # config
 export readonly INT_TOOLING_ROOT="${TOOLING_ROOT}/internal"
 
-## shared
+#### shared paths
 
 # root
-export readonly SHARED_ROOT="/usr/local"
+export readonly USR_LOCAL="/usr/local"
 # dest for shared execs...
-export readonly SHARED_BINS="/usr/local/bin"
+export readonly SHARED_BINS="${USR_LOCAL}/bin"
 # ...config
-export readonly SHARED_CONFIG_ROOT="/usr/local/etc"
+export readonly SHARED_CONFIG_ROOT="${USR_LOCAL}/etc"
+
+## application/executable specific paths
+
+export readonly GO_ROOT="${USR_LOCAL}/go"
 
