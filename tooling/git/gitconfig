@@ -22,6 +22,7 @@
     new-branch  = "!git checkout -b \"$1\"\\/\"$2\" #"
     publish     = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
     radd        = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
+    rundo       = !ROOT=`git rev-parse --show-toplevel` && git undo ${ROOT}
     rdel        = "!git push origin :\"$1\" #"
     rename      = "!git branch -m \"$1\"\\/\"$2\" #"
     rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\""
@@ -72,6 +73,8 @@
     br  = rename
     c   = commit
     cl  = clone
+    co  = checkout
+    cn  = checkout -b
     d   = diff
     fc  = fcheckout
     fd  = fdel
@@ -84,12 +87,14 @@
     nb  = new-branch
     p   = push
     pb  = publish
-    pb  = pull-sub
+    pl  = pull
+    ps  = pull-sub
     ra  = radd
     rh  = "reset --hard HEAD~"
     rs  = "reset --soft HEAD~"
     rv  = revert
     u   = undo
+    r   = rundo
     us  = unstage
 
      # [submodules]

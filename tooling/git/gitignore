@@ -1,6 +1,8 @@
-# added by Austin on 04/30/2021; for IntelliJ files
 .idea/
 __pycache__/
 **.swp
 **.DS_Store
+**.tmp
+**.bak
+**~
 
