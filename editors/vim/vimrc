@@ -17,6 +17,9 @@ set ruler
 set clipboard=unnamed
 syntax on
 
+" set leader to "<space>" before going any further
+let mapleader = " "
+
 "" navigation settings """""""""""""""""""""""""""""""""""""""""""""""""
 
 " for switching between windows easily (doesn't work in tmux)
@@ -26,6 +29,14 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 "" interaction settings """""""""""""""""""""""""""""""""""""""""""""""""
+
+" save
+nnoremap <leader>w :w<CR>
+nnoremap <leader>W :wqa<CR>
+" close/quit
+nnoremap <leader>q :q<CR>
+nnoremap <leader>Q :qa<CR>
+nnoremap <leader>! :qa!<CR>
 
 " disable mouse
 set mouse= 
@@ -121,3 +132,4 @@ endfunction
 
 " current colorscheme (technically a plugin, must come after pathongen init)
 colorscheme wombat256mod
+
