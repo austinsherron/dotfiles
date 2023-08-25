@@ -1,10 +1,12 @@
 #!/bin/bash
 
 
-<<comment
+comment() {
+cat <<comment
 This script contains paths shared by the admin user (aka: me, Austin) and the 
 super user.
 comment
+}
 
 
 ## administrator ###############################################################
@@ -25,6 +27,13 @@ export readonly TOOLS_ROOT="${CODE_ROOT}/tools"
 export readonly INT_TOOLING_ROOT="${TOOLING_ROOT}/internal"
 
 #### shared paths
+
+## interface points
+
+# external repo staging/storage
+# TODO: consider renaming to "EXTERNAL_REPOS", or something like that
+# TODO: consider moving this out of my (Austin's) home dir
+export readonly EXTERNAL_PKGS="${DEV_ROOT}/external"
 
 # root
 export readonly USR_LOCAL="/usr/local"
