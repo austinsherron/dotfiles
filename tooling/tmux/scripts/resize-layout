@@ -126,8 +126,13 @@ if [[ -z "$(tmux list-window -F "#W" | grep "${TARGET}" || true)" ]]; then
     log_and_exit "tmux window target='${TARGET}' does not exist"
 fi
 
+log "preparing to set layout for target window='${TARGET}'"
+
 # if layout-type isn't provided, try to extract it from window name
 if [[ -z "${LAYOUT}" ]]; then
+    # FIXME: the pattern used to extract the layout-type from window name should not allow whitespace
+    #        characters, and should probably be restricted to alphanumeric and hyphens + underscores;
+    #        I couldn't for the life of me get that pattern to work
     LAYOUT="$([[ "${TARGET}" =~ .*[[:space:]]\((.*)\)$ ]] && echo "${BASH_REMATCH[1]}" || echo "")"
 
     log "no layout provided; extracted layout='${LAYOUT}' from window name='${TARGET}'"
@@ -163,15 +168,15 @@ if [[ "${SPEC_MATCH}" != "${SINGLE_SPEC_MATCH}" ]]; then
     [[ "${STRICT}" == "true" ]] && log_and_exit "${MSG}" || log "${MSG}"
 fi
 
-log "using spec match='${SPEC_MATCH}'"
+log "extracting layout specification from match='${SINGLE_SPEC_MATCH}'"
 
 # the spec layout should be the last space separated column of the match
-LAYOUT_SPEC="${SINGLE_SPEC_MATCH##* }"
-if [[ -z "${LAYOUT_SPEC}" ]] && [[ "${STRICT}" == "true" ]]; then
+LAYOUT_SPEC="$(echo "${SINGLE_SPEC_MATCH}" | cut -d " " -f4)"
+if [[ -z "${LAYOUT_SPEC}" ]]; then
     log_and_exit "unable to extract layout specification from spec match='${SINGLE_SPEC_MATCH}'"
 fi
 
-log "extracted layout specification='${LAYOUT_SPEC}'"
+log "using extracted layout specification='${LAYOUT_SPEC}'"
 
 if [[ "${DRY_RUN}" == "true" ]]; then
     echo "tmux select-layout -t ${TARGET} ${LAYOUT_SPEC}"
