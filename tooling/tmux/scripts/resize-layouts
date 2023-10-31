@@ -1,0 +1,88 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+
+
+USAGE="resize-layouts [-l layout] {-t window} [-s path]"
+
+usage() {
+    echo "usage: ${USAGE}"
+}
+
+help() {
+cat <<help
+DESCRIPTION
+
+    Calls resize-layout on multiple tmux windows.
+
+    Note: this script is intended to run as a tmux hook on the "client-resized" event.
+
+USAGE
+
+    ${USAGE}
+
+OPTIONS
+
+    -l, --layout        optional; see resize-layout for parameter desription
+    -t, --target        optional, multi-valued, defaults to all windows; the names of the windows for which to set a layout
+    -s, --specs         optional; see resize-layout for parameter desription
+    -v, --verbose       optional; write progress/status messages to stdout
+    --strict            optional; see resize-layout for parameter/behavior desription
+    --dry-run           optional; indicates that the script should print hypothetical results to the console, but make no state changes
+    -h, --help          display this message
+help
+}
+
+
+TARGETS=()
+CMD="resize-layout"
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -l|--layout)
+      CMD="${CMD} $([[ -z "${2+x}" ]] && echo "" || echo " -l ${2}")"
+      shift
+      shift
+      ;;
+    -t|--target)
+      TARGETS+=("${2}")
+      shift
+      shift
+      ;;
+    -s|--specs)
+      CMD="${CMD} $([[ -z "${2+x}" ]] && echo "" || echo " -s ${2}")"
+      shift
+      shift
+      ;;
+    --verbose)
+      CMD="${CMD} --verbose"
+      shift
+      ;;
+    --strict)
+      CMD="${CMD} --strict"
+      shift
+      ;;
+    --dry-run)
+      CMD="${CMD} --dry-run"
+      shift
+      ;;
+    -h|--help)
+      help
+      exit 0
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+
+if [[ "${#TARGETS[@]}" -eq 0 ]]; then
+    mapfile -t TARGETS < <(tmux list-window -F '#W')
+fi
+
+for target in "${TARGETS[@]}"; do
+    eval "${CMD} -t \"${target}\""
+done
+
