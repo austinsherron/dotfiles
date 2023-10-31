@@ -79,7 +79,7 @@
     fc  = fcheckout
     fd  = fdel
     fm  = fmerge
-    fmc = fmerc
+    fM  = fmerc
     h   = home
     hd  = hdiff
     l   = log
