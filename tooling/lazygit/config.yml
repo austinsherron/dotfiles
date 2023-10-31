@@ -1,0 +1,10 @@
+gui:
+  commitLength:
+    show: true
+git:
+  merging:
+    args: "--no-ff"
+os:
+  editPreset: "nvim-remote"
+confirmOnQuit: false
+

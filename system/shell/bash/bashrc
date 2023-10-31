@@ -38,7 +38,7 @@ export readonly EDITORS_ROOT="${CONFIG_ROOT}/editors"
 
 ### shell
 
-export readonly SHELL_NAME="$(basename ${SHELL})"
+export readonly SHELL_NAME="$(basename "${SHELL}")"
 export readonly SHELL_ROOT="${CONFIG_ROOT}/system/shell/${SHELL_NAME}"
 export readonly RC_NAME="${SHELL_NAME}rc"
 export readonly RC="${HOME}/.${RC_NAME}"
@@ -56,10 +56,12 @@ export readonly VUNDLE="${VIM_ROOT}/.vim"
 
 ## nvim
 
+export readonly NVIM_INSTALL="${USR_LOCAL}/nvim/bin"
 export readonly NVIM_PARENT="${DEV_ROOT}"
 export readonly NVIM_ROOT="${NVIM_PARENT}/nvim"
 export readonly NVIMRC="${NVIM_ROOT}/init.lua"
 export readonly NVUNDLE="${NVIM_ROOT}/packages"
+export readonly NVIM_SUBMODULE="${EDITORS_ROOT}/nvim"
 
 ## tmux
 
@@ -74,7 +76,6 @@ export readonly LEGACY_CONFIG_ROOT_PUB="${HOME}"
 export readonly NVIM_ROOT_PUB="${CONFIG_ROOT_PUB}/nvim"
 export readonly TMUX_ROOT_PUB="${CONFIG_ROOT_PUB}/tmux"
 export readonly TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
-export readonly EXTERNAL_PKGS="${DEV_ROOT}/external"
 export readonly INSTALL_SCRIPTS="${CODE_ROOT}/scripts/install"
 
 ### remote storage
@@ -104,6 +105,7 @@ fi
 
 ### shell path
 
+export PATH="${PATH}:${NVIM_INSTALL}"               # neovim
 export PATH="${PATH}:${GO_ROOT}/bin"                # golang
 export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"     # java
 
@@ -118,7 +120,11 @@ export GOPATH="${HOME}/.go"
 #       time of writing, however (03/14/2023 [pi day!]), I don't know a better solution to
 #       the problem of importing homegrown modules
 
-lua-path -d "${NVIM_ROOT}" -d "${CODE_ROOT}" -d "${CONFIG_ROOT}" -e
+LUA_PATH="$(lua-path -d "${NVIM_ROOT}" -d "${CODE_ROOT}" -d "${CONFIG_ROOT}")"
+LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?.lua"              # for luarocks
+LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?/init.lua"         # for luarocks
+
+export LUA_PATH
 
 # TODO: address these when/if I re-start adoption of xplr
 # export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?.lua"                    # xplr plugins
@@ -140,7 +146,6 @@ export PROMPT_COMMAND="history -a; history -n"
 alias cl="clear"
 alias db="dropbox"
 alias g="git"
-alias og-vim="/usr/bin/vim"
 alias nv="nvim"
 alias sc="systemctl"
 alias ss="s-search"
@@ -149,9 +154,14 @@ alias swr="shift-window-right"
 alias tk="task"
 alias tx="tmux"
 alias uc="systemctl --user"
+alias vi="/usr/bin/vim"
 alias vim="nvim"
 alias zd="z"
 alias zx="zoxide"
+
+### git
+
+alias H="head"
 
 ### navigation
 
@@ -186,7 +196,7 @@ alias txload="tmux source-file ${TMUX_CONF_PUB}"
 
 alias rc="${EDITOR} ${RC}; rcload"
 alias spc-rc="${EDITOR} ${MACHINE_SPC_ROOT}/machinerc; rcload"
-alias txc="${EDITOR} ${TMUX_CONF}; txload"
+alias txrc="${EDITOR} ${TMUX_CONF}; txload"
 alias txrt="cd ${TMUX_ROOT}"
 alias txrtpub="cd ${TMUX_ROOT_PUB}"
 
@@ -235,14 +245,17 @@ alias sanon="s -p google -b \"chromium --incognito\""
 ## move mouse (assumes monitor configurations similar to home office on 06/17/2023)
 ##
 ## TODO: mouse movement to specific monitors doesn't work when resolution changes; figure
-##       out how to deal w/ this (xdotool getwindowgeometry isn't being cooperative)
+##       out how to deal w/ this programmatically  (xdotool getwindowgeometry isn't being 
+##       cooperative)
 
 # to spc monitors
 
 # to ~ center of left; click
-alias lmv="xdotool mousemove 3001 2289 click 1"     # `sleep 0.01 mousemove restore` = + move back
+# alias lmv="xdotool mousemove 3001 2289 click 1"
+alias lmv="xdotool mousemove 1576 1035 click 1"
 # to ~ center of right; click
-alias rmv="xdotool mousemove 7509 1938 click 1"     # `sleep 0.01 mousemove restore` = + move back
+# alias rmv="xdotool mousemove 7509 1938 click 1"
+alias rmv="xdotool mousemove 3937 1009 click 1"
 
 ## misc
 
@@ -351,52 +364,31 @@ gpg-export() {
     cd - || exit
 }
 
+### nvim
+
+editor() {
+    if [[ -n "$NVIM_LISTEN_ADDRESS" ]]; then
+        alias nvim=nvr -cc split --remote-wait +'set bufhidden=wipe'
+        export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+        export EDITOR="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+    else
+        export VISUAL="nvim"
+        export EDITOR="nvim"
+    fi
+
+}
+
 ### tmux
 
 make-ide() {
     local readonly dir="${1}"
     local readonly dir_name="$(basename "${dir}")"
 
-    tmux new-window -c "${dir}" -n "${dir_name}"
+    tmux new-window -c "${dir}" -n "${dir_name} (ide)"
     tmux select-pane -T "editor"
     tmux split-window -c "${dir}"
     tmux select-pane -T "exec"
-    tmux resize-pane -y 28%
-}
-
-# TODO: figure out how to do this w/out changing the current window
-fix-ide-dimensions() {
-    for _ in $(tmux list-windows -F "#I"); do
-        local current_window="$(tmux display-message -p "#W")"
-
-        if [[ "$(endswith "${current_window}" "${ide_sfx}")" = "true" ]]; then
-            tmux resize-pane -t 1 -y 72%
-            tmux next-window
-        fi
-    done
-}
-
-shift-window() {
-    local to_shift_idx="${1}"
-    local direction="${2}"
-    local num_shifts="${3}"
-
-    new_idx="$(($to_shift_idx $direction $num_shifts))"
-    tmux swap-window -d -s "${to_shift_idx}" -t "${new_idx}"
-}
-
-shift-window-left() {
-    local num_shifts="${1:-1}"
-    local active_idx="$(tmux display-message -p "#I")"
-
-    shift-window "${active_idx}" "+" "${num_shifts}"
-}
-
-shift-window-right() {
-    local num_shifts="${1:-1}"
-    local active_idx="$(tmux display-message -p "#I")"
-
-    shift-window "${active_idx}" "-" "${num_shifts}"
+    tmux resize-pane -y 22%
 }
 
 ## plugins/extensions ##########################################################
