@@ -13,8 +13,7 @@ help() {
 cat <<help
 DESCRIPTION
 
-    Resizes a tmux window's layout based on the window's dimensions, the custom layout type in its name (or provided via -l), and the window's pane count. If -l isn't used,
-    a window must be named ".* \(layout-type\)" for this script to act on it. 
+    Resizes a tmux window's layout based on the window's dimensions, the window's pane count, and the custom layout type in its name or provided via -l, if any.  
 
     Window layout specifications are defined in a space separated file of the following format:
 
@@ -22,10 +21,11 @@ DESCRIPTION
 
     Description and formats of the above fields are as follows:
 
-        * layout-type: a unique key that, when combined w/ window dimensions and pane count, uniquely maps to a layout specification; can contain alphanumeric characters,
-          hyphens (-) and underscores (_); whitespace is disallowed
         * window-dimensions: a tmux window height + the string "x" + a tmux window width; for example: 179x98; CAUTION: this value is affected by monitor resolution
         * pane-count: an integer pane count
+        * layout-type: a unique key that, when combined w/ window dimensions and pane count, uniquely maps to a layout specification; can contain alphanumeric characters,
+          hyphens (-) and underscores (_); whitespace is disallowed; layouts are not required to perform resizing, but are available to constrain the layout chosen for 
+          resizing 
         * layout-specification: a window specification recognized by "tmux select-layout"; see "man tmux" for details
 
     The default location for window layout specifications is "${HOME}/.config/tmux/layouts", or they can be passed via -s.
@@ -34,9 +34,9 @@ DESCRIPTION
     error cases, which, when triggered, result in non-zero return codes:
 
         * No valid layout specification file
-        * Can't determine layout-type (not passed in or found in window name)
-        * No layout specification found for the combination of layout-type, window-dimensions, and pane-count
-        * Multiple layout specifications found for the combination of layout-type, window-dimensions, and pane-count (if default mode, the first layout spec will be used)
+        * No layout specification found for the combination of window-dimensions, pane-count, and, optionally, layout-type
+        * Multiple layout specifications found for the combination of window-dimensions, pane-count, and, optionally, layout-type (if using default mode, the first layout
+          spec will be used)
 
     Note: this script is intended to run as a tmux hook on the "client-resized" event.
 
@@ -46,7 +46,7 @@ USAGE
 
 OPTIONS
 
-    -l, --layout        optional, if not provided, the window name must be of the format  ".* \(layout-type\)"; the layout to use
+    -l, --layout        optional; if not provided, will pull value from window name if in the format  ".* \(layout-type\)"; the layout to use
     -t, --target        optional, defaults to the active window; the name of the window for which to set a layout
     -s, --specs         optional, default to "${HOME}/.config/tmux/layouts"; a file that contains layout specifications in the format describe about
     -v, --verbose       optional; write progress/status messages to stdout
@@ -138,17 +138,15 @@ if [[ -z "${LAYOUT}" ]]; then
     log "no layout provided; extracted layout='${LAYOUT}' from window name='${TARGET}'"
 fi
 
-if [[ -z "${LAYOUT}" ]]; then
-    log_and_exit "-l|--layout not provided and window name does not match pattern '.* \(layout-type\)'"
-fi
-
 if [[ ! -f "${SPEC_PATH}" ]]; then
     log_and_exit "spec file='${SPEC_PATH}' does not exist"
 fi
 
 DIMENSIONS="$(tmux display-message -p "#{window_width}x#{window_height}")"
 PANE_COUNT="$(tmux list-panes | wc -l)"
-IDENTIFIER="${LAYOUT} ${DIMENSIONS} ${PANE_COUNT}"
+# if present, add extra space to layout to make below identifier work in grep pattern
+LAYOUT="$([[ -z ${LAYOUT} ]] && echo "" || echo "${LAYOUT} ")"
+IDENTIFIER="${LAYOUT}${DIMENSIONS} ${PANE_COUNT}"
 
 log "searching for layout specification with identifier='${IDENTIFIER}'"
 
