@@ -7,22 +7,25 @@ and of themselves. 🙃
 
 ## My Setup
 
-These files are shared across two laptops: my work computer, a 2019 MacBook Pro running Ventura, and my personal laptop, a StarBook Mk. VI
-running Zorin OS. I do my best to keep my config platform agnostic, but there are some bits of config that are necessarily specific to specific
-machines. I try to handle that gracefully, but I'm sure there are better solutions I'll discover in the fullness of time. If you have suggestions,
-please reach out!
+These files are shared across two laptops: my work computer, a 2023 M3 MacBook and my personal laptop, a System76 Darter Pro running Pop!_OS. 
+
+Most of these configs, especially the Neovim files, were developed while I took some time away from working, so they've been developed and tested only on my personal Linux machine. I'm starting a new role that's going to require me to install these configs on a MacBook for the first time in a while, so that's certainly going to be a challenge. 😅
 
 ### Active Work
 
-- [ ] Adding [Gitleaks](https://github.com/gitleaks/gitleaks-action) to my personal git workflows
-- [ ] Implementing my ideal [Neovim](editors/nvim/) setup
-- [ ] Tweaking my keymaps across all tools so my hands hurt less 👴
+#### [Gitleaks](https://github.com/gitleaks/gitleaks-action)
+
+When I first pushed this repo and make it public, though I thought I'd checked everything, I exposed a minor, but still sensitive, credential.
+Luckily it was caught inside of a couple days and no harm was done. But it's a reminder that these things can't be left at good intentions and
+*almost* good enough. Automation to the rescue. 🤖
+
+#### [yadm](https://yadm.io)/[chezmoi](https://www.chezmoi.io/user-guide/command-overview)
+
+I'm considering adopting an OOB tool to handle environmental deviations in my dotfiles. Yadm and Chezmoi seem like good choices, so I'm starting to explore each of those.
 
 ### Paused Work
 
 - [ ] [Xplr](https://github.com/sayanarijit/xplr) - love the concept, but haven't been able to devote enough time to really make it my own/incorporate into daily workflows
-- [ ] [Tmux](https://github.com/tmux/tmux) - I feel like I've only scratched the surface here, but I'm honestly pretty satisfied with what it does for me now
-- [ ] Further consolidation of work/personal dots - I got my shell rc more or less there, and that's 90% of it
 
 ### Future Work
 
@@ -38,32 +41,4 @@ All kinds of stuff! But in all seriousness:
 * I'd like some mechanism to live sync b/w machines shared state not suitable for a git repo, i.e.: DBs for tools like zoxide, code templates, etc.
   * I don't think I'd get much pushback on the idea that something like the DB instance that backs a zoxide installation doesn't belong in a git repo, but I may get some on the idea that code templates don't 
   * That pushback may be warranted, but at the very least, if templates do belong in a repo, I think it should be repo other than the one managing my dotfiles/IDE (in this case, nvim)
-
-## Structure
-
-```
-
-├── editors
-│   ├── nvim
-│   └── vim
-├── system
-│   ├── shell
-│   │   └── bash
-│   │       ├── extensions
-│   │       └── machine-spc
-│   └── terminal
-├── tooling
-│   ├── git
-│   ├── internal
-│   │   └── snaphot
-│   ├── s-search
-│   ├── tmux
-│   └── xplr
-└── work
-    ├── editors
-    │   └── vim
-    └── tooling
-        ├── git
-        └── tmux
-```
 
