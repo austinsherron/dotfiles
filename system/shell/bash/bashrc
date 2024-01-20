@@ -6,8 +6,8 @@
 ## imports #####################################################################
 
 source /etc/profile.d/shared_paths.sh
+# shellcheck source=/home/austin/Workspace/workspace/lib/bash/utils.sh
 source "${CODE_ROOT}/lib/bash/utils.sh"
-
 
 ## constants ###################################################################
 
@@ -77,6 +77,7 @@ export readonly NVIM_ROOT_PUB="${CONFIG_ROOT_PUB}/nvim"
 export readonly TMUX_ROOT_PUB="${CONFIG_ROOT_PUB}/tmux"
 export readonly TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
 export readonly INSTALL_SCRIPTS="${CODE_ROOT}/scripts/install"
+export readonly LOG_ROOT="${HOME}/.local/state/logs"
 
 ### remote storage
 
@@ -113,6 +114,14 @@ export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"     # java
 
 export GOPATH="${HOME}/.go"
 
+### pythonpath
+
+## FIXME: I hate having to manually add things here
+export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/lib/python"
+export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/interview-prep/utils"
+export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/finance/src"
+export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/py-toolbox/tools"
+
 ### lua path
 
 # note: as with PYTHONPATH, I'd rather not have to specify the lua path like this,
@@ -123,6 +132,8 @@ export GOPATH="${HOME}/.go"
 LUA_PATH="$(lua-path -d "${NVIM_ROOT}" -d "${CODE_ROOT}" -d "${CONFIG_ROOT}")"
 LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?.lua"              # for luarocks
 LUA_PATH="${LUA_PATH};/usr/local/share/lua/5.3/?/init.lua"         # for luarocks
+LUA_PATH="${LUA_PATH};/usr/local/lib/lua/5.3/?.lua"
+LUA_PATH="${LUA_PATH};/usr/local/lib/lua/5.3/?/init.lua"
 
 export LUA_PATH
 
@@ -143,14 +154,10 @@ export PROMPT_COMMAND="history -a; history -n"
 
 ### rename
 
-alias cl="clear"
 alias db="dropbox"
 alias g="git"
 alias nv="nvim"
 alias sc="systemctl"
-alias ss="s-search"
-alias swl="shift-window-left"
-alias swr="shift-window-right"
 alias tk="task"
 alias tx="tmux"
 alias uc="systemctl --user"
@@ -158,32 +165,6 @@ alias vi="/usr/bin/vim"
 alias vim="nvim"
 alias zd="z"
 alias zx="zoxide"
-
-### git
-
-alias H="head"
-
-### navigation
-
-export readonly MEDIA_ROOT="${HOME}/Media"
-
-alias apps="cd ${HOME}/Applications"
-alias code="cd ${CODE_ROOT}"
-alias cst="cd ${HOME}/Customization"
-alias desk="cd ${HOME}/Desktop"
-alias docs="cd ${HOME}/Documents"
-alias dots="cd ${CONFIG_ROOT}"
-alias down="cd ${HOME}/Downloads"
-alias drop="cd ${DROPBOX_ROOT}"
-alias pics="cd ${MEDIA_ROOT}/Pictures"
-alias vids="cd ${MEDIA_ROOT}/${VIDEOS_DIR}"
-alias vol="cd ${VOLUME_ROOT}"
-alias wrk="cd ${CODE_ROOT}"
-alias wk="cd ${DEV_ROOT}"
-
-### quick access
-
-alias nvlog="vim ${HOME}/.local/state/nvim/nvim-user.log"
 
 ### config
 
@@ -252,10 +233,12 @@ alias sanon="s -p google -b \"chromium --incognito\""
 
 # to ~ center of left; click
 # alias lmv="xdotool mousemove 3001 2289 click 1"
-alias lmv="xdotool mousemove 1576 1035 click 1"
+alias lmv="xdotool mousemove 1576 1035 click 1"         # two large monitors, l hz, r vr
+# alias lmv="xdotool mousemove 895 1458 click 1"        # laptop + one large monitors, r hz
 # to ~ center of right; click
 # alias rmv="xdotool mousemove 7509 1938 click 1"
-alias rmv="xdotool mousemove 3937 1009 click 1"
+alias rmv="xdotool mousemove 3937 1009 click 1"         # two large monitors, l hz, r vr
+# alias rmv="xdotool mousemove 2628 1023 click 1"       # laptop + one large monitors, r hz
 
 ## misc
 
@@ -277,10 +260,10 @@ alias repo-ls="gh repo ls --no-archived"
 
 ## nvm #########################################################################
 
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="${ADMIN_HOME}/.nvm"
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                    # load nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # load completions
+[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"                    # load nvm
+[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion"  # load completions
 
 ## functions ###################################################################
 
@@ -375,20 +358,6 @@ editor() {
         export VISUAL="nvim"
         export EDITOR="nvim"
     fi
-
-}
-
-### tmux
-
-make-ide() {
-    local readonly dir="${1}"
-    local readonly dir_name="$(basename "${dir}")"
-
-    tmux new-window -c "${dir}" -n "${dir_name} (ide)"
-    tmux select-pane -T "editor"
-    tmux split-window -c "${dir}"
-    tmux select-pane -T "exec"
-    tmux resize-pane -y 22%
 }
 
 ## plugins/extensions ##########################################################
@@ -427,4 +396,9 @@ eval "$(zoxide init bash)"
 if [ -e /home/austin/.nix-profile/etc/profile.d/nix.sh ]; then 
     . /home/austin/.nix-profile/etc/profile.d/nix.sh; 
 fi
+
+### neovim
+
+export NEOVIM_LOG_LEVEL="INFO"
+export NEOVIM_NOTIFY_LEVEL="INFO"
 
