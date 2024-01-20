@@ -99,7 +99,7 @@
 
      # [submodules]
     init-sub = submodule update --recursive --init 
-    pull-sub = submodule update --recursive --remote
+    pull-sub = submodule update --recursive
 [push]
     default = upstream
 [pull]
