@@ -93,7 +93,8 @@
     rh  = "reset --hard HEAD~"
     rs  = "reset --soft HEAD~"
     rv  = revert
-    u   = undo
+    und = undo
+    uns = unstage
     r   = rundo
     us  = unstage
 
