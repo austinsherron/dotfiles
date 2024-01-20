@@ -71,5 +71,6 @@ switch() {
 
 open() {
     xdg-open "${1}" > /dev/null 2>&1
+    guake -t
 }
 
