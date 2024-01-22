@@ -203,6 +203,7 @@ Installed via listed install script via `sudo ./${DEV_ROOT}/scripts/install/[scr
 Installed w/ `sudo snap install` unless otherwise stated. 
 
 - [ ] htop
+- [ ] task --classic
 - [ ] yq
 
 ## Internal
