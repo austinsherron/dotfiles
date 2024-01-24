@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ## TODO: extract pieces of this file into standalone scripts, config files, etc.
 
