@@ -161,7 +161,7 @@ fi
 
 # build layout identifier from window dimensions, pane count, and, optionally, the identifier
 DIMENSIONS="$(tmux display-message -t "${TARGET_ID}" -p "#{window_width}x#{window_height}")"
-PANE_COUNT="$(tmux list-panes -t "${TARGET_ID}"  | wc -l)"
+PANE_COUNT="$(tmux list-panes -t "${TARGET_ID}"  | wc -l | xargs)"
 # if present, add extra space to layout to make below identifier work in grep pattern
 LAYOUT="$([[ -z ${LAYOUT} ]] && echo "" || echo "${LAYOUT} ")"
 IDENTIFIER="${LAYOUT}${DIMENSIONS} ${PANE_COUNT}"
