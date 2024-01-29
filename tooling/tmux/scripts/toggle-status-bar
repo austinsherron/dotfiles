@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+
+# toggles tmux status bar position
+
+TMUX_STATUS_POS="$(tmux show-environment TMUX_STATUS_POS | cut -d "=" -f2)"
+NEW_POS=""
+
+if [[ "${TMUX_STATUS_POS}" == "top" ]]; then
+    NEW_POS="bottom"
+elif [[ "${TMUX_STATUS_POS}" == "bottom" ]]; then
+    NEW_POS="top"
+else
+    echo "tmux: unrecognized status bar position=${TMUX_STATUS_POS}"
+    exit 1
+fi
+
+if tmux set-option -g status-position "${NEW_POS}"; then
+    tmux setenv TMUX_STATUS_POS "${NEW_POS}"
+else
+    echo "tmux: error setting status bar position to ${NEW_POS}"
+    exit 1
+fi
+
