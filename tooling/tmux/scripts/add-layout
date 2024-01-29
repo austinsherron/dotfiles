@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+
+USAGE="add-layout -l layout [-t window] [-s path]"
+
+usage() {
+    echo "usage: ${USAGE}"
+}
+
+help() {
+cat <<help
+DESCRIPTION
+
+    Adds a layout entry to the resize-layout(s) config file.
+
+    The default location for window layout specifications is "${HOME}/.config/tmux/layouts", or they can be passed via -s.
+
+USAGE
+
+    ${USAGE}
+
+OPTIONS
+
+    -l, --layout        the layout's identifier; the combination of identifier, window dimensions, and pane count should uniquely identify a layout
+    -t, --target        optional, defaults to the active window; the name of the window for which to add a layout
+    -s, --specs         optional, default to "${HOME}/.config/tmux/layouts"; the file to which to write the new layout specifications
+    -v, --verbose       optional; write progress/status messages to stdout
+    --force             optional; if specified, forces resize even if pane dimensions match those in the layout spec
+    --dry-run           optional; can't be used w/ --force; indicates that the script should print hypothetical results to the console, but make no state changes
+    -h, --help          display this message
+help
+}
+
+
+LAYOUT_ID=""
+TARGET="$(tmux display-message -p "#W")"
+SPEC_PATH="${HOME}/.config/tmux/layouts"
+VERBOSE=""
+FORCE=""
+DRY_RUN=""
+
+
+log() {
+    [[ -n "$VERBOSE" ]] && echo "[INFO] ${1}" || echo -n ""
+}
+
+log_and_exit() {
+    [[ -n "$VERBOSE" ]] && echo "[WARN] ${1}" || echo -n ""
+    exit 1
+}
+
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -l|--layout)
+      LAYOUT_ID="$([[ -z "${2+x}" ]] && echo "" || echo "${2}")"
+      shift
+      shift
+      ;;
+    -t|--target)
+      TARGET="$([[ -z "${2+x}" ]] && echo "${TARGET}" || echo "${2}")"
+      shift
+      shift
+      ;;
+    -s|--specs)
+      SPEC_PATH="$([[ -z "${2+x}" ]] && echo "${SPEC_PATH}" || echo "${2}")"
+      shift
+      shift
+      ;;
+    --verbose)
+      VERBOSE="true"
+      shift
+      ;;
+    --force)
+      FORCE="true"
+      shift
+      ;;
+    --dry-run)
+      DRY_RUN="true"
+      shift
+      ;;
+    -h|--help)
+      help
+      exit 0
+      ;;
+    *)
+      echo "${1}"
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+
+if [[ -z "${LAYOUT_ID}" ]]; then
+    echo "-l|--layout is required"
+    exit 1
+fi
+
+if [[ -n "${DRY_RUN}" && -n "${FORCE}" ]]; then
+    echo "--force and --dry-run are mutually exclusive"
+    exit 1
+fi
+
+# validate target refers to a window
+if [[ -z "$(tmux list-windows -F "#W" | grep "${TARGET}" || true)" ]]; then
+    log_and_exit "tmux window target='${TARGET}' does not exist"
+fi
+
+if [[ ! -f "${SPEC_PATH}" ]]; then
+    log_and_exit "-s|--specs must refer to a valid file"
+fi
+
+# get window id
+TARGET_ID="$(tmux list-windows -F "#I #W" | grep "${TARGET}"| cut -d ' ' -f1)"
+log "preparing to add layout for target window='${TARGET}' (id: ${TARGET_ID})"
+
+PANES="$(tmux list-panes -t "${TARGET_ID}" -F "#{pane_width}x#{pane_height}")"
+DIMENSIONS="$(tmux display-message -t "${TARGET_ID}" -p "#{window_width}x#{window_height}")"
+PANE_COUNT="$(echo "${PANES}" | wc -l)"
+LAYOUT="$(tmux display-message -t "${TARGET_ID}" -p "#{window_layout}")"
+PANE_DIMENSIONS="$(echo "${PANES}" | tr '\n' ',')"
+PANE_DIMENSIONS="${PANE_DIMENSIONS:0:-1}"
+LAYOUT_SPEC="${LAYOUT_ID} ${DIMENSIONS} ${PANE_COUNT} ${LAYOUT} ${PANE_DIMENSIONS}"
+
+log "constructed layout spec='${LAYOUT_SPEC}'"
+
+SPEC_MATCH="$(grep -v "^#" "${SPEC_PATH}" | grep "^${LAYOUT_SPEC}$" || true)"
+
+if [[ -n "${SPEC_MATCH}" ]] && [[ "${FORCE}" != "true" ]]; then
+    log_and_exit "layout already exists; exiting"
+fi
+
+CMD=""
+
+if [[ -n "${SPEC_MATCH}" ]]; then
+    CMD="sed 's/${SPEC_MATCH}/${LAYOUT_SPEC}' ${SPEC_PATH}"
+else
+    CMD="echo ${LAYOUT_SPEC} >> ${SPEC_PATH}"
+fi
+
+if [[ "${DRY_RUN}" == "true" ]]; then
+    echo "${CMD}"
+    exit
+fi
+
+exec ${CMD}
+
