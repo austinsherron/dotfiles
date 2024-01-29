@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+source /etc/profile.d/shared_paths.sh
+
+
+## loads tmux env variables
+
+# tmux.conf sets bar at top to start
+tmux setenv TMUX_STATUS_POS "top"
+tmux setenv TMUX_DEFAULT_PATH "${DEV_ROOT}"
+tmux setenv TMUX_ROOT "${TMUX_ROOT_PUB}"
+

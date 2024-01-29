@@ -13,20 +13,21 @@ help() {
 cat <<help
 DESCRIPTION
 
-    Resizes a tmux window's layout based on the window's dimensions, the window's pane count, and the custom layout type in its name or provided via -l, if any.  
+    Resizes a tmux window's layout based on the window's dimensions, the window's pane count, and the custom layout type in its name or provided via -l, if any.
 
     Window layout specifications are defined in a space separated file of the following format:
 
-        layout-type window-dimensions pane-count layout-specification
+        layout-type window-dimensions pane-count layout-specification pane-dimensions
 
     Description and formats of the above fields are as follows:
 
         * window-dimensions: a tmux window height + the string "x" + a tmux window width; for example: 179x98; CAUTION: this value is affected by monitor resolution
         * pane-count: an integer pane count
         * layout-type: a unique key that, when combined w/ window dimensions and pane count, uniquely maps to a layout specification; can contain alphanumeric characters,
-          hyphens (-) and underscores (_); whitespace is disallowed; layouts are not required to perform resizing, but are available to constrain the layout chosen for 
-          resizing 
+          hyphens (-) and underscores (_); whitespace is disallowed; layouts are not required to perform resizing, but are available to constrain the layout chosen for
+          resizing
         * layout-specification: a window specification recognized by "tmux select-layout"; see "man tmux" for details
+        * pane-dimensions: a comma separated list of dimensions of panes in the layout, i.e.: 319x88,79x88
 
     The default location for window layout specifications is "${HOME}/.config/tmux/layouts", or they can be passed via -s.
 
@@ -50,8 +51,10 @@ OPTIONS
     -t, --target        optional, defaults to the active window; the name of the window for which to set a layout
     -s, --specs         optional, default to "${HOME}/.config/tmux/layouts"; a file that contains layout specifications in the format describe about
     -v, --verbose       optional; write progress/status messages to stdout
-    --strict            optional; if specified, error cases will case the script to exit with non-zero return codes; see above for specific behavioral description
-    --dry-run           optional; indicates that the script should print hypothetical results to the console, but make no state changes
+    --strict            optional; can't be used w/ --dry-run; if specified, error cases will case the script to exit with non-zero return codes; see above for specific
+                        behavioral description
+    --force             optional; if specified, forces resize even if pane dimensions match those in the layout spec
+    --dry-run           optional; can't be used w/ --force; indicates that the script should print hypothetical results to the console, but make no state changes
     -h, --help          display this message
 help
 }
@@ -62,20 +65,21 @@ TARGET="$(tmux display-message -p "#W")"
 SPEC_PATH="${HOME}/.config/tmux/layouts"
 VERBOSE=""
 STRICT=""
+FORCE=""
 DRY_RUN=""
 
 
 log() {
-    [[ -n "$VERBOSE" ]] && echo "${1}" || echo -n ""
+    [[ -n "$VERBOSE" ]] && echo "[INFO] ${1}" || echo -n ""
 }
 
 log_and_exit() {
     if [[ "${STRICT}" == "true" ]]; then
-        echo "${1}"
+        echo "[ERROR] ${1}"
         exit 1
     fi
 
-    [[ -n "$VERBOSE" ]] && echo "${1}" || echo -n ""
+    [[ -n "$VERBOSE" ]] && echo "[WARN] ${1}" || echo -n ""
     exit 0
 }
 
@@ -105,6 +109,10 @@ while [[ $# -gt 0 ]]; do
       STRICT="true"
       shift
       ;;
+    --force)
+      FORCE="true"
+      shift
+      ;;
     --dry-run)
       DRY_RUN="true"
       shift
@@ -122,11 +130,19 @@ while [[ $# -gt 0 ]]; do
 done
 
 
-if [[ -z "$(tmux list-window -F "#W" | grep "${TARGET}" || true)" ]]; then
+if [[ "${DRY_RUN}" == "true" && "${FORCE}" == "true" ]]; then
+    echo "--force and --dry-run are mutually exclusive"
+    exit 1
+fi
+
+# validate target refers to a window
+if [[ -z "$(tmux list-windows -F "#W" | grep "${TARGET}" || true)" ]]; then
     log_and_exit "tmux window target='${TARGET}' does not exist"
 fi
 
-log "preparing to set layout for target window='${TARGET}'"
+# get window id
+TARGET_ID="$(tmux list-windows -F "#I #W" | grep "${TARGET}"| cut -d ' ' -f1)"
+log "preparing to set layout for target window='${TARGET}' (id: ${TARGET_ID})"
 
 # if layout-type isn't provided, try to extract it from window name
 if [[ -z "${LAYOUT}" ]]; then
@@ -135,29 +151,32 @@ if [[ -z "${LAYOUT}" ]]; then
     #        I couldn't for the life of me get that pattern to work
     LAYOUT="$([[ "${TARGET}" =~ .*[[:space:]]\((.*)\)$ ]] && echo "${BASH_REMATCH[1]}" || echo "")"
 
-    log "no layout provided; extracted layout='${LAYOUT}' from window name='${TARGET}'"
+    EXTRACTED_LAYOUT_MSG="$([[ -z "${LAYOUT}" ]] && echo "no layout extracted" || echo "extracted layout='${LAYOUT}'")"
+    log "no layout provided; ${EXTRACTED_LAYOUT_MSG} from window name='${TARGET}'"
 fi
 
 if [[ ! -f "${SPEC_PATH}" ]]; then
     log_and_exit "spec file='${SPEC_PATH}' does not exist"
 fi
 
-DIMENSIONS="$(tmux display-message -p "#{window_width}x#{window_height}")"
-PANE_COUNT="$(tmux list-panes | wc -l)"
+# build layout identifier from window dimensions, pane count, and, optionally, the identifier
+DIMENSIONS="$(tmux display-message -t "${TARGET_ID}" -p "#{window_width}x#{window_height}")"
+PANE_COUNT="$(tmux list-panes -t "${TARGET_ID}"  | wc -l)"
 # if present, add extra space to layout to make below identifier work in grep pattern
 LAYOUT="$([[ -z ${LAYOUT} ]] && echo "" || echo "${LAYOUT} ")"
 IDENTIFIER="${LAYOUT}${DIMENSIONS} ${PANE_COUNT}"
 
 log "searching for layout specification with identifier='${IDENTIFIER}'"
 
-SPEC_MATCH="$(grep "${IDENTIFIER}" "${SPEC_PATH}" || true)"
+# filter out comments before grepping for identifier
+SPEC_MATCH="$(grep -v "^#" "${SPEC_PATH}" | grep "${IDENTIFIER}" || true)"
 if [[ -z "${SPEC_MATCH}" ]]; then
     log_and_exit "no layout specification found for '${IDENTIFIER}'"
 fi
 
 log "found spec match='${SPEC_MATCH}'"
 
-# ensure that we have only one match for the current identifier; if the original match 
+# ensure that we have only one match for the current identifier; if the original match
 # is different from this "single match", we know we originally found > 1 match
 SINGLE_SPEC_MATCH="$(echo "${SPEC_MATCH}" | head -1)"
 if [[ "${SPEC_MATCH}" != "${SINGLE_SPEC_MATCH}" ]]; then
@@ -168,7 +187,7 @@ fi
 
 log "extracting layout specification from match='${SINGLE_SPEC_MATCH}'"
 
-# the spec layout should be the last space separated column of the match
+# extract get the tmux layout from the spec
 LAYOUT_SPEC="$(echo "${SINGLE_SPEC_MATCH}" | cut -d " " -f4)"
 if [[ -z "${LAYOUT_SPEC}" ]]; then
     log_and_exit "unable to extract layout specification from spec match='${SINGLE_SPEC_MATCH}'"
@@ -176,10 +195,26 @@ fi
 
 log "using extracted layout specification='${LAYOUT_SPEC}'"
 
+# check the current pane dimensions against those in the layout
+CURRENT_PANES="$(tmux list-panes -t "${TARGET_ID}" -F "#{pane_width}x#{pane_height}" | tr '\n' ',')"
+CURRENT_PANES="${CURRENT_PANES:0:-1}"
+LAYOUT_PANES="$(echo "${SINGLE_SPEC_MATCH}" | cut -d " " -f5)"
+
+log "target panes=\"${CURRENT_PANES}\"; layout panes=\"${LAYOUT_PANES}\""
+
+# if they match, don't do anything
+if [[ "${CURRENT_PANES}" == "${LAYOUT_PANES}" ]] && [[ "${FORCE}" != "true" ]]; then
+    log "target panes match layout panes; exiting"
+    exit 0
+elif [[ "${FORCE}" == "true" ]]; then
+    log "target panes match layout panes but --force option detected; continuing"
+fi
+
 if [[ "${DRY_RUN}" == "true" ]]; then
     echo "tmux select-layout -t ${TARGET} ${LAYOUT_SPEC}"
-else
-    # the lack of quotes around ${LAYOUT_SPEC} is intentional
-    tmux select-layout -t "${TARGET}" ${LAYOUT_SPEC}
+    exit
 fi
+
+# the lack of quotes around ${LAYOUT_SPEC} is intentional
+tmux select-layout -t "${TARGET}" ${LAYOUT_SPEC}
 

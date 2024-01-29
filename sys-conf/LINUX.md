@@ -115,12 +115,14 @@ Installed w/ package of the same name via `sudo apt install` unless otherwise st
 
 - [ ] adb
 - [ ] ag (aka: silversearcher-ag)
+- [ ] alacritty
 - [ ] bat (aka: batcat)
 - [ ] chrome-gnome-shell
 - [ ] cloc
 - [ ] colordiff
 - [ ] devilspie2
 - [ ] fzf
+- [ ] gconf2
 - [ ] gnome-shell-extension-manager
 - [ ] imagemagick - specifically installed `imagemagick-6.q16`
 - [ ] img2pdf
