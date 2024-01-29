@@ -14,6 +14,7 @@ Installed w/ `flatpak` install unless otherwise stated. Package FQNs are listed 
 - [ ] krita - `flatpak install krita`
 - [ ] seahorse - `flatpak install seahorse`
 - [ ] tor - `flatpak install flathub com.github.micahflee.torbrowser-launcher`
+- [ ] yubico-authenticator - `flatpak install flathub com.yubico.yubioath`
 
 ### Manual
 
@@ -49,7 +50,6 @@ Format = "name - version - notes"
 - [ ] Notesnook - 2.4.4
 - [ ] UHK Agent - 2.1.2
 - [ ] Vim - 2.1.2 - don't remember installing this, seems to be the same as its nvim counterpart 
-- [ ] Yubico Authenticator - 1 (?)
 - [ ] YubiKey Manager - ? - seems borked
 
 ## Gnome Shell Extensions
@@ -128,6 +128,7 @@ Installed w/ package of the same name via `sudo apt install` unless otherwise st
 - [ ] img2pdf
 - [ ] Kdenlive
 - [ ] lua5.3
+- [ ] pcscd
 - [ ] policykit-1-gnome
 - [ ] python3-pip
 - [ ] python3.10-venv
@@ -146,6 +147,8 @@ Installed w/ package of the same name via `sudo apt install` unless otherwise st
 - [ ] vim
 - [ ] vlc
 - [ ] whois
+- [ ] yubikey-manager
+- [ ] yubikey-manager-qt
 - [ ] zoxide
 
 ##### `purge`

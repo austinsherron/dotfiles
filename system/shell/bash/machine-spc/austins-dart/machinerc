@@ -35,6 +35,7 @@ export readonly VIDEOS_DIR="Videos"
 alias bat="batcat"
 alias dbc="dbxcli"
 alias dp2="devilspie2"
+alias fp="flatpak"
 
 ## utils
 
