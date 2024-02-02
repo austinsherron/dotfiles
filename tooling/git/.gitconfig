@@ -49,7 +49,7 @@
 
     # [fuzzy]
     fcheckout       = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
-    frcheckout      = !BRANCH=`git ls-remote | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
+    frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
     frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     fdel            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -d ${BRANCH}
     frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git rdel ${BRANCH}
@@ -76,6 +76,7 @@
     co  = checkout
     cn  = checkout -b
     d   = diff
+    f   = fetch
     fc  = fcheckout
     fd  = fdel
     fm  = fmerge
