@@ -1,11 +1,33 @@
 #!/usr/bin/env bash
 
-## TODO: extract pieces of this file into standalone scripts, config files, etc.
+
+## bootstrap ###################################################################
+
+export CONFIG_ROOT_PUB="${HOME}/.config"
+export SHELL_NAME="$(basename "${SHELL}")"
+export SHELL_ROOT="${CONFIG_ROOT_PUB}/shell/${SHELL_NAME}"
+export HELPERS_ROOT="${CONFIG_ROOT_PUB}/shell/${SHELL_NAME}/helpers"
+export HOST_CONFIG_ROOT="${SHELL_ROOT}/host"
+
+# so functions can be used in rc, osrc, and hostrc
+source "${HELPERS_ROOT}/functions.sh"
+
+## os specific config ##########################################################
+
+OS="$(uname | tr [:upper:] [:lower:])"
+OS_SPC_ROOT="${HOST_CONFIG_ROOT}/${OS}"
+OS_SPC_RC="${OS_SPC_ROOT}/osrc"
+
+# this machine os's config
+if [[ -f "${OS_SPC_RC}" ]]; then
+    source "${OS_SPC_RC}"
+else
+    echo "[WARN] no os specific config found for os='${OS}' (path=${OS_SPC_RC})"
+fi
 
 ## imports #####################################################################
 
 source /etc/profile.d/shared_paths.sh
-# shellcheck source=/home/austin/Workspace/workspace/lib/bash/utils.sh
 source "${CODE_ROOT}/lib/bash/utils.sh"
 
 ## constants ###################################################################
@@ -31,18 +53,24 @@ export TRUNK="master"
 
 ## important paths #############################################################
 
+### interface points
+
+export LEGACY_CONFIG_ROOT_PUB="${HOME}"
+export NVIM_ROOT_PUB="${CONFIG_ROOT_PUB}/nvim"
+export TMUX_ROOT_PUB="${CONFIG_ROOT_PUB}/tmux"
+export TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
+export INSTALL_SCRIPTS="${CODE_ROOT}/scripts/install"
+export LOG_ROOT="${HOME}/.local/state/logs"
+
 ### development
 
 export EDITORS_ROOT="${CONFIG_ROOT}/editors"
 
 ### shell
 
-export SHELL_NAME="$(basename "${SHELL}")"
-export SHELL_ROOT="${CONFIG_ROOT}/system/shell/${SHELL_NAME}"
 export RC_NAME="${SHELL_NAME}rc"
-export RC="${HOME}/.${RC_NAME}"
-export RC_SRC="${SHELL_ROOT}/${RC_NAME}"
-export PROFILE="${HOME}/.${SHELL_NAME}_profile"
+export RC="${LEGACY_CONFIG_ROOT_PUB}/.${RC_NAME}"
+export EXTENSIONS_ROOT="${SHELL_ROOT}/extensions"
 
 ### tooling
 
@@ -55,7 +83,7 @@ export VUNDLE="${VIM_ROOT}/.vim"
 
 ## nvim
 
-export NVIM_INSTALL="${USR_LOCAL}/nvim/bin"
+export NVIM_INSTALL="${BIN_PARENT}/nvim/bin"
 export NVIM_PARENT="${DEV_ROOT}"
 export NVIM_ROOT="${NVIM_PARENT}/nvim"
 export NVIMRC="${NVIM_ROOT}/init.lua"
@@ -68,50 +96,37 @@ export TMUX_ROOT="${TOOLING_ROOT}/tmux"
 export TMUX_CONF="${TMUX_ROOT}/tmux.conf"
 export TMUX_BUNDLE="${TMUX_ROOT}/plugins"
 
-### interface points
-
-export CONFIG_ROOT_PUB="${HOME}/.config"
-export LEGACY_CONFIG_ROOT_PUB="${HOME}"
-export NVIM_ROOT_PUB="${CONFIG_ROOT_PUB}/nvim"
-export TMUX_ROOT_PUB="${CONFIG_ROOT_PUB}/tmux"
-export TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
-export INSTALL_SCRIPTS="${CODE_ROOT}/scripts/install"
-export LOG_ROOT="${HOME}/.local/state/logs"
-
 ### remote storage
 
 export REMOTE_ROOT="${HOME}/Remote"
 export DROPBOX_ROOT="${REMOTE_ROOT}/Dropbox"
 
-## machine specific config #####################################################
+## host specific config ########################################################
 
-MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/${HOSTNAME}"
+HOST="$(hostname -s)"
+HOST_SPC_ROOT="${HOST_CONFIG_ROOT}/${HOST}"
+HOST_SPC_RC="${HOST_SPC_ROOT}/hostrc"
 
-# this machine's config
-if [[ -d "${SHELL_ROOT}/machine-spc/${HOSTNAME}" ]]; then
-    MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/${HOSTNAME}"
-# fallback to os specific config
-elif [[ -d "${SHELL_ROOT}/machine-spc/$(to_lower "$(uname)")" ]]; then
-    MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/$(to_lower "$(uname)")"
-# fallback to default "unknown" config
+if [[ -f "${HOST_SPC_RC}" ]]; then
+    source "${HOST_SPC_RC}"
 else
-    MACHINE_SPC_ROOT="${SHELL_ROOT}/machine-spc/unknown"
+    echo "[WARN] no host specific config found for host='${HOST}' (path=${HOST_SPC_RC})"
 fi
 
-[[ -f "${MACHINE_SPC_ROOT}/machinerc" ]] && source "${MACHINE_SPC_ROOT}/machinerc"
-[[ -f "${MACHINE_SPC_ROOT}/appearance.sh" ]] && source "${MACHINE_SPC_ROOT}/appearance.sh"
+# source optional appearance customization file, if it exists
+[[ -f "${HOST_SPC_ROOT}/appearance.sh" ]] && source "${HOST_SPC_ROOT}/appearance.sh"
 
 ## path manipulations ##########################################################
-
-### shell path
-
-export PATH="${PATH}:${NVIM_INSTALL}"           # neovim
-export PATH="${PATH}:${GO_ROOT}/bin"            # golang
-export PATH="${PATH}:/usr/local/jdk-20.0.1/bin" # java
 
 ### go path
 
 export GOPATH="${HOME}/.go"
+
+### shell path
+
+export PATH="${PATH}:${NVIM_INSTALL}"                   # neovim
+export PATH="${PATH}:${GO_ROOT}/bin:${GOPATH}/bin"      # golang
+export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"         # java
 
 ### pythonpath
 
@@ -136,12 +151,6 @@ LUA_PATH="${LUA_PATH};/usr/local/lib/lua/5.3/?/init.lua"
 
 export LUA_PATH
 
-# TODO: address these when/if I re-start adoption of xplr
-# export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?.lua"                    # xplr plugins
-# export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/?/init.lua"               # xplr plugins
-# export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?.lua"           # xplr plugins
-# export LUA_PATH="${LUA_PATH};${CONFIG_ROOT}/tooling/xplr/packages/xpm.xplr/?/init.lua"      # xplr plugins manager
-
 ## shell #######################################################################
 
 ### behavior
@@ -149,256 +158,9 @@ export LUA_PATH
 # append to + reload history = history shared b/w tmux panes, amongst other things
 export PROMPT_COMMAND="history -a; history -n"
 
-## aliases #####################################################################
+## helpers #####################################################################
 
-### rename
+source "${HELPERS_ROOT}/aliases.sh"
+source "${HELPERS_ROOT}/extensions.sh"
+source "${HELPERS_ROOT}/tools.sh"
 
-alias db="dropbox"
-alias g="git"
-alias nv="nvim"
-alias sc="systemctl"
-alias tk="task"
-alias tx="tmux"
-alias uc="systemctl --user"
-alias vi="/usr/bin/vim"
-alias vim="nvim"
-alias zd="z"
-alias zx="zoxide"
-
-### config
-
-## reload
-
-alias rcload="source ${RC}"
-alias txload="tmux source-file ${TMUX_CONF_PUB}"
-
-## shell + tmux
-
-alias rc="${EDITOR} ${RC}; rcload"
-alias spc-rc="${EDITOR} ${MACHINE_SPC_ROOT}/machinerc; rcload"
-alias txrc="${EDITOR} ${TMUX_CONF}; txload"
-alias txrt="cd ${TMUX_ROOT}"
-alias txrtpub="cd ${TMUX_ROOT_PUB}"
-
-## nvim
-
-alias nvimrc="${EDITOR} ${NVIM_ROOT_PUB}/init.lua"
-alias nvrc="nvimrc"
-alias nvrt="cd ${NVIM_ROOT}"
-alias nvrtpub="cd ${NVIM_ROOT_PUB}"
-alias nvundle="cd ${NVUNDLE}"
-
-## vim
-
-alias vimrc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.vimrc"
-alias vundle="cd ${LEGACY_CONFIG_ROOT_PUB}/.vim"
-
-## misc (task, git, hyper, kube)
-
-alias tkrc="${EDITOR} ${CONFIG_ROOT_PUB}/task/taskrc"
-alias gc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.gitconfig"
-alias hyperconf="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.hyper.js"
-alias kc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.kube/config"
-
-### utils
-
-## diff
-
-alias diff="colordiff -N -u"
-alias diffr="diff -r"
-alias diffw="diff -w"
-
-## copy/paste
-
-alias pbc="pbcopy"
-alias pbp="pbpaste"
-
-## search
-
-alias brv="s -p searxng"
-alias ddg="s -p duckduckgo"
-alias goog="s -p google"
-alias qwnt="s -p qwant"
-alias sp="s -p startpage"
-alias sanon="s -p google -b \"chromium --incognito\""
-
-## move mouse (assumes monitor configurations similar to home office on 06/17/2023)
-##
-## TODO: mouse movement to specific monitors doesn't work when resolution changes; figure
-##       out how to deal w/ this programmatically  (xdotool getwindowgeometry isn't being
-##       cooperative)
-
-# to spc monitors
-
-# to ~ center of left; click
-# alias lmv="xdotool mousemove 3001 2289 click 1"
-alias lmv="xdotool mousemove 1576 1035 click 1"         # two large monitors, l hz, r vr
-# alias lmv="xdotool mousemove 895 1458 click 1"        # laptop + one large monitors, r hz
-# to ~ center of right; click
-# alias rmv="xdotool mousemove 7509 1938 click 1"
-alias rmv="xdotool mousemove 3937 1009 click 1"         # two large monitors, l hz, r vr
-# alias rmv="xdotool mousemove 2628 1023 click 1"       # laptop + one large monitors, r hz
-
-## misc
-
-alias sush="sudo -i -- bash -c \"cd $(pwd); /bin/bash\""
-
-## github ######################################################################
-
-### gh cli aliases
-
-## for prs
-
-alias pr-ls="gh pr ls --author \"@me\""
-alias pr-view="gh pr view ${1}"
-alias pr-todo="gh pr ls --search 'is:open is:pr review-requested:austinsherron archived:false'"
-
-## for repos
-
-alias repo-ls="gh repo ls --no-archived"
-
-## nvm #########################################################################
-
-export NVM_DIR="${ADMIN_HOME}/.nvm"
-
-[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"                    # load nvm
-[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion"  # load completions
-
-## functions ###################################################################
-
-### files
-
-# TODO: parameterize find pattern, create inverse function
-unhide() {
-  GLOBIGNORE=".:.."
-  for file in .*; do
-     mv -n "$file" "${file#.}"
-  done
-}
-
-uz() {
-  filename="${1}"
-  wo_extension="${filename%.*}"
-
-  unzip "$filename" -d "${wo_extension}"
-}
-
-### clipboard
-
-clip-clear() {
-    pbcopy < /dev/null
-}
-
-diff-clip() {
-    tmp="$(mktemp)"
-    pbpaste >| "${tmp}"
-    diff "${tmp}" "${1}" && rm "${tmp}"
-}
-
-pbcf() {
-    cat "${1}" | pbcopy
-}
-
-pbpf() {
-    pbpaste > "${1}"
-}
-
-pbpo() {
-    pbpaste > "${1}" && ${EDITOR} "${1}"
-}
-
-### git
-
-alias get-git-root="git rev-parse --show-toplevel"
-
-git-root() {
-    cd "$(get-git-root)" || exit
-}
-
-git-ignore() {
-    ${EDITOR} "$(get-git-root)/.gitignore"
-}
-
-clone-external() {
-    local repo="${1}"
-    local repo_name="$(basename "${repo}")"
-
-    git clone "https://github.com/${repo}" "${EXTERNAL_PKGS}/${repo_name}"
-}
-
-### gpg
-
-gpg-export() {
-    mkdir gpg-keychain
-    cd gpg-keychain || exit
-
-    gpg --armor --export-secret-keys > priv.asc
-    gpg --armor --export > pub.asc
-    gpg --armor --export-ownertrust > trust.asc
-
-    if [[ "${1}" != "-c" ]]; then
-        return
-    fi
-
-    cp ~/.gnupg/dirmngr.conf .
-    cp ~/.gnupg/gpg-agent.conf .
-    cp ~/.gnupg/gpg.conf .
-    cd - || exit
-}
-
-### nvim
-
-editor() {
-    if [[ -n "$NVIM_LISTEN_ADDRESS" ]]; then
-        alias nvim=nvr -cc split --remote-wait +'set bufhidden=wipe'
-        export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-        export EDITOR="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-    else
-        export VISUAL="nvim"
-        export EDITOR="nvim"
-    fi
-}
-
-## plugins/extensions ##########################################################
-
-### fzf tab completion (TODO: why isn't this working on intel macbook?)
-
-# shellcheck source=/home/austin/Workspace/external/fzf-tab-completion/bash/fzf-bash-completion.sh
-source "${EXTERNAL_PKGS}/fzf-tab-completion/bash/fzf-bash-completion.sh"
-# TODO: bind seems to cause problems on startup; figure out a workaround
-bind -x '"\t": fzf_bash_completion'
-
-# configure when fzf auto-completion actually kicks in
-# FZF_COMPLETION_AUTO_COMMON_PREFIX="true"            # true makes activation more conservative...
-# FZF_COMPLETION_AUTO_COMMON_PREFIX_PART="true"       # ...and even more so
-
-# to reduce flickering on activation (I'm convinced it actually made it worse...)
-_fzf_bash_completion_loading_msg() { echo "${PS1@P}${READLINE_LINE}" | tail -n1; }
-
-### oh-my-bash
-
-# shellcheck source=/home/austin/Workspace/dotfiles/system/shell/bash/extensions/oh-my-bash.sh
-source "${SHELL_ROOT}/extensions/oh-my-bash.sh"
-
-### starship
-
-# shellcheck source=/home/austin/Workspace/dotfiles/system/shell/bash/extensions/starship.sh
-source "${SHELL_ROOT}/extensions/starship.sh"
-
-### zoxide
-
-eval "$(zoxide init bash)"
-
-### nix
-
-# added by Nix installer
-if [ -e /home/austin/.nix-profile/etc/profile.d/nix.sh ]; then
-    . /home/austin/.nix-profile/etc/profile.d/nix.sh;
-fi
-
-### neovim
-
-export NEOVIM_LOG_LEVEL="DEBUG"
-export NEOVIM_NOTIFY_LEVEL="INFO"
-export NEOVIM_AUTO_INSTALL_PACKAGES=true
-export NEOVIM_PLUGINS_PATH='plugins.spec'

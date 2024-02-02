@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+
+<<comment
+Note: it's possible I'll run into a circular dependency issue here: something in
+      this file depends on something in the main file, which in turn depends on
+      something here. It's mostly an issue of order, so the problem could be
+      solved by breaking this up into it's constituent parts. That seems like
+      overkill at this point though.
+comment
+
+
+## important paths ###########################################################
+
+## shell path
+
+SHELL_PATH="/bin/bash"
+
+## admin (my) home dir
+
+export ADMIN_HOME="/home/austin"
+
+## external storage
+
+export VOLUME_ROOT="/media"
+export MOUNT_POINT="${VOLUME_ROOT}/${USER}"
+
+## completions
+
+export COMPLETION_PATH="/usr/share/bash-completion/bash_completion"
+# TODO: verify this path
+export COMPLETION_DIR="${HOME}/.local/share/bash-completion/completions"
+
+## aliases #####################################################################
+
+### rename
+
+alias bat="batcat"
+alias dbc="dbxcli"
+alias dp2="devilspie2"
+alias fp="flatpak"
+
+### utils
+
+## copy/paste
+
+alias pbcopy='xsel --clipboard'
+alias pbpaste='xsel --clipboard'
+
+## system
+
+alias reboot="sudo systemctl reboot -i"
+alias sc="systemctl"
+alias sush="sudo -i -- bash -c \"cd $(pwd); /bin/bash\""
+alias uc="systemctl --user"
+
+## functions ###################################################################
+
+## utils
+
+open() {
+    xdg-open "${1}" > /dev/null 2>&1
+    guake -t
+}
+
