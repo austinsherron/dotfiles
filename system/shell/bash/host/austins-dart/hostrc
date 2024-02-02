@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-<<comment
+cat <<comment
 Note: it's possible I'll run into a circular dependency issue here: something in
       this file depends on something in the main file, which in turn depends on
       something here. It's mostly an issue of order, so the problem could be
@@ -14,8 +14,8 @@ comment
 
 ## identifiers
 
-export readonly MACHINE="Darter"
-export readonly MACHINE_NICKNAME="🏎️"
+export MACHINE="Darter"
+export MACHINE_NICKNAME="🏎️"
 
 ## aliases #####################################################################
 
