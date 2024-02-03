@@ -141,7 +141,19 @@ if [[ -z "$(tmux list-windows -F "#W" | grep "${TARGET}" || true)" ]]; then
 fi
 
 # get window id
-TARGET_ID="$(tmux list-windows -F "#I #W" | grep "${TARGET}"| cut -d ' ' -f1)"
+MATCHING_TARGETS="$(tmux list-windows -F "#I #W" | grep "${TARGET}"| cut -d ' ' -f1)"
+TARGET_ID="$(echo "${MATCHING_TARGETS}" | head -1)"
+
+# ensure that we have only one match for the provided target; if the original match is
+# different from the matching targets, we know we originally found > 1 match
+if [[ "${MATCHING_TARGETS}" != "${TARGET_ID}" ]]; then
+    TARGET_IDS="$(echo "${MATCHING_TARGETS}" | tr '\n' ',')"
+    TARGET_IDS="${TARGET_IDS:0:-1}"
+    MSG="multiple windows found for target='${TARGET}' (ids: ${TARGET_IDS})"
+    # exit only if using strict mode (that's why we're not just using log_and_exit here)
+    [[ "${STRICT}" == "true" ]] && log_and_exit "${MSG}" || log "${MSG}"
+fi
+
 log "preparing to set layout for target window='${TARGET}' (id: ${TARGET_ID})"
 
 # if layout-type isn't provided, try to extract it from window name
@@ -176,8 +188,8 @@ fi
 
 log "found spec match='${SPEC_MATCH}'"
 
-# ensure that we have only one match for the current identifier; if the original match
-# is different from this "single match", we know we originally found > 1 match
+# ensure that we have only one match for the current identifier; if the original match is
+# different from this "single match", we know we originally found > 1 match
 SINGLE_SPEC_MATCH="$(echo "${SPEC_MATCH}" | head -1)"
 if [[ "${SPEC_MATCH}" != "${SINGLE_SPEC_MATCH}" ]]; then
     MSG="multiple layout specifications found for '${IDENTIFIER}'"
