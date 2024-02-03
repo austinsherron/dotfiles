@@ -15,7 +15,7 @@ DESCRIPTION
 
     Adds a layout entry to the resize-layout(s) config file.
 
-    The default location for window layout specifications is "${HOME}/.config/tmux/layouts", or they can be passed via -s.
+    The default location for window layout specifications is "${HOME}/.config/tmux/layouts", or a path can be passed via -s|--specs.
 
 USAGE
 
@@ -25,7 +25,8 @@ OPTIONS
 
     -l, --layout        the layout's identifier; the combination of identifier, window dimensions, and pane count should uniquely identify a layout
     -t, --target        optional, defaults to the active window; the name of the window for which to add a layout
-    -s, --specs         optional, default to "${HOME}/.config/tmux/layouts"; the file to which to write the new layout specifications
+    -s, --specs         optional, default to "${HOME}/.config/tmux/layouts"; must be file path or "stdout"; the file to which to write the new layout
+                        specifications; using "-s|--specs stdout" will write the layout to stdout
     -v, --verbose       optional; write progress/status messages to stdout
     --force             optional; if specified, forces resize even if pane dimensions match those in the layout spec
     --dry-run           optional; can't be used w/ --force; indicates that the script should print hypothetical results to the console, but make no state changes
@@ -40,7 +41,6 @@ SPEC_PATH="${HOME}/.config/tmux/layouts"
 VERBOSE=""
 FORCE=""
 DRY_RUN=""
-
 
 log() {
     [[ -n "$VERBOSE" ]] && echo "[INFO] ${1}" || echo -n ""
@@ -69,7 +69,7 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
-    --verbose)
+    -v|--verbose)
       VERBOSE="true"
       shift
       ;;
@@ -109,7 +109,7 @@ if [[ -z "$(tmux list-windows -F "#W" | grep "${TARGET}" || true)" ]]; then
     log_and_exit "tmux window target='${TARGET}' does not exist"
 fi
 
-if [[ ! -f "${SPEC_PATH}" ]]; then
+if [[ "${SPEC_PATH}" != "stdout" ]] && [[ ! -f "${SPEC_PATH}" ]]; then
     log_and_exit "-s|--specs must refer to a valid file"
 fi
 
@@ -119,24 +119,32 @@ log "preparing to add layout for target window='${TARGET}' (id: ${TARGET_ID})"
 
 PANES="$(tmux list-panes -t "${TARGET_ID}" -F "#{pane_width}x#{pane_height}")"
 DIMENSIONS="$(tmux display-message -t "${TARGET_ID}" -p "#{window_width}x#{window_height}")"
-PANE_COUNT="$(echo "${PANES}" | wc -l)"
+PANE_COUNT="$(echo "${PANES}" | wc -l | xargs)"
 LAYOUT="$(tmux display-message -t "${TARGET_ID}" -p "#{window_layout}")"
 PANE_DIMENSIONS="$(echo "${PANES}" | tr '\n' ',')"
 PANE_DIMENSIONS="${PANE_DIMENSIONS:0:-1}"
-LAYOUT_SPEC="${LAYOUT_ID} ${DIMENSIONS} ${PANE_COUNT} ${LAYOUT} ${PANE_DIMENSIONS}"
+
+IDENTIFIER="${LAYOUT_ID} ${DIMENSIONS} ${PANE_COUNT}"
+LAYOUT_SPEC="${IDENTIFIER} '${LAYOUT}' ${PANE_DIMENSIONS}"
+
+if [[ "${SPEC_PATH}" == "stdout" ]]; then
+    log "writing layout to sdtout"
+    echo "${LAYOUT_SPEC}"
+    exit
+fi
 
 log "constructed layout spec='${LAYOUT_SPEC}'"
 
-SPEC_MATCH="$(grep -v "^#" "${SPEC_PATH}" | grep "^${LAYOUT_SPEC}$" || true)"
+SPEC_MATCH="$(grep -v "^#" "${SPEC_PATH}" | grep "^${IDENTIFIER}" || true)"
 
 if [[ -n "${SPEC_MATCH}" ]] && [[ "${FORCE}" != "true" ]]; then
-    log_and_exit "layout already exists; exiting"
+    log_and_exit "layout already exists for identifier='${IDENTIFIER}'; exiting"
 fi
 
 CMD=""
 
 if [[ -n "${SPEC_MATCH}" ]]; then
-    CMD="sed 's/${SPEC_MATCH}/${LAYOUT_SPEC}' ${SPEC_PATH}"
+    CMD="sed 's/^${SPEC_MATCH}.*$/${LAYOUT_SPEC}' ${SPEC_PATH}"
 else
     CMD="echo ${LAYOUT_SPEC} >> ${SPEC_PATH}"
 fi
@@ -146,5 +154,5 @@ if [[ "${DRY_RUN}" == "true" ]]; then
     exit
 fi
 
-exec ${CMD}
+eval "${CMD}"
 
