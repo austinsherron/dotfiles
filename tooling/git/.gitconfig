@@ -1,14 +1,13 @@
 [user]
     email      = austin@pryvate.email
     name       = Austin Sherron
-    signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
+    # FIXME: not working on mac, even after importing the key
+    # signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 [core]
-    editor = nvr -cc split --remote-wait +'set bufhidden=wipe'
+    editor = nvr -cc vsplit --remote-wait +'set bufhidden=wipe'
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
-    clear       = !git reset HEAD && git checkout -- .
-    clearp      = !git reset HEAD \"$1\" && git checkout -- \"$1\"
     diff        = diff -M
     hdiff       = diff HEAD
     home        = checkout master
@@ -22,6 +21,7 @@
     new-branch  = "!git checkout -b \"$1\"\\/\"$2\" #"
     publish     = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
     radd        = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
+    root        = !ROOT=`git rev-parse --show-toplevel` && cd ${ROOT}
     rundo       = !ROOT=`git rev-parse --show-toplevel` && git undo ${ROOT}
     rdel        = "!git push origin :\"$1\" #"
     rename      = "!git branch -m \"$1\"\\/\"$2\" #"
@@ -35,7 +35,6 @@
     # [stash]
     s   = stash
     sl  = stash list
-    ; sf = "!STASH=`${1:-0}` && git stash show stash@{"${STASH}"}
     sft = stash show stash@{0}
     sst = stash show -p stash@{0}
     sf  = "!git stash show stash@{\"$1\"} #"
@@ -59,14 +58,14 @@
     frebase         = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git rebase ${BRANCH}
     flog            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log ${BRANCH}
     fdiff           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git diff ${BRANCH}
-    # what commits are in that branch that aren't in this one (includes merges)
-    fcdiff          = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log HEAD..${BRANCH}
-    # what commits are in this branch that aren't in that one (includes merges)
-    frcdiff         = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log ${BRANCH}..HEAD
     # what commits are in that branch that aren't in this one
-    fcinthatnotthis = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges HEAD..${BRANCH}
+    fcmtdiff = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges HEAD..${BRANCH}
     # what commits are in this branch that aren't in that one
-    fcinthisnotthat = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges ${BRANCH}..HEAD
+    frcmtdiff = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges ${BRANCH}..HEAD
+    # what commits are in that branch that aren't in this one
+    frcmtdiff = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges HEAD..origin/${BRANCH}
+    # what commits are in this branch that aren't in that one
+    frrcmtdiff = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges origin/${BRANCH}..HEAD
 
     # [micro]
     a   = add
@@ -99,8 +98,8 @@
     r   = rundo
     us  = unstage
 
-     # [submodules]
-    init-sub = submodule update --recursive --init 
+    # [submodules]
+    init-sub = submodule update --recursive --init
     pull-sub = submodule update --recursive
 [push]
     default = upstream
@@ -109,7 +108,8 @@
 [credential]
     helper = store
 [commit]
-    gpgsign = true
+    # FIXME: this should be true, see FIXME at signingkey
+    gpgsign = false
 [url "https://user@hostname"]
     insteadOf = ssh://git@hostname
 [url "https://x-access-token@github.com"]
@@ -122,6 +122,8 @@
     insteadOf = ssh://git@127.0.0.1:56799
 
 # slightly different configs for work (i.e.: user, branch name format, etc.)
-[includeIf "gitdir:~/sigma/**"]
-    path = .gitconfig-sigma
+[includeIf "gitdir:~/Workspace/workspace/granica/**"]
+    path = .gitconfig-work
 
+[gpg]
+    program = gpg

@@ -40,5 +40,7 @@ alias gl-pr-create=""
 
 ## glab
 
-GITLAB_TOKEN="$(op-get "GitLab - Granica (API)" "credential")"
+if [[ -z "${GITLAB_TOKEN+x}" ]]; then
+    GITLAB_TOKEN="$(op-get "GitLab - Granica (API)" "credential")"
+fi
 
