@@ -1,0 +1,9 @@
+*.netrwhist
+README.md
+TASKS.md
+dot_config/hyper/hyper_plugins
+dot_config/tmux/extensions
+dot_config/tmux/plugins
+dot_config/tmux/resurrect
+dot_config/xplr/packages
+sys-conf

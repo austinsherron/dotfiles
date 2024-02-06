@@ -22,6 +22,7 @@ Installed w/ package of the same name via `sudo apt install` unless otherwise st
 - [ ] cmake
 - [ ] colordiff
 - [ ] devilspie2
+- [ ] evtest
 - [ ] fzf
 - [ ] g++
 - [ ] gconf2
@@ -64,11 +65,16 @@ Installed w/ package of the same name via `sudo apt install` unless otherwise st
 - [ ] yubikey-manager-qt
 - [ ] zoxide
 
-##### `purge`
+##### purge
 
 Purged w/ package of the same name via `sudo apt purge` unless otherwise stated.
 
 - [ ] python3-setuptools
+
+#### cargo
+
+- [ ]  syngestures
+    - [ ] For non-root installation, run: `sudo chown ${USER} /dev/input/by-path/pci-0000:00:15.0-platform-i2c_designware.0-event-mouse`
 
 #### flatpak
 
@@ -84,6 +90,7 @@ Installed w/ `flatpak` install unless otherwise stated. Package FQNs are listed 
 
 Installed w/ `sudo snap install` unless otherwise stated.
 
+- [ ] chezmoi --classic
 - [ ] firefox
 - [ ] htop
 - [ ] plexmediaserver

@@ -1,8 +1,0 @@
-path: "/usr/local/bin/take-snapshot"
-src: "/"
-dst: "/media/austin/LinuxBackups/snapshots/austins-dart"
-filters:
-  type: "merge"
-  file: "/usr/local/etc/snapshot/filters.txt"
-# flags: "v"
-keep: 14

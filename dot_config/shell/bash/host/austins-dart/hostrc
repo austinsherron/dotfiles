@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+
+## constants ###################################################################
+
+## identifiers
+
+export MACHINE="Darter"
+export MACHINE_NICKNAME="🏎️"
+
+## aliases #####################################################################
+
+### move mouse (assumes monitor configurations similar to home office on 06/17/2023)
+###
+### TODO: mouse movement to specific monitors doesn't work (well) when resolution changes;
+###       figure out how to deal w/ this programmatically  (xdotool getwindowgeometry
+###       isn't being cooperative)
+
+## to spc monitors
+
+# to ~ center of left; click
+alias lmv="xdotool mousemove 1576 1035 click 1"         # two large monitors, l hz, r vr
+
+# to ~ center of right; click
+alias rmv="xdotool mousemove 3937 1009 click 1"         # two large monitors, l hz, r vr
+

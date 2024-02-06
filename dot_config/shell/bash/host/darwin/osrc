@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+
+## bootstrap ###################################################################
+
+if ! which brew > /dev/null; then
+    echo "[WARN] homebrew is required for this configuration"
+fi
+
+BREW="$(brew --prefix)"
+export BREW
+
+## important paths #############################################################
+
+## bin
+
+export BIN_PARENT="${BREW}"
+export BIN="${BREW}/bin"
+
+if [[ ! -d "${BIN}" ]]; then
+    echo "[WARN] homebrew binaries not found"
+fi
+
+## shell
+
+export SHELL_PATH="${BIN}/bash"
+
+## admin (my) home dir
+
+export ADMIN_HOME="/Users/austin"
+
+## go
+
+export GO_ROOT="${BIN}/go"
+
+## external storage
+
+export VOLUME_ROOT="/Volumes"
+export MOUNT_POINT="${VOLUME_ROOT}"
+
+## completions
+
+export COMPLETION_PATH="${BREW}/etc/bash_completion"
+export COMPLETION_DIR="${HOME}/.bash_completions"
+
+## path manipulations ##########################################################
+
+## shell path
+
+export PATH="${BIN}:${PATH}"    # homebrew
+
+## aliases #####################################################################
+
+## rename
+
+alias eject="sudo diskutil eject"
+alias lsblk="diskutil list"
+
