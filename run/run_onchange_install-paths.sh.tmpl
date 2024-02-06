@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+{{ $shared_paths := (print .chezmoi.sourceDir "/dot_config/shell/bash/helpers/shared_paths.sh") }}
+# paths.sh hash: {{ include $shared_paths | sha256sum }}
+
+{{ $target := "/etc/profile.d" }}
+if [[ ! -d /etc/profile.d ]]; then
+    sudo mkdir {{ $target }}
+fi
+
+sudo cp {{ $shared_paths }} {{ print $target "/shared_paths.sh" }}
+

@@ -1,0 +1,8 @@
+path: "/usr/local/bin/take-snapshot"
+src: "/"
+dst: "/home/austin/Remote/Dropbox/Staging/Backups/Computers/austins-dart/snapshots"
+filters:
+  type: "merge"
+  file: "/usr/local/etc/snapshot/filters.txt"
+# flags: "v"
+keep: 14

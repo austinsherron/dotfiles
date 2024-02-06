@@ -1,9 +1,6 @@
-editors/vim/vim/
-editors/vim/archive/
-system/terminal/hyper/hyper_plugins/
-tooling/tmux/extensions/
-tooling/tmux/plugins/
-tooling/tmux/resurrect/
-tooling/xplr/packages/
 *.netrwhist
-
+dot_config/hyper/hyper_plugins/
+dot_config/tmux/extensions/
+dot_config/tmux/plugins/
+dot_config/tmux/resurrect/
+dot_config/xplr/packages/

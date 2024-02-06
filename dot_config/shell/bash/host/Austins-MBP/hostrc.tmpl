@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+
+## constants ###################################################################
+
+## identifiers
+
+export MACHINE="MacBook"
+export MACHINE_NICKNAME="🍎📖"
+
+## important paths #############################################################
+
+## granica
+
+export WORK_ROOT="${CODE_ROOT}/granica"
+
+## aliases #####################################################################
+
+### rename
+
+alias gl="glab"
+alias kc="kubectl"
+alias tf="terraform"
+alias tg="terragrunt"
+
+### glab
+
+alias gl-pr-create=""
+
+## tools #######################################################################
+
+## glab
+
+if [[ -z "${GITLAB_TOKEN+x}" ]]; then
+    GITLAB_TOKEN="{{ (onepasswordDetailsFields "dkrn7o7kv7eoi3ddclsabely4m").credential.value }}"
+fi
+

@@ -1,0 +1,12 @@
+{{ if eq .chezmoi.os "linux" }}
+!! swap left control and left super keys
+
+! update left super to act as control
+remove mod4 = Control_L
+add control = Control_L
+
+! update left control to act as super
+remove control = Super_L
+add mod4 = Super_L
+{{ end }}
+

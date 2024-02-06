@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+
+
+## bootstrap ###################################################################
+
+### constants
+
+SHELL_NAME="$(basename "${SHELL}")"
+
+### paths
+
+export CONFIG_ROOT_PUB="${HOME}/.config"
+export SHELL_ROOT="${CONFIG_ROOT_PUB}/shell/${SHELL_NAME}"
+export HELPERS_ROOT="${CONFIG_ROOT_PUB}/shell/${SHELL_NAME}/helpers"
+export HOST_CONFIG_ROOT="${SHELL_ROOT}/host"
+
+export SHELL_NAME
+
+### imports
+
+source /etc/profile.d/shared_paths.sh
+source "${CODE_ROOT}/lib/bash/utils.sh"
+source "${HELPERS_ROOT}/functions.sh"
+
+## os specific config ##########################################################
+
+source "${HOST_CONFIG_ROOT}/inject-os.sh"
+
+## constants ###################################################################
+
+## me
+
+export ME="austinsherron"
+export MY_NICKNAME="austin"
+export ME_FORMALLY="Austin Sherron"
+export MY_EMAIL="austin@pryvate.email"
+export MY_KEY_ID="D55F49224387A57E0FDB80E1494E1B61A3505B41"
+
+## tooling
+
+export EDITOR="nvim"
+export TRUNK="master"
+
+## paths #######################################################################
+
+### interface points
+
+export LEGACY_CONFIG_ROOT_PUB="${HOME}"
+export NVIM_ROOT_PUB="${CONFIG_ROOT_PUB}/nvim"
+export TMUX_ROOT_PUB="${CONFIG_ROOT_PUB}/tmux"
+export TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
+export INSTALL_SCRIPTS="${CODE_ROOT}/scripts/install"
+
+### development
+
+export EDITORS_ROOT="${CONFIG_ROOT}/editors"
+
+### shell
+
+export RC_NAME="${SHELL_NAME}rc"
+export RC="${LEGACY_CONFIG_ROOT_PUB}/.${RC_NAME}"
+export EXTENSIONS_ROOT="${SHELL_ROOT}/extensions"
+
+### tooling
+
+## nvim
+
+export NVIM_ROOT="${DEV_ROOT}/nvim"
+export NVUNDLE="${NVIM_ROOT}/packages"
+
+## tmux
+
+export TMUX_ROOT="${TOOLING_ROOT}/tmux"
+export TMUX_CONF="${TMUX_ROOT}/tmux.conf"
+export TMUX_BUNDLE="${TMUX_ROOT}/plugins"
+
+## host specific config ########################################################
+
+source "${HOST_CONFIG_ROOT}/inject-host.sh"
+
+## path manipulations ##########################################################
+
+### go path
+
+export GOPATH="${HOME}/.go"
+
+### shell path
+
+export PATH="${PATH}:${BIN_PARENT}/nvim/bin"            # neovim
+export PATH="${PATH}:${GO_ROOT}/bin:${GOPATH}/bin"      # golang
+export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"         # java
+
+### pythonpath
+
+## FIXME: I hate having to manually add things here
+export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/lib/python"
+export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/interview-prep/utils"
+export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/finance/src"
+export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/py-toolbox/tools"
+
+### lua path
+
+LUA_PATH="$(lua-path -d "${NVIM_ROOT}" -d "${CODE_ROOT}" -d "${CONFIG_ROOT}")"
+LUA_PATH="${LUA_PATH};$(lua-path -p lua/5.3 -d /usr/local)"
+
+export LUA_PATH
+
+## shell #######################################################################
+
+### behavior
+
+# append to + reload history = history shared b/w tmux panes, amongst other things
+export PROMPT_COMMAND="history -a; history -n"
+
+## helpers #####################################################################
+
+source "${HELPERS_ROOT}/aliases.sh"
+source "${HELPERS_ROOT}/extensions.sh"
+source "${HELPERS_ROOT}/tools.sh"
+
