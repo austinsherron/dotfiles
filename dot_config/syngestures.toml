@@ -1,0 +1,16 @@
+[[device]]
+device = "/dev/input/by-path/pci-0000:00:15.0-platform-i2c_designware.0-event-mouse"
+gestures = [
+    # forward
+    { type = "swipe", direction = "right", fingers = 2, execute = "xdotool key alt+Right" },
+    # back
+    { type = "swipe", direction = "left", fingers = 2, execute = "xdotool key alt+Left" },
+    # workspace above
+    { type = "swipe", direction = "up", fingers = 3, execute = "xdotool key Super_L+Up" },
+    # workspace below
+    { type = "swipe", direction = "down", fingers = 3, execute = "xdotool key Super_L+Down" },
+    # move window to workspace above
+    { type = "swipe", direction = "up", fingers = 4, execute = "xdotool key Shift+Super_L+Up" },
+    # move window to workspace below
+    { type = "swipe", direction = "down", fingers = 4, execute = "xdotool key Shift+Super_L+Down" },
+]
