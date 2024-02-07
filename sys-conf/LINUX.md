@@ -126,7 +126,7 @@ Installed for lua 5.3 via `sudo luarocks install [rock-name]` unless otherwise s
 
 ### Script
 
-Installed by listed install script via `sudo ./${DEV_ROOT}/scripts/install/[os]/[script-name]` unless otherwise stated.
+Installed by listed install script via `sudo ./${SCRIPTS_ROOT}/install/[os]/[script-name]` unless otherwise stated.
 
 - [ ] [1password](https://support.1password.com/install-linux/#debian-or-ubuntu) - `1password.sh"`
 - [ ] [app-image-launcher](https://github.com/TheAssassin/AppImageLauncher/wiki/Install-on-Ubuntu-or-Debian) - `app-image-launcher.sh`
@@ -236,23 +236,10 @@ Note: unfortunately, I haven't maintained these lists, so they've fallen a bit o
 
 ### Dotfiles
 
-- [ ] 2-fa - `ln -s ${TOOLING_ROOT}/internal/web/2-fa ${CONFIG_ROOT_PUB}/2-fa`
-- [ ] bash profile - `ln -s ${SHELL_ROOT}/bash_profile ${HOME}/.bash_profile`
-- [ ] bash rc - `ln -s ${SHELL_ROOT}/bashrc ${HOME}/.bashrc`
-- [ ] git config - `ln -s ${TOOLING_ROOT}/git/gitconfig ${HOME}/.gitconfig`
-- [ ] git ignore - `ln -s ${TOOLING_ROOT}/git/gitignore ${HOME}/.gitignore`
-- [ ] input rc - `ln -s ${SHELL_ROOT}/inputrc ${HOME}/.inputrc`
-- [ ] lazygit - `ln -s ${TOOLING_ROOT}/lazygit/config.yaml ${CONFIG_ROOT_PUB}/lazygit/config.yaml`
-- [ ] nvim - `ln -s ${NVIM_ROOT} ${CONFIG_ROOT_PUB}`
-- [ ] shared paths script - `deploy -s ${SHELL_ROOT} -t /etc/profile.d shared`
-- [ ] snapshot - `cp -r ${TOOLING_ROOT}/internal/snapshot ${SHARED_CONFIG_ROOT}/`
-- [ ] starship init - `ln -s ${SHELL_ROOT}/extensions/starship.sh ${CONFIG_ROOT_PUB}/starship.sh`
-- [ ] starship conf - `ln -s ${SHELL_ROOT}/extensions/starship.toml ${CONFIG_ROOT_PUB}/starship.toml`
-- [ ] tmux - `ln -s ${TMUX_ROOT} ${CONFIG_ROOT_PUB}`
-- [ ] tmux scripts - `cd ${TOOLING_ROOT} && deploy -s tmux scripts`
-- [ ] vim conf dir - `ln -s ${VIM_ROOT}/vim ${HOME}/.vim`
-- [ ] vim rc - `ln -s ${VIM_ROOT}/vimrc ${HOME}/.vimrc`
-- [ ] xmodmap - `ln -s ${CONFIG_ROOT}/system/keymap/xmodmap/xmodmaprc ${LEGACY_CONFIG_ROOT_PUB}/.xmodmaprc`
+Path: ~/Workspace/dotfiles
+Repo: https://github.com/austinsherron/dotfiles
+
+Managed and deployed w/ chezmoi.
 
 ### Crontab Entries
 
@@ -261,22 +248,25 @@ Note: unfortunately, I haven't maintained these lists, so they've fallen a bit o
 
 ### Systemd Units
 
-- [ ] mv-stg-backups.path - `sush` -> `${TOOLS_ROOT}/system/systemd/mv-stg-backups/install`
-- [ ] run-snapshot.timer - `sush` -> `${TOOLS_ROOT}/system/systemd/run-snapshot/install`
-
-### Scripts
-
-- [ ] enable-wakeup - `deploy -s [TODO: TBD]/enable-wakeup`
+- [ ] mv-stg-backups.path - `sush` -> `${TOOLS_ROOT}/system/systemd/units/mv-stg-backups/install`
+- [ ] run-snapshot.timer - `sush` -> `${TOOLS_ROOT}/system/systemd/units/run-snapshot/install`
 
 ### Tools
 
-- [ ] `config/*` - `deploy -s util config`
-- [ ] `log/*` - `deploy logs`
-- [ ] `snapshot/*` - `deploy -s system snapshot`
-- [ ] `system/config/*` - `deploy -s system logs`
-- [ ] `system/config/*` - `deploy -s system config`
-- [ ] `system/deploy/*` - `deploy -s system deploy`
-- [ ] `system/systemd/utils/*` - `deploy -s system/systemd utils`
-- [ ] `validation/*` - `deploy -s system validation`
-- [ ] `web/*` - `deploy -s util web`
+Commands listed are called from `${TOOLS_ROOT}`.
+
+- [ ] deploy - `./${TOOLS_ROOT}/system/deploy/deploy -s system deploy`
+- [ ] log - `deploy log`
+- [ ] utils/shell - `deploy -s util shell`
+- [ ] utils/web - `deploy -s util web`
+
+#### TODO
+
+- [ ] snapshot - `deploy -s system snapshot`
+- [ ] system/config/* - `deploy -s system logs`
+- [ ] system/config/* - `deploy -s system config`
+- [ ] system/deploy/* - `deploy -s system deploy`
+- [ ] system/systemd/utils/* - `deploy -s system/systemd utils`
+- [ ] validation/* - `deploy -s system validation`
+- [ ] web/* - `deploy -s util web`
 

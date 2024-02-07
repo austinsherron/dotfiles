@@ -12,26 +12,14 @@ export BREW
 
 ## important paths #############################################################
 
-## bin
-
-export BIN_PARENT="${BREW}"
-export BIN="${BREW}/bin"
-
-if [[ ! -d "${BIN}" ]]; then
+# NOTE: SYS_BIN is set in shared_paths.sh
+if [[ ! -d "${SYS_BIN}" ]]; then
     echo "[WARN] homebrew binaries not found"
 fi
 
-## shell
-
-export SHELL_PATH="${BIN}/bash"
-
-## admin (my) home dir
-
-export ADMIN_HOME="/Users/austin"
-
 ## go
 
-export GO_ROOT="${BIN}/go"
+export GO_ROOT="${SYS_BIN}/go"
 
 ## external storage
 
@@ -42,12 +30,6 @@ export MOUNT_POINT="${VOLUME_ROOT}"
 
 export COMPLETION_PATH="${BREW}/etc/bash_completion"
 export COMPLETION_DIR="${HOME}/.bash_completions"
-
-## path manipulations ##########################################################
-
-## shell path
-
-export PATH="${BIN}:${PATH}"    # homebrew
 
 ## aliases #####################################################################
 
