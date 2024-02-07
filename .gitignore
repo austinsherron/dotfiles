@@ -1,4 +1,5 @@
 *.netrwhist
+*.tmp
 dot_config/hyper/hyper_plugins/
 dot_config/tmux/extensions/
 dot_config/tmux/plugins/
