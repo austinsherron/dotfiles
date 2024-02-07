@@ -7,7 +7,7 @@ HOST="$(host-id)"
 HOST_ROOT="${HOST_CONFIG_ROOT}/${HOST}"
 HOSTRC="${HOST_ROOT}/hostrc"
 
-# this machine host specific config
+# this machine's host specific config
 if [[ -f "${HOSTRC}" ]]; then
     source "${HOSTRC}"
 else
@@ -19,7 +19,5 @@ HOST_APPEARANCE="${HOST_ROOT}/appearance.sh"
 # source optional appearance customization file, if it exists
 if [[ -f "${HOST_APPEARANCE}" ]]; then
     source "${HOST_APPEARANCE}"
-else
-    echo "[INFO] no host specific appearance config for host='${HOST}'"
 fi
 

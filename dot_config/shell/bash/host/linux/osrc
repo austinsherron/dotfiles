@@ -3,14 +3,6 @@
 
 ## important paths ###########################################################
 
-## shell path
-
-SHELL_PATH="/bin/bash"
-
-## admin (my) home dir
-
-export ADMIN_HOME="/home/austin"
-
 ## external storage
 
 export VOLUME_ROOT="/media"

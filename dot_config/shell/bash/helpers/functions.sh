@@ -121,6 +121,15 @@ gpg-export() {
 
 ## logs ########################################################################
 
+log-ls() {
+    if [[ -z "${LOG_ROOT+x}" ]]; then
+        echo "[ERROR] log-ls: LOG_ROOT is not set"
+        return 1
+    fi
+
+    ls "${LOG_ROOT}"
+}
+
 log() {
     if [[ -z "${LOG_ROOT+x}" ]]; then
         echo "[ERROR] LOG_ROOT is not set"
