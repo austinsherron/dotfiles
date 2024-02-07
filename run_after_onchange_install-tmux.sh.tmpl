@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+
+{{- $tmux_root := (print .chezmoi.homeDir "/.config/tmux") }}
+{{- $tmux_plugins := (print $tmux_root "/plugins") }}
+
+deploy scripts -s {{ $tmux_root }}
+
+if [[ ! -d "{{ $tmux_plugins }}" ]]; then
+    mkdir {{ $tmux_plugins }}
+fi
+
+if [[ ! -f "{{ $tmux_root }}/plugins/tpm/tpm" ]]; then
+    [[ -d "{{ $tmux_plugins }}/tpm" ]] && rm -rf {{ $tmux_plugins }}/tpm
+    cd {{ $tmux_plugins }} && git clone https://github.com/tmux-plugins/tpm && cd -
+fi
+

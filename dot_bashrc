@@ -69,7 +69,7 @@ export NVUNDLE="${NVIM_ROOT}/packages"
 
 ## tmux
 
-export TMUX_ROOT="${TOOLING_ROOT}/tmux"
+export TMUX_ROOT="${CONFIG_ROOT_PUB}/tmux"
 export TMUX_CONF="${TMUX_ROOT}/tmux.conf"
 export TMUX_BUNDLE="${TMUX_ROOT}/plugins"
 

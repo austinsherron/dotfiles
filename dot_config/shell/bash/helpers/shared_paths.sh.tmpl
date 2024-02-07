@@ -35,8 +35,8 @@ export SYS_ROOT="/usr/local"
 export SYS_BIN="${SYS_ROOT}/bin"
 export LOCAL_BIN="${SYS_BIN}"
 {{- else if eq .chezmoi.os "darwin" }}
-export SYS_ROOT="/opt/hombebrew"
-export SYS_BIN="${SYS_BIN}/bin"
+export SYS_ROOT="/opt/homebrew"
+export SYS_BIN="${SYS_ROOT}/bin"
 export LOCAL_BIN="/usr/local/bin"
 {{- end }}
 

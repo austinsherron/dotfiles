@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "linux" }}
 [[device]]
 device = "/dev/input/by-path/pci-0000:00:15.0-platform-i2c_designware.0-event-mouse"
 gestures = [
@@ -14,3 +15,4 @@ gestures = [
     # move window to workspace below
     { type = "swipe", direction = "down", fingers = 4, execute = "xdotool key Shift+Super_L+Down" },
 ]
+{{- end }}
