@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
+set -Eeuo pipefail
+
 
 {{- $target := "/etc/profile.d" }}
 {{- $shared_paths := (print .chezmoi.homeDir "/.config/shell/bash/helpers/shared_paths.sh") }}
-# shared_paths.sh hash: {{ include $shared_paths | sha256sum }}
+
+{{ template "version-check.tmpl" (merge . (dict "path" $shared_paths)) }}
 
 if [[ ! -d "{{ $target }}" ]]; then
     sudo mkdir {{ $target }}

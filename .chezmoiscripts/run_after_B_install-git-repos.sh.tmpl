@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+source /etc/profile.d/shared_paths.sh
+
+
+{{ template "validate-deps.tmpl" (list "git") }}
+
+{{ template "version-check.tmpl" (merge . (dict "type" "git")) }}
+
+# clone internal repos
+{{ template "git-repos.tmpl" (merge . (dict "dir" (env "CODE_ROOT") "type" "internal")) }}
+# clone external repos
+{{ template "git-repos.tmpl" (merge . (dict "dir" (env "EXTERNAL_PKGS") "type" "external")) }}
+

@@ -1,0 +1,5 @@
+packages:
+  common:
+    go:
+      - "github.com/erroneousboat/slack-term@latest"
+

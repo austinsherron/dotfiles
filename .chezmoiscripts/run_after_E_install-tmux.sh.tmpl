@@ -1,17 +1,24 @@
 #!/usr/bin/env bash
 
+set -Eeuo pipefail
+
+
+{{ template "validate-deps.tmpl" (list "tmux") }}
 
 {{- $tmux_root := (print .chezmoi.homeDir "/.config/tmux") }}
 {{- $tmux_plugins := (print $tmux_root "/plugins") }}
+{{- $tmux_tpm := (print $tmux_plugins "/tpm") -}}
 
+echo "[INFO] deploying tmux scripts"
 deploy scripts -s {{ $tmux_root }}
 
 if [[ ! -d "{{ $tmux_plugins }}" ]]; then
     mkdir {{ $tmux_plugins }}
 fi
 
-if [[ ! -f "{{ $tmux_root }}/plugins/tpm/tpm" ]]; then
-    [[ -d "{{ $tmux_plugins }}/tpm" ]] && rm -rf {{ $tmux_plugins }}/tpm
+if [[ ! -f "{{ $tmux_tpm }}/tpm" ]]; then
+    echo "[INFO] cloning tmp to {{ $tmux_tpm }}"
+    [[ -d "{{ $tmux_tpm }}" ]] && rm -rf {{ $tmux_tpm }}
     cd {{ $tmux_plugins }} && git clone https://github.com/tmux-plugins/tpm && cd -
 fi
 

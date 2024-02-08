@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+{{ template "validate-deps.tmpl" (list "go") }}
+
+{{ template "version-check.tmpl" (merge . (dict "type" "common")) }}
+
+{{- range $pkg := .packages.common.go }}
+PKG="$(echo "{{ $pkg }}" | sed 's/.*\///' | sed 's/@.*//')"
+which "${PKG}" > /dev/null || go install "{{ $pkg }}" \
+    || echo "[ERROR] unable to go install {{ $pkg }}"
+{{- end }}
+

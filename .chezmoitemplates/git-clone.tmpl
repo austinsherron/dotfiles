@@ -1,0 +1,8 @@
+if [[ ! -d "{{ print .dir "/" (base .repo) }}" ]]; then
+    echo "[INFO] cloning '{{ .repo }}' to '{{ .dir }}'"
+
+
+    if ! git clone https://github.com/{{ .repo }}; then
+        echo "[WARN] unable to clone {{ .repo }}"
+    fi
+fi

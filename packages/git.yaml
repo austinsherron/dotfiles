@@ -1,0 +1,14 @@
+git:
+  common:
+    internal:
+      - "austinsherron/lib"
+      - "austinsherron/scripts"
+      - "austinsherron/sieve-filters"
+      - "austinsherron/snippets"
+      - "austinsherron/nvim"
+      - "austinsherron/tools"
+    external:
+      - "lincheney/fzf-tab-completion"
+      - "ohmybash/oh-my-bash"
+  linux: []
+  darwin: []
