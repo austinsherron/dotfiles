@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+
+{{ template "validate-deps.tmpl" (list "tmux" "yq") }}
+
+{{- $tmux_root := (print .chezmoi.homeDir "/.config/tmux") }}
+{{- $tmux_scripts := (print $tmux_root "/scripts") }}
+{{- $tmux_plugins := (print $tmux_root "/plugins") }}
+{{- $tmux_tpm := (print $tmux_plugins "/tpm") -}}
+
+{{- $versions := (print .chezmoi.sourceDir "/.chezmoidata/versions.yaml") -}}
+
+DEPLOYED_SCRIPTS=""
+
+for SCRIPT in "{{ $tmux_scripts }}/"*; do
+    KEY="$(echo "$(basename "${SCRIPT}")" | tr '-' '_')"
+    CURRENT_SHA="$(sha256sum "${SCRIPT}" | sed 's/  .*//')"
+    LAST_SHA="$(cat "{{ $versions }}" | yq ".versions.${KEY}" )"
+
+    if [[ "${CURRENT_SHA}" != "${LAST_SHA}" ]]; then
+        SCRIPT_NAME="$(basename "${SCRIPT}")"
+        echo "[INFO] change to ${SCRIPT_NAME} detected; deploying tmux scripts"
+
+        deploy scripts -s {{ $tmux_root }}
+
+        DEPLOYED_SCRIPTS="true"
+        break
+    fi
+done
+
+if [[ -z "${DEPLOYED_SCRIPTS}" ]]; then
+    echo "[INFO] no changes to tmux scripts since last installation; skipping"
+fi
+
+if [[ ! -d "{{ $tmux_plugins }}" ]]; then
+    mkdir {{ $tmux_plugins }}
+fi
+
+if [[ ! -f "{{ $tmux_tpm }}/tpm" ]]; then
+    echo "[INFO] cloning tmp to {{ $tmux_tpm }}"
+    [[ -d "{{ $tmux_tpm }}" ]] && rm -rf {{ $tmux_tpm }}
+    cd {{ $tmux_plugins }} && git clone https://github.com/tmux-plugins/tpm && cd -
+fi
+
