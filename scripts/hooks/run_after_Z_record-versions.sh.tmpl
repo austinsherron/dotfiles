@@ -11,21 +11,31 @@ set -Eeuo pipefail
 
 {{- $data := (print .chezmoi.sourceDir "/.chezmoidata") }}
 {{- $versions := (print $data "/versions.yaml") }}
+
 {{- $shared_paths := (print .chezmoi.homeDir "/.config/shell/bash/helpers/shared_paths.sh") }}
+{{- $tmux_scripts := (print .chezmoi.homeDir "/.config/tmux/scripts") }}
 
-rm -f "{{ $versions }}"
+# clear versions file
+echo "versions:" >| "{{ $versions }}"
 
-echo "versions:" > "{{ $versions }}"
-
+# record checksum of shared_paths.sh
 sha256sum "{{ $shared_paths }}" \
     | sed "s/  .*\// /" \
     | sed "s/\..*//" \
     | awk '{print "  "$2": "$1}' \
     >> "{{ $versions }}"
 
+# record checksum of package manifests
 sha256sum "{{ $data }}/"* \
     | sed "s/  .*\// /" \
     | sed "s/\..*//" \
+    | awk '{print "  "$2": "$1}' \
+    >> "{{ $versions }}"
+
+# record checksum of tmux scripts
+sha256sum "{{ $tmux_scripts }}/"* \
+    | sed 's/  .*\// /' \
+    | tr '-' '_' \
     | awk '{print "  "$2": "$1}' \
     >> "{{ $versions }}"
 

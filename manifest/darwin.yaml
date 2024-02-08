@@ -42,6 +42,7 @@ packages:
         - "stow"
         - "task"
         - "taskwarrior-tui"
+        - "tree"
         - "tmux"
         - "xdotool"
         - "xinit"
