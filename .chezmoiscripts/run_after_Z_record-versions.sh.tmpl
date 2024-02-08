@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+
+# NOTE: this script exists to record "versions" of chezmoi scripts; combined w/
+# .chezmoitemplates/version-check.tmpl, it implements something similar to chezmoi
+# "onchanged" scripts; I used this instead of the aforementioned onchanged mechanism
+# because I need a combination of "run_after" and onchanged functionality, which doesn't
+# exist oob in chezmoi
+
+{{- $data := (print .chezmoi.sourceDir "/.chezmoidata") }}
+{{- $versions := (print $data "/versions.yaml") }}
+{{- $shared_paths := (print .chezmoi.homeDir "/.config/shell/bash/helpers/shared_paths.sh") }}
+
+rm -f "{{ $versions }}"
+
+echo "versions:" > "{{ $versions }}"
+
+sha256sum "{{ $shared_paths }}" \
+    | sed "s/  .*\// /" \
+    | sed "s/\..*//" \
+    | awk '{print "  "$2": "$1}' \
+    >> "{{ $versions }}"
+
+sha256sum "{{ $data }}/"* \
+    | sed "s/  .*\// /" \
+    | sed "s/\..*//" \
+    | awk '{print "  "$2": "$1}' \
+    >> "{{ $versions }}"
+

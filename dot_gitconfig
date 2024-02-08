@@ -12,7 +12,6 @@
     hdiff       = diff HEAD
     home        = checkout master
     in-branches = branch --contains
-    jreset      = !BRANCH=`git jstatus | sed -n '2 p' | awk -F ' +' '{print $3}'` && git reset --hard ${BRANCH}
     ls          = "!git branch | grep -v STORAGE"
     merc        = merge --log --no-ff
     mmerge      = merge master

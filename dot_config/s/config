@@ -1,7 +1,7 @@
 customProviders [
   {
     name: searxng
-    url: "http://searx.be?q=%s"
+    url: "https://searx.be?q=%s"
     tags: [private]
   }
   {

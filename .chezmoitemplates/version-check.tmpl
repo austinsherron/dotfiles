@@ -1,0 +1,16 @@
+{{- $path := dig "path" "" . }}
+{{- $type := dig "type" "" . }}
+
+{{- $path := default (print .chezmoi.sourceDir "/.chezmoidata/" $type ".yaml") $path }}
+{{- $type := default (base (trimSuffix (ext $path) $path)) $type }}
+{{- $base := base $path -}}
+
+CURRENT_SHA="{{ include $path | sha256sum }}"
+LAST_SHA="{{ dig "versions" $type "" . }}"
+
+if [[ "${CURRENT_SHA}" == "${LAST_SHA}" ]]; then
+    echo "[INFO] no change to {{ $base }} since last installation; skipping"
+    exit 0
+else
+    echo "[INFO] change to {{ $base }} detected; installing {{ $base }}"
+fi

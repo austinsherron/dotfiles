@@ -23,7 +23,7 @@ source "${HELPERS_ROOT}/functions.sh"
 
 ### path manipulations
 
-export PATH="${PATH}:${SYS_ROOT}:${SYS_BIN}:${LOCAL_BIN}"
+export PATH="${SYS_ROOT}:${SYS_BIN}:${LOCAL_BIN}:${PATH}"
 
 ## os specific config ##########################################################
 

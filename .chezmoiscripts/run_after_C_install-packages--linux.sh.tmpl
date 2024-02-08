@@ -1,0 +1,13 @@
+{{- if eq .chezmoi.os "linux" }}
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+
+{{ template "validate-deps.tmpl" (list "apt" "snap" "flatpak ") }}
+
+{{ template "version-check.tmpl" (merge . (dict "type" "linux")) }}
+
+# TODO: add real impl
+
+{{- end }}
