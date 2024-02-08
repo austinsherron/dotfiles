@@ -17,6 +17,7 @@ packages:
         - "gawk"
         - "gh"
         - "git"
+        - "git-credential-manager"
         - "google-chrome"
         - "grep"
         - "gpg"
