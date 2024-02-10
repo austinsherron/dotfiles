@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+
+{{ template "version-check.tmpl" (merge . (dict "type" "settings")) }}
+
+{{- if eq .chezmoi.os "darwin" }}
+# for screenshots location setting
+mkdir -p ~/Pictures/Screenshots
+{{- end }}
+
+{{- range $_, $group := .settings.darwin }}
+
+{{- range $group.values }}
+defaults write {{ $group.domain }} "{{ .key }}" {{ .value | join " " }}
+{{- end }}
+
+{{- if hasKey $group "killall" }}
+killall -q {{ $group.killall }} || true
+{{- end }}
+
+{{- end }}
+

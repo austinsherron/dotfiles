@@ -1,0 +1,43 @@
+settings:
+  darwin:
+    # system settings
+    dock:
+      domain: com.apple.dock
+      killall: Dock
+      values:
+        - key: "autohide"
+          value: [-bool, "true"]
+        - key: "show-recents"
+          value: [-bool, "false"]
+        - key: "mru-spaces"
+          value: [-bool, "false"]
+    global:
+      domain: NSGlobalDomain
+      values:
+        # WARN: requires reboot to take effect
+        - key: com.apple.keyboard.fnState
+          value: [-bool, false]
+    screenshots:
+      domain: com.apple.screencapture
+      killall: SystemUIServer
+      values:
+        - key: "location"
+          value: [-string, "~/Pictures/Screenshots"]
+    spaces:
+      domain: com.apple.spaces
+      killall: SystemUIServer
+      values:
+        - key: "spans-displays"
+          value: [-bool, "true"]
+    trackpad:
+      domain: com.apple.AppleMultitouchTrackpad
+      values:
+        - key: "DragLock"
+          value: [-bool, "true"]
+    # application settings
+    hammerspoon:
+      killall: Hammerspoon
+      domain: "org.hammerspoon.Hammerspoon"
+      values:
+        - key: MJConfigFile
+          value: "~/.config/hammerspoon/init.lua"

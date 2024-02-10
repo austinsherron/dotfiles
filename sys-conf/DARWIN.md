@@ -22,7 +22,6 @@ Note: can all be installed w/ homebrew casks.
 - [ ] Turn on disk encryption (FileVault)
 - [ ] Turn on firewall
 - [ ] Customize screensaver/sleep time
-- [ ] Change dragging style to "With Drag Lock"
 - [ ] Grant full disk access to iTerm2
 
 ## App Config
