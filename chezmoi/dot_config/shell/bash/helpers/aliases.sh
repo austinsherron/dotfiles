@@ -22,6 +22,8 @@ alias zx="zoxide"
 
 alias rcload="source ${RC}"
 alias txload="tmux source-file ${TMUX_CONF_PUB}"
+alias dot-deploy="chezmoi apply && rcload && txload"
+alias dpl="dot-deploy"
 
 ### edit
 

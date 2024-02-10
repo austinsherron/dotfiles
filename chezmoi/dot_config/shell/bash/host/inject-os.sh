@@ -4,7 +4,8 @@
 ## inject os specific config ###################################################
 
 OS="$(os-type)"
-OSRC="${HOST_CONFIG_ROOT}/${OS}/osrc"
+export OS_ROOT="${HOST_CONFIG_ROOT}/${OS}"
+OSRC="${OS_ROOT}/osrc"
 
 # this machine os specific config
 if [[ -f "${OSRC}" ]]; then

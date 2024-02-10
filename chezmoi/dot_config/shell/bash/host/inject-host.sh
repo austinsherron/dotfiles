@@ -4,7 +4,7 @@
 ## inject host specific config #################################################
 
 HOST="$(host-id)"
-HOST_ROOT="${HOST_CONFIG_ROOT}/${HOST}"
+export HOST_ROOT="${HOST_CONFIG_ROOT}/${HOST}"
 HOSTRC="${HOST_ROOT}/hostrc"
 
 # this machine's host specific config
