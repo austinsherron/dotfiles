@@ -4,7 +4,7 @@
     # FIXME: not working on mac, even after importing the key
     # signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 [core]
-    editor = nvr -cc vsplit --remote-wait +'set bufhidden=wipe'
+    editor = nvr -cc split --remote-wait +'set bufhidden=wipe'
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
@@ -104,8 +104,6 @@
     default = upstream
 [pull]
     ff = only
-[credential]
-    helper = store
 [commit]
     # FIXME: this should be true, see FIXME at signingkey
     gpgsign = false
@@ -126,3 +124,9 @@
 
 [gpg]
     program = gpg
+[credential]
+    helper = store
+    helper =
+    helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+    useHttpPath = true

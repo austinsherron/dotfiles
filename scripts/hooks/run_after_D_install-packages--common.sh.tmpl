@@ -2,6 +2,7 @@
 
 set -Eeuo pipefail
 
+
 {{ template "validate-deps.tmpl" (list "go") }}
 
 {{ template "version-check.tmpl" (merge . (dict "type" "common")) }}

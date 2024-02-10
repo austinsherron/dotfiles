@@ -1,3 +1,4 @@
+*.bak
 *.netrwhist
 *.tmp
 dot_config/hyper/hyper_plugins/

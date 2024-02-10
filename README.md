@@ -34,7 +34,7 @@ I've recently adopted chezmoi; I'm really liking it so far. I think I may be usi
 
 ### Paused Work
 
-- [ ] [Xplr](https://github.com/sayanarijit/xplr) - love the concept, but haven't been able to devote enough time to really make it my own/incorporate into daily workflows
+- [ ] [xplr](https://github.com/sayanarijit/xplr) - love the concept, but haven't been able to devote enough time to really make it my own/incorporate into daily workflows
 
 ### Future Work
 

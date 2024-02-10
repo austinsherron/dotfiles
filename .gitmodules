@@ -1,3 +1,6 @@
 [submodule "chezmoi/dot_config/nvim"]
-	path = chezmoi/dot_config/nvim
+	path = chezmoi/dot_config/external_nvim
 	url = https://github.com/austinsherron/nvim.git
+[submodule "chezmoi/dot_config/external_hammerspoon"]
+	path = chezmoi/dot_config/external_hammerspoon
+	url = https://github.com/austinsherron/hammerspoon.git

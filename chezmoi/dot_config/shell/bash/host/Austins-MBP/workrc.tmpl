@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+
+## important paths #############################################################
+
+## granica
+
+export WORK_ROOT="${CODE_ROOT}/granica"
+
+## environment #################################################################
+
+## context
+
+export SCREEN_RELEASE="1.28.0"
+
+## required: krypton:tellus-multitenant helmdist
+
+if [[ -z "${ALERTING_PAGERDUTY_TOKEN+x}" ]]; then
+    export ALERTING_PAGERDUTY_TOKEN="{{ (onepasswordDetailsFields "myzhr6t5daozr6f5pc2sdbpkxi" "" "granica").password.value }}"
+fi
+
+if [[ -z "${ALERTING_SLACK_TOKEN+x}" ]]; then
+    export ALERTING_SLACK_TOKEN="{{ (onepasswordDetailsFields "mxqsegi7a7mitjidym22e23ioi" "" "granica").password.value }}"
+fi
+
+## functions ###################################################################
+
+rel-diff() {
+    local mod="--oneline"
+    local filter="HAWK"
+
+    while [[ $# -gt 1 ]]; do
+        case $1 in
+            -v)
+                mod=""
+                shift
+                ;;
+            -a)
+                filter=""
+                shift
+                ;;
+            *)
+                echo "[ERROR] unrecognized parameter '${1}'"
+                return 1
+        esac
+    done
+
+    git log ${mod} release-${SCREEN_RELEASE}-qtm-screen..master | grep "${filter}"
+}
+
