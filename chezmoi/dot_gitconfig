@@ -4,7 +4,6 @@
     # FIXME: not working on mac, even after importing the key
     # signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 [core]
-    editor = nvr -cc split --remote-wait +'set bufhidden=wipe'
     excludesfile = /Users/austinsherron/.gitignore
 [alias]
     checkoutr   = checkout
@@ -98,8 +97,9 @@
     us  = unstage
 
     # [submodules]
-    init-sub = submodule update --recursive --init
-    pull-sub = submodule update --recursive
+    addsub = "!git submodule add https://github.com/austinsherron/$1.git $2"
+    # WARN: untested
+    rmsub  =  "!git submodule deinit $1 && git rm $1"
 [push]
     default = upstream
 [pull]
