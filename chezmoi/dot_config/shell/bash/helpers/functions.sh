@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+source "${CODE_ROOT}/lib/bash/utils.sh"
+
 
 ### 1password ##################################################################
 
 op-get() {
     if [[ $# -lt 2 ]]; then
-        echo "op-get: item and field are required"
+        echo "[ERROR] op-get: item and field are required"
         return 1
     fi
 
@@ -132,14 +134,14 @@ log-ls() {
 
 log() {
     if [[ -z "${LOG_ROOT+x}" ]]; then
-        echo "[ERROR] LOG_ROOT is not set"
+        echo "[ERROR] log: LOG_ROOT is not set"
         return 1
     fi
 
     local log_name=""
 
     if [[ -z "${DEFAULT_LOG_TYPE+x}" ]] && [[ "$#" -eq 0 ]]; then
-        echo "[ERROR] unable to determine log type: none provided and no default set"
+        echo "[ERROR] log: unable to determine log type: none provided and no default set"
         return 1
     elif [[ "$#" -eq 0 ]]; then
         log_name="${DEFAULT_LOG_TYPE}"
@@ -150,7 +152,7 @@ log() {
     local log_path="${LOG_ROOT}/${log_name}.log"
 
     if [[ ! -f "${log_path}" ]]; then
-        echo "[ERROR] '${log_path}' is not a log file'"
+        echo "[ERROR] log: '${log_path}' is not a log file'"
         return 1
     fi
 
@@ -179,4 +181,42 @@ host-id() {
 os-type() {
     uname | tr '[:upper:]' '[:lower:]'
 }
+
+## tmux ########################################################################
+
+tmux-env() {
+    [[ -n "${1+x}" ]] && local var="TMUX_$(to_upper "${1}")"
+
+    if [[ $# -eq 0 ]]; then
+        tmux show-environment
+    elif [[ $# -eq 1 ]]; then
+        tmux show-environment "${var}" 2> /dev/null | cut -d "=" -f2
+    elif [[ $# -eq 2 ]] && [[ "${2}" == "-c"  ]]; then
+        tmux setenv -u "${var}"
+    elif [[ $# -eq 2 ]]; then
+        tmux setenv "${var}" "${2}"
+    else
+        echo "[ERROR] tmux-env: zero, one, or two arguments, var_name/var_val, required"
+        return 1
+    fi
+}
+
+alias txenv="tmux-env"
+
+tmux-layout() {
+    local var="$(tmux display-message -pF '#W')_layout"
+
+    if [[ $# -eq 0 ]]; then
+        tmux-env "${var}"
+    elif [[ $# -eq 1 ]] && [[ "${1}" == "-c"  ]]; then
+        tmux-env "${var}" "-c"
+    elif [[ $# -eq 1 ]]; then
+        tmux-env "${var}" "${1}"
+    else
+        echo "[ERROR] tmux-layout: zero or one arguments, layout|-c (clear) expected"
+        return 1
+    fi
+}
+
+alias txlyt="tmux-layout"
 

@@ -27,9 +27,9 @@ OPTIONS
     -t, --target        optional, defaults to the active window; the name of the window for which to add a layout
     -s, --specs         optional, default to "${HOME}/.config/tmux/layouts"; must be file path or "stdout"; the file to which to write the new layout
                         specifications; using "-s|--specs stdout" will write the layout to stdout
-    -v, --verbose       optional; write progress/status messages to stdout
     --force             optional; if specified, forces resize even if pane dimensions match those in the layout spec
-    --dry-run           optional; can't be used w/ --force; indicates that the script should print hypothetical results to the console, but make no state changes
+    -v, --verbose       optional; write progress/status messages to stdout
+    --dry-run           optional; indicates that the script should print hypothetical results to the console, but make no state changes
     -h, --help          display this message
 help
 }
@@ -99,18 +99,15 @@ if [[ -z "${LAYOUT_ID}" ]]; then
     exit 1
 fi
 
-if [[ -n "${DRY_RUN}" && -n "${FORCE}" ]]; then
-    echo "--force and --dry-run are mutually exclusive"
-    exit 1
-fi
-
 # validate target refers to a window
 if [[ -z "$(tmux list-windows -F "#W" | grep "${TARGET}" || true)" ]]; then
     log_and_exit "tmux window target='${TARGET}' does not exist"
 fi
 
 if [[ "${SPEC_PATH}" != "stdout" ]] && [[ ! -f "${SPEC_PATH}" ]]; then
-    log_and_exit "-s|--specs must refer to a valid file"
+    log_and_exit "-s|--specs must refer to a valid file (${SPEC_PATH (${SPEC_PATH})})"
+elif [[ -f "${SPEC_PATH}" ]]; then
+    SPEC_PATH="$(realpath "${SPEC_PATH}")"
 fi
 
 # get window id
@@ -125,7 +122,7 @@ PANE_DIMENSIONS="$(echo "${PANES}" | tr '\n' ',')"
 PANE_DIMENSIONS="${PANE_DIMENSIONS:0:-1}"
 
 IDENTIFIER="${LAYOUT_ID} ${DIMENSIONS} ${PANE_COUNT}"
-LAYOUT_SPEC="${IDENTIFIER} '${LAYOUT}' ${PANE_DIMENSIONS}"
+LAYOUT_SPEC="${IDENTIFIER} ${LAYOUT} ${PANE_DIMENSIONS}"
 
 if [[ "${SPEC_PATH}" == "stdout" ]]; then
     log "writing layout to sdtout"
@@ -134,7 +131,6 @@ if [[ "${SPEC_PATH}" == "stdout" ]]; then
 fi
 
 log "constructed layout spec='${LAYOUT_SPEC}'"
-
 SPEC_MATCH="$(grep -v "^#" "${SPEC_PATH}" | grep "^${IDENTIFIER}" || true)"
 
 if [[ -n "${SPEC_MATCH}" ]] && [[ "${FORCE}" != "true" ]]; then
@@ -144,9 +140,10 @@ fi
 CMD=""
 
 if [[ -n "${SPEC_MATCH}" ]]; then
-    CMD="sed 's/^${SPEC_MATCH}.*$/${LAYOUT_SPEC}' ${SPEC_PATH}"
+    CMD="sed -i.bak 's/^${IDENTIFIER}.*$/${LAYOUT_SPEC}/' ${SPEC_PATH}"
 else
-    CMD="echo ${LAYOUT_SPEC} >> ${SPEC_PATH}"
+    # NOTE: reconstructing this w/ single quotes around layout to escape special chars
+    CMD="echo ${IDENTIFIER} '${LAYOUT}' ${PANE_DIMENSIONS} >> ${SPEC_PATH}"
 fi
 
 if [[ "${DRY_RUN}" == "true" ]]; then
