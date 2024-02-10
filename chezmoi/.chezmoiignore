@@ -8,5 +8,3 @@ dot_config/xplr/packages
 scripts
 symlinks
 sys-conf
-
-{{ include (print .chezmoi.sourceDir "/dot_config/external_nvim/.gitignore") }}
