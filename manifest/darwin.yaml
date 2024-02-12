@@ -4,6 +4,8 @@ packages:
       taps:
         - "homebrew/cask-fonts"
       formulae:
+        # tentative
+        - "neomutt"
         # personal
         - "blahtexml"
         - "bash"
@@ -12,6 +14,7 @@ packages:
         - "chezmoi"
         - "cmake"
         - "colordiff"
+        - "duf"
         - "font-jetbrains-mono-nerd-font"
         - "fzf"
         - "gawk"
@@ -38,12 +41,13 @@ packages:
         - "rust"
         - "qt5"
         - "s-search"
-        - "spotify-tui"
+        - "spotify_player"
         - "spotifyd"
         - "starship"
         - "stow"
         - "task"
         - "taskwarrior-tui"
+        - "tldr"
         - "trash-cli"
         - "tree"
         - "tmux"
@@ -65,6 +69,9 @@ packages:
         - "kubectl"
         - "xorgproto"
       casks:
+        # tentative
+        - protonmail-bridge
+        # end
         - "1password"
         - "1password-cli"
         - "amethyst"
