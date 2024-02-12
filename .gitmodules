@@ -4,3 +4,6 @@
 [submodule "chezmoi/dot_config/external_nvim"]
 	path = chezmoi/dot_config/external_nvim
 	url = https://github.com/austinsherron/nvim.git
+[submodule "chezmoi/dot_config/external_xplr"]
+	path = chezmoi/dot_config/external_xplr
+	url = https://github.com/austinsherron/xplr.git
