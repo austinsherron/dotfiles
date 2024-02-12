@@ -99,8 +99,9 @@ export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/py-toolbox/tools"
 
 ### lua path
 
-LUA_PATH="$(lua-path -d "${NVIM_ROOT}" -d "${CODE_ROOT}" -d "${DOTFILES}")"
-LUA_PATH="${LUA_PATH};$(lua-path -p lua/5.3 -d /usr/local)"
+LUA_PATH="$(lua-path -d "${CONFIG_ROOT_PUB}")"              # add deployed projects (i.e.: nvim, xplr, hammerspoon, etc.)
+LUA_PATH="$(lua-path -d "${CODE_ROOT}" -p lib/lua -a)"      # add internal lua library (toolbox)
+LUA_PATH="$(lua-path -d /usr/local -p lua/5.3 -a)"          # add external lua library
 
 export LUA_PATH
 
