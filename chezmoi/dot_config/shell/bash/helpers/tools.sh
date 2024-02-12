@@ -3,9 +3,9 @@
 
 ## neovim ######################################################################
 
-export NEOVIM_LOG_LEVEL="DEBUG"
-export NEOVIM_NOTIFY_LEVEL="INFO"
-export NEOVIM_AUTO_INSTALL_PACKAGES=true
+export NVIM_LOG_LEVEL="DEBUG"
+export NVIM_NOTIFY_LEVEL="INFO"
+export NVIM_AUTO_INSTALL_PACKAGES=true
 
 ## nix #########################################################################
 
