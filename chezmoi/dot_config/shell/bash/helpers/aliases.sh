@@ -22,8 +22,19 @@ alias zx="zoxide"
 
 alias rcload="source ${RC}"
 alias txload="tmux source-file ${TMUX_CONF_PUB}"
-alias dot-deploy="chezmoi apply && rcload && txload"
-alias dpl="dot-deploy"
+
+## deploy (chezmoi) + reload
+
+# diff
+alias diff-dot="chezmoi diff"
+alias dfdot="diff-dot"
+alias dfd="dfdot"
+
+# deploy
+alias deploy-dot="chezmoi diff && chezmoi apply && rcload && txload"
+alias dpdot="deploy-dot"
+alias dpdot="deploy-dot"
+alias dpd="dpdot"
 
 ### edit
 

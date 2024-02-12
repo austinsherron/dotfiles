@@ -7,4 +7,12 @@ git:
 os:
   editPreset: "nvim-remote"
 confirmOnQuit: false
-
+customCommands:
+  - key: 'C'
+    context: "global"
+    command: "EDITOR=\"nvr -cc split --remote-wait +'set bufhidden=wipe'\" && git commit"
+    subprocess: true
+  - key: 'C'
+    context: "files"
+    command: "EDITOR=\"nvr -cc split --remote-wait +'set bufhidden=wipe'\" && git commit"
+    subprocess: true
