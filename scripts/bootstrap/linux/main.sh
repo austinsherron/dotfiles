@@ -98,11 +98,9 @@ echo "[INFO] [END] installing pass"
 
 MY_KEY_ID="D55F49224387A57E0FDB80E1494E1B61A3505B41"
 
-{ gpg --list-keys ${MY_KEY_ID} &> /dev/null; RC="$?"; } || true
-
 if ! gpg --list-keys ${MY_KEY_ID} &> /dev/null; then
     echo "Please import key-pair ${MY_KEY_ID}"
-    read -n 1 -p "Press any key to continue." USERINPUT
+    read -r -n 1 -p "Press any key to continue."
     echo ""
 fi
 
