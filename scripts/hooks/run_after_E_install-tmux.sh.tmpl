@@ -13,11 +13,12 @@ set -Eeuo pipefail
 {{- $versions := (print .chezmoi.sourceDir "/.chezmoidata/versions.yaml") -}}
 
 DEPLOYED_SCRIPTS=""
+LAST_SHA=""
 
 for SCRIPT in "{{ $tmux_scripts }}/"*; do
     KEY="$(echo "$(basename "${SCRIPT}")" | tr '-' '_')"
     CURRENT_SHA="$(sha256sum "${SCRIPT}" | sed 's/  .*//')"
-    LAST_SHA="$(cat "{{ $versions }}" | yq ".versions.${KEY}" )"
+    [[ -f "{{ $versions }}" ]] && LAST_SHA="$(cat "{{ $versions }}" | yq ".versions.${KEY}" )"
 
     if [[ "${CURRENT_SHA}" != "${LAST_SHA}" ]]; then
         SCRIPT_NAME="$(basename "${SCRIPT}")"

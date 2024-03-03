@@ -1,8 +1,9 @@
 *.bak
 *.netrwhist
 *.tmp
-dot_config/hyper/hyper_plugins/
-dot_config/tmux/extensions/
-dot_config/tmux/plugins/
-dot_config/tmux/resurrect/
-dot_config/xplr/packages/
+chezmoi/dot_config/hyper/hyper_plugins/
+chezmoi/dot_config/tmux/extensions/
+chezmoi/dot_config/tmux/plugins/
+chezmoi/dot_config/tmux/resurrect/
+chezmoi/dot_config/xplr/packages/
+manifest/versions.yaml

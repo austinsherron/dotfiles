@@ -8,7 +8,6 @@ set -Eeuo pipefail
 {{- if eq .chezmoi.os "darwin" }}
 # for screenshots location setting
 mkdir -p ~/Pictures/Screenshots
-{{- end }}
 
 {{- range $_, $group := .settings.darwin }}
 
@@ -21,4 +20,4 @@ killall -q {{ $group.killall }} || true
 {{- end }}
 
 {{- end }}
-
+{{- end }}

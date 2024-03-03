@@ -2,13 +2,18 @@
 
 ## To-Do
 
-### `tmux`
+### Linux
+
+- [ ] Automate git-credential-manager installation/configuration
+    - [ ] Incorporate this into dotfiles init/bootstrapping
+
+### tmux
 
 - [ ] Investigate incorporating at least pieces of oh-my-tmux
 
 ## Done
 
-### `tmux`
+### tmux
 
 - [x] Install and configure resurrect
 - [x] Install and configure continuum
