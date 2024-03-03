@@ -139,6 +139,7 @@ Installed by listed install script via `sudo ./${SCRIPTS_ROOT}/install/[os]/[scr
 - [ ] [dropbox](https://www.dropbox.com/install-linux) - `dropbox.sh`
 - [ ] [gh-cli](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) - `gh-cli.sh`
 - [ ] [git](https://git-scm.com/download/linux) - `git.sh`
+- [ ] [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager) - `git-credential-manager.sh`
 - [ ] [golang](https://go.dev/dl/) - `golang.sh`
 - [ ] [google-chrome](https://itsfoss.com/install-chrome-ubuntu/) - `google-chrome.sh`
 - [ ] [guake](https://guake.readthedocs.io/en/latest/user/installing.html#system-wide-installation) - `guake.sh`

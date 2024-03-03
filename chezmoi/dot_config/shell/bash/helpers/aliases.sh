@@ -81,7 +81,7 @@ alias pbp="pbpaste"
 alias gh-pr-create="gh pr create -a \"@me\""
 alias gh-pr-ls="gh pr ls --author \"@me\""
 alias gh-pr-todo="gh pr ls --search 'is:open is:pr review-requested:austinsherron archived:false'"
-alias gh-pr-view="gh pr view ${1}"
+alias gh-pr-view="gh pr view"
 
 ## repos
 

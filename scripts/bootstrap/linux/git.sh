@@ -9,6 +9,13 @@ set -Eeuo pipefail
 # clone that repo
 
 echo  "[INFO] adding git-core apt repo"
+VERSION="2.43.0"
+
+if [[ "$(git --version | awk '{print $3}')" = "${VERSION}" ]]; then
+    echo "git already installed at version ${VERSION}; exiting"
+    exit 0
+fi
+
 sudo add-apt-repository ppa:git-core/ppa
 
 echo  "[INFO] installing git"

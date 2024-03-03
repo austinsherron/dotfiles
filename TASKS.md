@@ -4,8 +4,8 @@
 
 ### Linux
 
-- [ ] Automate git-credential-manager installation/configuration
-    - [ ] Incorporate this into dotfiles init/bootstrapping
+- [x] Automate git-credential-manager installation/configuration
+    - [x] Incorporate this into dotfiles init/bootstrapping
 
 ### tmux
 
@@ -24,6 +24,7 @@
 - [x] Since upgrading from 3.0a to 3.2a, check if I can uncomment some/all of the tmux conf lines I had to to temporarily remove after the downgrade from 3.3a
 - [x] Fix resizing shortcuts
 - [x] Add shortcut for "renaming" panes
-- [x] Tmux has "randomly" started straight up failing. It's just broken: it exits as soon as it starts (ended up being an issue w/ the resurrect/continuum plugins: the last state file saved was corrupted; the solution was to remove the last state file and relink the next to last to the "last" symlink
+- [x] Tmux has "randomly" started straight up failing. It's just broken: it exits as soon as it starts
+    - [x] ended up being an issue w/ the resurrect/continuum plugins: the last state file saved was corrupted; the solution was to remove the last state file and relink the next to last to the "last" symlink
 - [x] Add layout/resize scripts and integrate them w/ client resize hooks
 
