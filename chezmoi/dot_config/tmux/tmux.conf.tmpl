@@ -91,6 +91,17 @@ bind-key s run-shell "toggle-status-bar"
 
 ## navigation ##################################################################
 
+#### sessions
+
+# extra binding for choose-session
+bind-key S choose-session
+
+# bindings for next/prev session
+bind-key \{ switch-client -p
+bind-key \} switch-client -n
+bind-key -n M-, switch-client -p
+bind-key -n M-. switch-client -n
+
 #### windows
 
 # use 'p' instead of 'l' to switch to previous window
@@ -207,7 +218,7 @@ bind-key r command-prompt -p "(resize-layout)" "run-shell \"resize-layout -l '%1
 # resize all windows when tmux client attaches and resizes
 set-hook -g client-attached 'run-shell "resize-layouts"'
 set-hook -g client-resized 'run-shell "resize-layouts"'
-set-hook -g window-pane-changed 'run-shell "resize-layouts"'
+# set-hook -g window-pane-changed 'run-shell "resize-layouts"'
 
 ## plugins #####################################################################
 

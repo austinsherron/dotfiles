@@ -23,7 +23,7 @@
     rundo       = !ROOT=`git rev-parse --show-toplevel` && git undo ${ROOT}
     rdel        = "!git push origin :\"$1\" #"
     rename      = "!git branch -m \"$1\"\\/\"$2\" #"
-    rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\""
+    rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\" | awk '{print $2}' | sed 's/refs\\/heads\\///'"
     squash      = rebase -i
     st          = status
     undo        = checkout --
@@ -78,12 +78,15 @@
     fd  = fdel
     fm  = fmerge
     fM  = fmerc
+    fp  = push --force
+    frb = frebase
     frc = frcheckout
     frd = frdel
     h   = home
     hd  = hdiff
     l   = log
     mm  = mmerge
+    mr  = mrebase
     nb  = new-branch
     p   = push
     pb  = publish
