@@ -3,7 +3,6 @@
 
 ## init logging ################################################################
 
-export LOG_ROOT="${STD_LOG}"
 export CURRENT_LOG_LEVEL="WARN"
 export DEFAULT_LOG_LEVEL="WARN"
 export DEFAULT_LOG_TYPE="default"
