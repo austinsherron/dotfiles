@@ -25,10 +25,12 @@ Installed w/ package of the same name via `sudo apt install` unless otherwise st
 - [ ] evtest
 - [ ] fzf
 - [ ] g++
+- [ ] gawk
 - [ ] gconf2
 - [ ] gnome-shell-extension-manager
 - [ ] imagemagick - specifically installed `imagemagick-6.q16`
 - [ ] img2pdf
+- [ ] inxi
 - [ ] Kdenlive
 - [ ] libavahi-compat-libdnssd-dev
 - [ ] libcurl4-openssl-dev
@@ -38,6 +40,7 @@ Installed w/ package of the same name via `sudo apt install` unless otherwise st
 - [ ] libx11-dev
 - [ ] lua5.3
 - [ ] pamu2fcfg
+- [ ] pass
 - [ ] pcscd
 - [ ] policykit-1-gnome
 - [ ] postfix
@@ -128,32 +131,33 @@ Installed for lua 5.3 via `sudo luarocks install [rock-name]` unless otherwise s
 
 Installed by listed install script via `sudo ./${SCRIPTS_ROOT}/install/[os]/[script-name]` unless otherwise stated.
 
-- [ ] [1password](https://support.1password.com/install-linux/#debian-or-ubuntu) - `1password.sh"`
+- [ ] [1password](https://support.1password.com/install-linux/#debian-or-ubuntu) - `1password.sh`
 - [ ] [app-image-launcher](https://github.com/TheAssassin/AppImageLauncher/wiki/Install-on-Ubuntu-or-Debian) - `app-image-launcher.sh`
 - [ ] [bisq](https://bisq.network/getting-started/) - `bisq.sh`
-- [ ] [brave](https://brave.com/linux/) - `brave.sh"`
+- [ ] [brave](https://brave.com/linux/) - `brave.sh`
 - [ ] [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) - `cargo.sh`
 - [ ] [dropbox](https://www.dropbox.com/install-linux) - `dropbox.sh`
 - [ ] [gh-cli](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) - `gh-cli.sh`
 - [ ] [git](https://git-scm.com/download/linux) - `git.sh`
 - [ ] [golang](https://go.dev/dl/) - `golang.sh`
-- [ ] [google-chrome](https://itsfoss.com/install-chrome-ubuntu/) - `google-chrome.sh"`
+- [ ] [google-chrome](https://itsfoss.com/install-chrome-ubuntu/) - `google-chrome.sh`
 - [ ] [guake](https://guake.readthedocs.io/en/latest/user/installing.html#system-wide-installation) - `guake.sh`
 - [ ] [i2p](https://geti2p.net/en/download/debian) - `i2p.sh`
 - [ ] [lazygit](https://github.com/jesseduffield/lazygit#installation) - `lazygit.sh`
-- [ ] [librewolf](https://librewolf.net/installation/debian/) - `librewolf.sh"`
+- [ ] [librewolf](https://librewolf.net/installation/debian/) - `librewolf.sh`
 - [ ] [luarocks-3.9.2](https://github.com/luarocks/luarocks/wiki/Installation-instructions-for-Unix) - `luarocks.sh`
-- [ ] [mullvad](https://github.com/mullvad/mullvadvpn-app/) - `mullvad.sh"`
+- [ ] [mullvad](https://github.com/mullvad/mullvadvpn-app/) - `mullvad.sh`
 - [ ] [nerd fonts](https://www.nerdfonts.com/font-downloads) - Download to `${HOME/Customizations/Fonts}`, unzip, open individual files, install via GUI
 - [ ] [nvim]() - `nvim.sh`
 - [ ] [s-search](https://github.com/zquestz/s) - `s-search.sh` (w/o `sudo`)
-- [ ] [signal](https://signal.org/download/linux/) - `signal.sh"`
-- [ ] [speedtest](https://www.speedtest.net/apps/cli) - `speedtest.sh"`
+- [ ] [signal](https://signal.org/download/linux/) - `signal.sh`
+- [ ] [speedtest](https://www.speedtest.net/apps/cli) - `speedtest.sh`
 - [ ] [starship](https://starship.rs/) - `starship.sh`
-- [ ] [system76-keyboard-configurator](https://github.com/pop-os/keyboard-configurator/) - `system76-keyboard-configurator.sh"`
-- [ ] [whatsapp-for-linux](https://github.com/eneshecan/whatsapp-for-linux/wiki) - `whatsapp-for-linux.sh"`
+- [ ] [system76-keyboard-configurator](https://github.com/pop-os/keyboard-configurator/) - `system76-keyboard-configurator.sh`
+- [ ] [tdrop](https://github.com/noctuid/tdrop) - `tdrop.sh`
+- [ ] [whatsapp-for-linux](https://github.com/eneshecan/whatsapp-for-linux/wiki) - `whatsapp-for-linux.sh`
 - [ ] [xplr](https://xplr.dev/en/install) - `xplr.sh`
-- [ ] [zoom](https://zoom.us/download?os=linux) - `zoom.sh"`
+- [ ] [zoom](https://zoom.us/download?os=linux) - `zoom.sh`
 
 ### Pop Shop
 

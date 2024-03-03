@@ -1,17 +1,49 @@
+# clutter/irrelevant files
+
 *.netrwhist
 *.md
+scripts
+symlinks
+sys-conf
+
+# noise reduction
+
+.config/nvim/spell
+
+# external packages that are also gitignored
+
 .config/hammerspoon
 .config/hammerspoon/Spoons
 !.config/hammerspoon/Spoons/SpoonInstall.spoon
 !.config/hammerspoon/Spoons/SpoonInstall.spoon/**
 .config/hyper/hyper_plugins
-.config/nvim/spell
 .config/tmux/extensions
 .config/tmux/plugins
 .config/tmux/resurrect
 .config/xplr
 .config/xplr/packages
+
+# not in use
+
+dot_config/hyper
 dot_config/external_xplr
-scripts
-symlinks
-sys-conf
+dot_librewolf
+
+# host specific ignores
+
+# FIXME: these don't work the way I expect them to
+
+# dot_config/shell/bash/host/Austins-MBP
+# dot_config/shell/bash/host/darwin
+# !dot_config/shell/bash/host/{{ .chezmoi.os }}
+# !dot_config/shell/bash/host/{{ .chezmoi.os }}/**
+# !dot_config/shell/bash/host/{{ .chezmoi.hostname }}
+# !dot_config/shell/bash/host/{{ .chezmoi.hostname }}/**
+
+# {{- if not (eq .chezmoi.os "darwin") }}
+# dot_config/iterm2
+# dot_bash_completion
+# {{- else if not (eq .chezmoi.os "linux") }}
+# syngestures.toml
+# dot_xmodmaprc
+# {{- end }}

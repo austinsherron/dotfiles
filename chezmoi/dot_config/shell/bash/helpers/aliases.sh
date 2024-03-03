@@ -108,7 +108,7 @@ alias sanon="s -p google -b \"chromium --incognito\""
 ### informational
 
 function fz-history() { history | fzf-tmux -p; }
-function help() { tmux-cmd-popup "${1} --help"; }
+function help() { tmux-cmd-popup "${1} --help | less"; }
 function man() { tmux-cmd-popup "man ${1}"; }
 function tldr() { tmux-cmd-popup "tldr ${1}" -h 70%; }
 
