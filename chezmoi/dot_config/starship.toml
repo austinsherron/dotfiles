@@ -2,6 +2,7 @@
 ## prompt ######################################################################
 
 format = """
+$kubernetes$line_break\
 ($git_branch$git_status$git_metrics$git_state$line_break)\
 $time $directory$lua$python$golang$java \
 $cmd_duration\
@@ -12,7 +13,7 @@ $character"""
 ## core ########################################################################
 
 [character] # -> the actual prompt
-success_symbol = "[❯](purple)"
+success_symbol = "[❯](blue)"
 error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
 
@@ -26,7 +27,7 @@ disabled = true
 [directory] # -> mini path/repo base
 truncate_to_repo = true
 truncation_length = 3
-style = "bold cyan"
+style = "cyan"
 repo_root_style = "bold purple"
 home_symbol = "~"
 
@@ -106,7 +107,7 @@ style = "bold red"
 charging_symbol = "󰢟"
 discharging_symbol = "󰂎"
 
-[[battery.display]] 
+[[battery.display]]
 threshold = 2
 style = "bold red"
 charging_symbol = "󰚌"
@@ -135,14 +136,11 @@ format = "[$added]($added_style) [$deleted]($deleted_style)"
 
 
 [git_status]
-format = "([$all_status$ahead_behind]($style))"
+format = "([$conflicted$modified$staged$ahead_behind]($style))"
 style = "yellow"
 conflicted = "󰓡 "
-deleted = " "
 modified = " "
-renamed = " "
 staged = " "
-stashed = " "
 untracked = " "
 
 ## languages ###################################################################
@@ -169,6 +167,48 @@ format = "[$symbol($version )]($style)"
 symbol = "🐍 "
 version_format = "v${major}.${minor}"
 format = "[$symbol($version )]($style)"
+
+## cloud #######################################################################
+
+# TODO: add aws and gcp modules
+
+## kubernetes ##################################################################
+
+[kubernetes]
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style) '
+style = '#FFA500'
+detect_folders = [
+    'chart',
+    'charts',
+    'cluster',
+    'clusters',
+    'eks',
+    'gke',
+    'helm',
+    'k8s',
+    'kubernetes'
+]
+detect_files = [
+    'Chart.yaml',
+    'Chart.yml',
+    'helmfile.yaml',
+    'helmfile.yml',
+    'values.yaml',
+    'values.yml'
+]
+
+[[kubernetes.contexts]]
+context_pattern = 'tellus.*-gcp'
+context_alias = 'gcp-tellus'
+
+[[kubernetes.contexts]]
+context_pattern = 'tellus.*-aws'
+context_alias = 'aws-tellus'
+
+## infra #######################################################################
+
+# TODO: add docker and terraform modules
 
 ## TODO ########################################################################
 
