@@ -108,8 +108,11 @@ bind-key -n M-. switch-client -n
 bind-key p previous-window
 
 # extra window switching bindings for keyboard + closer to nvim
-bind-key -n M-\} next-window
 bind-key -n M-\{ previous-window
+bind-key -n M-\} next-window
+# for convenience on laptop keyboards
+bind-key -n M-l previous-window
+bind-key -n M-\; next-window
 
 # extra window switching bindings for keyboard + closer to nvim
 bind-key -n M-! select-window -t 1
@@ -212,6 +215,8 @@ bind-key h command-prompt -p "(resize-pane horizontally)" "resize-pane -x %1%%"
 
 # r for resizing based on configured layouts
 bind-key r command-prompt -p "(resize-layout)" "run-shell \"resize-layout -l '%1'\""
+# alt-r for resizing based on configured layouts
+bind-key M-r run-shell "resize-layouts"
 
 ## hooks #######################################################################
 
