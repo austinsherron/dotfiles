@@ -22,6 +22,7 @@ alias bat="batcat"
 alias dbc="dbxcli"
 alias dp2="devilspie2"
 alias fp="flatpak"
+alias pm="pkgmgr"
 
 ### utils
 
