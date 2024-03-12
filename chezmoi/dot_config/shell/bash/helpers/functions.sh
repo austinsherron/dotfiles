@@ -121,7 +121,7 @@ log-ls() {
     ls "${LOG_ROOT}"
 }
 
-log() {
+view-log() {
     if [[ -z "${LOG_ROOT+x}" ]]; then
         echo "[ERROR] log: LOG_ROOT is not set"
         return 1
@@ -145,8 +145,10 @@ log() {
         return 1
     fi
 
-    vim "${log_path}"
+    ${EDITOR:-vim} "${log_path}"
 }
+
+alias vl="view-log"
 
 ## nvim ########################################################################
 

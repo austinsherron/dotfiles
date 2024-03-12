@@ -53,6 +53,7 @@ export NVIM_ROOT_PUB="${CONFIG_ROOT_PUB}/nvim"
 export TMUX_ROOT_PUB="${CONFIG_ROOT_PUB}/tmux"
 export TMUX_CONF_PUB="${CONFIG_ROOT_PUB}/tmux/tmux.conf"
 export INSTALL_SCRIPTS="${CODE_ROOT}/scripts/install"
+export APP_IMAGES="${HOME}/Applications"
 
 ### shell
 
