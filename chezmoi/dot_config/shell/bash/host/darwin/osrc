@@ -38,3 +38,7 @@ export COMPLETION_DIR="${HOME}/.bash_completions"
 alias eject="sudo diskutil eject"
 alias lsblk="diskutil list"
 
+## tools #######################################################################
+
+export HOMEBREW_NO_AUTO_UPDATE=1
+

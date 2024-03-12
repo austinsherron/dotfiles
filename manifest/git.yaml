@@ -1,14 +1,15 @@
 git:
   common:
     internal:
-      - "austinsherron/hammerspoon"
-      - "austinsherron/lib"
-      - "austinsherron/scripts"
-      - "austinsherron/sieve-filters"
-      - "austinsherron/tools"
-      - "austinsherron/xplr"
+      - austinsherron/hammerspoon
+      - austinsherron/lib
+      - austinsherron/scripts
+      - austinsherron/sieve-filters
+      - austinsherron/snippets
+      - austinsherron/tools
+      - austinsherron/xplr
     external:
-      - "lincheney/fzf-tab-completion"
-      - "ohmybash/oh-my-bash"
+      - lincheney/fzf-tab-completion
+      - ohmybash/oh-my-bash
   linux: []
   darwin: []
