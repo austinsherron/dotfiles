@@ -1,0 +1,142 @@
+packages:
+  linux:
+    apt:
+      - adb
+      - bash-completion
+      - bat
+      - chrome-gnome-shell
+      - cloc
+      - cmake
+      - colordiff
+      - devilspie2
+      - evtest
+      - fzf
+      - g++
+      - gawk
+      - gconf2
+      - gnome-shell-extension-manager
+      - imagemagick-6.q16
+      - img2pdf
+      - inxi
+      - Kdenlive
+      - libavahi-compat-libdnssd-dev
+      - libcurl4-openssl-dev
+      - libfontconfig1-dev
+      - libfreetype6-dev
+      - libfuse-dev
+      - libice-dev
+      - libpam-u2f
+      - libpcsclite-dev
+      - libsm-dev
+      - libssl-dev
+      - libwxgtk3.0-gtk3-dev
+      - libx11-dev
+      - libxcb-xfixes0-dev
+      - libxkbcommon-dev
+      - lua5.3
+      - pamu2fcfg
+      - pass
+      - pcscd
+      - pkg-config
+      - policykit-1-gnome
+      - postfix
+      - python3
+      - python3-pip
+      - python3.10-venv
+      - qttools5-dev
+      - qtbase5-dev
+      - ripgrep
+      - shellcheck
+      - silversearcher-ag
+      - snap
+      - snapd
+      - stow
+      - timeshift
+      - tmux
+      - tree
+      - xbindkeys
+      - xdotool
+      - xorg-dev
+      - xsel
+      - ubuntu-restricted-extras
+      - vim
+      - vlc
+      - whois
+      - wmctrl
+      - yubikey-manager
+      - yubikey-manager-qt
+      - zoxide
+    flatpak:
+      - de.haeckerfelix.Fragments
+      - org.kde.krita
+      - seahorse
+      - com.github.micahflee.torbrowser-launcher
+      - com.yubico.yubioath
+    snap:
+      - chezmoi --classic
+      - firefox
+      - htop
+      - plexmediaserver
+      - task --classic
+      - whatsapp-for-linux
+      - yq
+    luarocks:
+      - name: bit32
+        version: 5.3.5.1-1
+      - name: busted
+        version: 2.1.2-3
+      - name: luacov
+        version: 0.15.0-1
+      - name: luafilesystem
+        version: 1.8.0-1
+      - name: see
+        version: 0.1-1
+      - name: yaml
+        version: 1.1.2-1
+    pip3:
+      - name: SQLAlchemy
+      - name: coverage
+      - name: flask
+      - name: neovim-remote
+      - name: progressbar2
+      - name: pyopenssl
+      - name: rope
+      - name: selenium
+      - name: selenium-driver-updater
+      - name: webdriver-auto-update
+      - name: webdriver-manager
+    scripts:
+      - 1password
+      - alacritty
+      - app-image-launcher
+      - bisq
+      - brave
+      - cargo
+      - dropbox
+      - gh-cli
+      - git-credential-manager
+      - git
+      - gnome-tweaks
+      - golang
+      - google-chrome
+      - guake
+      - i2p
+      - lazygit
+      - librewolf
+      - luarocks
+      - lua
+      - mullvad
+      - nvim
+      - s
+      - signal
+      - speedtest
+      - starship
+      - syngestures
+      - system76-keyboard-configurator
+      - tdrop
+      - tlp
+      - ungoogled-chromium
+      - veracrypt
+      - xkeysnail
+      - xplr
+      - zoom

@@ -4,11 +4,59 @@
 
 set -Eeuo pipefail
 
+source /etc/profile.d/shared_paths.sh
 
-{{ template "validate-deps.tmpl" (list "apt" "snap" "flatpak ") }}
+
+# validate external dependencies
+{{ template "validate-deps.tmpl" (list "apt" "snap" "flatpak" "cargo" "luarocks" "pip3") }}
+
+# validate internal dependencies
+{{ template "validate-deps.tmpl" (list "pkgmgr" "check-pkg") }}
 
 {{ template "version-check.tmpl" (merge . (dict "type" "linux")) }}
 
-# TODO: add real impl
+echo "[INFO] installing apt packages"
 
+{{- range $pkg := .packages.linux.apt }}
+pkgmgr -p "{{ $pkg }}" -m apt
+{{- end }}
+
+echo "[INFO] installing flatpak packages"
+
+{{- range $pkg := .packages.linux.flatpak }}
+pkgmgr -p "{{ $pkg }}" -m flatpak
+{{- end }}
+
+echo "[INFO] installing snap packages"
+
+{{- range $pkg := .packages.linux.snap }}
+pkgmgr -p "{{ $pkg }}" -m snap
+{{- end }}
+
+echo "[INFO] installing lua rocks"
+
+{{- range $pkg := .packages.linux.luarocks }}
+luarocks show {{ $pkg.name }} &> /dev/null || sudo luarocks install {{ $pkg.name }} {{ $pkg.version }}
+{{- end }}
+
+echo "[INFO] installing pip3 packages"
+
+{{- range $pkg := .packages.linux.pip3 }}
+{{- $sudo := (hasKey $pkg "sudo") | ternary "sudo " "" }}
+{{ $sudo }}pip3 show {{ $pkg.name }} &> /dev/null || pip3 install {{ $pkg.name }}
+{{- end }}
+
+OS="$(uname | tr '[:upper:]' '[:lower:]')"
+INSTALL_ROOT="${SCRIPTS_ROOT}/install/${OS}"
+
+if [[ ! -d "${INSTALL_ROOT}" ]]; then
+    echo "[ERROR] ${INSTALL_ROOT} dir does not exist"
+    exit 1
+fi
+
+echo "[INFO] installing from scripts"
+
+{{- range $script := .packages.linux.scripts }}
+    "${INSTALL_ROOT}"/{{ $script }}.sh
+{{- end }}
 {{- end }}
