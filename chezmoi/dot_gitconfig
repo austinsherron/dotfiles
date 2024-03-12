@@ -126,6 +126,8 @@
 # slightly different configs for work (i.e.: user, branch name format, etc.)
 [includeIf "gitdir:~/Workspace/workspace/granica/**"]
     path = .gitconfig-work
+[includeIf "gitdir:~/.gvm/pkgsets/go1.21/global/src/project.n/"]
+    path = .gitconfig-work
 
 [gpg]
     program = gpg

@@ -14,6 +14,10 @@ export COMPLETION_PATH="/usr/share/bash-completion/bash_completion"
 # TODO: verify this path
 export COMPLETION_DIR="${HOME}/.local/share/bash-completion/completions"
 
+## go path
+
+export GOPATH="${HOME}/.go"
+
 ## aliases #####################################################################
 
 ### rename

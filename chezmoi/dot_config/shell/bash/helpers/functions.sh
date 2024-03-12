@@ -4,20 +4,6 @@ source /etc/profile.d/shared_paths.sh
 source "${CODE_ROOT}/lib/bash/utils.sh"
 
 
-### 1password ##################################################################
-
-op-get() {
-    if [[ $# -lt 2 ]]; then
-        echo "[ERROR] op-get: item and field are required"
-        return 1
-    fi
-
-    local item="${1}"
-    local field="${2}"
-
-    op item get "${item}" --field label="${field}"
-}
-
 ## chezmoi #####################################################################
 
 declare -A CM_ALIASES=([a]=apply [d]=diff)
@@ -83,15 +69,17 @@ uz() {
 
 ## git #########################################################################
 
-alias get-git-root="git rev-parse --show-toplevel"
-
 git-root() {
-    cd "$(get-git-root)" || exit
+    cd "$(git rev-parse --show-toplevel)" || exit
 }
+
+alias gr="git-root"
 
 git-ignore() {
-    ${EDITOR} "$(get-git-root)/.gitignore"
+    ${EDITOR} "$(git-root)/.gitignore"
 }
+
+alias gi="git-ignore"
 
 clone-external() {
     local repo="${1}"

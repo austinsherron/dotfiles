@@ -79,10 +79,6 @@ source "${HOST_CONFIG_ROOT}/inject-host.sh"
 
 ## path manipulations ##########################################################
 
-### go path
-
-export GOPATH="${HOME}/.go"
-
 ### shell path
 
 export PATH="${PATH}:${SYS_ROOT}/nvim/bin"              # neovim

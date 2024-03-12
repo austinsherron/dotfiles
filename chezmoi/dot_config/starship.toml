@@ -2,9 +2,9 @@
 ## prompt ######################################################################
 
 format = """
-$kubernetes$line_break\
+$kubernetes$terraform$line_break\
 ($git_branch$git_status$git_metrics$git_state$line_break)\
-$time $directory$lua$python$golang$java \
+$battery$time $directory$lua$python$golang$java \
 $cmd_duration\
 $sudo\
 $line_break\
@@ -38,8 +38,8 @@ disabled = false
 ## informational ###############################################################
 
 [battery] # -> gives us info about battery state
-disabled = true
-format = "[$symbol $percentage]($style) "
+disabled = false
+format = "[$symbol]($style)"
 
 [[battery.display]]
 threshold = 100
@@ -146,7 +146,6 @@ untracked = " "
 ## languages ###################################################################
 
 [golang]
-symbol = "🐹 "
 version_format = "v${major}.${minor}"
 format = "[$symbol($version )]($style)"
 
@@ -175,45 +174,42 @@ format = "[$symbol($version )]($style)"
 ## kubernetes ##################################################################
 
 [kubernetes]
+symbol = "⎈"
 disabled = false
-format = '[$symbol$context( \($namespace\))]($style) '
-style = '#FFA500'
+format = '[$symbol $context( \($namespace\))]($style) '
+style = "#FFA500"
 detect_folders = [
-    'chart',
-    'charts',
-    'cluster',
-    'clusters',
-    'eks',
-    'gke',
-    'helm',
-    'k8s',
-    'kubernetes'
+    "chart",
+    "charts",
+    "cluster",
+    "clusters",
+    "eks",
+    "gke",
+    "helm",
+    "k8s",
+    "kubernetes"
 ]
 detect_files = [
-    'Chart.yaml',
-    'Chart.yml',
-    'helmfile.yaml',
-    'helmfile.yml',
-    'values.yaml',
-    'values.yml'
+    "Chart.yaml",
+    "Chart.yml",
+    "helmfile.yaml",
+    "helmfile.yml",
+    "values.yaml",
+    "values.yml"
 ]
 
 [[kubernetes.contexts]]
-context_pattern = 'tellus.*-gcp'
-context_alias = 'gcp-tellus'
+context_pattern = "tellus.*-gcp"
+context_alias = "gcp-tellus"
 
 [[kubernetes.contexts]]
-context_pattern = 'tellus.*-aws'
-context_alias = 'aws-tellus'
+context_pattern = "tellus.*-aws"
+context_alias = "aws-tellus"
 
 ## infra #######################################################################
 
-# TODO: add docker and terraform modules
+# TODO: add docker module
 
-## TODO ########################################################################
-
-[hostname] # -> ssh prompt
-prefix = "⟪"
-ssh_only = true
-suffix = "⟫"
-
+[terraform]
+format = '[$symbol$workspace( \($version\))]($style) '
+style = "#e074e0"
