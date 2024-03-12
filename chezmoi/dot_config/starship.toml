@@ -4,7 +4,7 @@
 format = """
 $kubernetes$terraform$line_break\
 ($git_branch$git_status$git_metrics$git_state$line_break)\
-$battery$time $directory$lua$python$golang$java \
+$battery $time $directory$lua$python$golang$java \
 $cmd_duration\
 $sudo\
 $line_break\
