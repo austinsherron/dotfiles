@@ -3,6 +3,10 @@
 
 ## important paths ###########################################################
 
+## interface points
+
+export APP_IMAGES="${HOME}/Applications"
+
 ## external storage
 
 export VOLUME_ROOT="/media"
