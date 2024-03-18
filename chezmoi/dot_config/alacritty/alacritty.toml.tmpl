@@ -1,0 +1,20 @@
+import = [
+    "{{ env "XDG_CONFIG_HOME" }}/alacritty/appearance.toml",
+    "{{ env "XDG_CONFIG_HOME" }}/alacritty/keymap.toml"
+]
+
+[window]
+startup_mode = "Fullscreen"
+decorations = "None"
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font Mono", style = "SemiBold" }
+size = {{ eq .chezmoi.os "linux" | ternary 9 10 }}
+
+[cursor.style]
+shape = "Block"
+blinking = "Off"
+
+[cursor.vi_mode_style]
+shape = "Underline"
+blinking = "On"
