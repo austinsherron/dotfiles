@@ -50,7 +50,7 @@ bind p run "pbpaste | tmux load-buffer - && tmux paste-buffer"
 #### misc
 
 # bind R to reload tmux.conf
-bind R source-file "{{ print (env "TMUX_ROOT_PUB") "/tmux.conf" }}"
+bind M-r source-file "{{ print (env "TMUX_ROOT_PUB") "/tmux.conf" }}"
 
 ## appearance ##################################################################
 
@@ -216,7 +216,7 @@ bind-key h command-prompt -p "(resize-pane horizontally)" "resize-pane -x %1%%"
 # r for resizing based on configured layouts
 bind-key r command-prompt -p "(resize-layout)" "run-shell \"resize-layout -l '%1'\""
 # alt-r for resizing based on configured layouts
-bind-key M-r run-shell "resize-layouts"
+bind-key R run-shell "resize-layouts"
 
 ## hooks #######################################################################
 
