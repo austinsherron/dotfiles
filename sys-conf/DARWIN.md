@@ -4,7 +4,6 @@
 
 ### App Store
 
-- [ ] Multi Monitor Wallpaper
 - [ ] Xcode
 
 ### Web Downloads
@@ -23,6 +22,8 @@ Note: can all be installed w/ homebrew casks.
 - [ ] Turn on firewall
 - [ ] Customize screensaver/sleep time
 - [ ] Grant full disk access to iTerm2
+- [ ] Keyboard sensitivity to max
+- [ ] Update fn key to do nothing instead of opening emoji window (in keyboard settings)
 
 ## App Config
 
