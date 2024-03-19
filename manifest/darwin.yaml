@@ -2,91 +2,115 @@ packages:
   darwin:
     brew:
       taps:
-        - "homebrew/cask-fonts"
+        - ankitpokhrel/jira-cli
+        - homebrew/cask-fonts
       formulae:
-        # tentative
-        - "neomutt"
         # personal
-        - "blahtexml"
-        - "bash"
-        - "bash-completion"
-        - "bat"
-        - "chezmoi"
-        - "cmake"
-        - "colordiff"
-        - "duf"
-        - "font-jetbrains-mono-nerd-font"
-        - "fzf"
-        - "gawk"
-        - "gh"
-        - "git"
-        - "git-credential-manager"
-        - "google-chrome"
-        - "grep"
-        - "gpg"
-        - "gsed"
-        - "hammerspoon"
-        - "htop"
-        - "jq"
-        - "lazygit"
-        - "lua"
-        - "luarocks"
-        - "neovim"
-        - "npm"
-        - "nvr"
-        - "openssl"
-        - "pkg-config"
-        - "pinentry"
-        - "rg"
-        - "rust"
-        - "qt5"
-        - "s-search"
-        - "spotify_player"
-        - "spotifyd"
-        - "starship"
-        - "stow"
-        - "task"
-        - "taskwarrior-tui"
-        - "tldr"
-        - "trash-cli"
-        - "tree"
-        - "tmux"
-        - "xdotool"
-        - "xinit"
-        - "xorg-server"
-        - "xplr"
-        - "wget"
-        - "wtfutil"
-        - "yq"
-        - "zoxide"
+        - blahtexml
+        - bash
+        - bash-completion
+        - bat
+        - chezmoi
+        - cmake
+        - colordiff
+        - duf
+        - font-jetbrains-mono-nerd-font
+        - fzf
+        - gawk
+        - gh
+        - git
+        - git-credential-manager
+        - google-chrome
+        - grep
+        - gpg
+        - gsed
+        - hammerspoon
+        - htop
+        - jira-cli
+        - jq
+        - lazygit
+        - lua
+        - luarocks
+        - neovim
+        - k9s
+        - npm
+        - nvr
+        - openssl
+        - pkg-config
+        - pinentry
+        - python-toml
+        - rg
+        - rust
+        - qt5
+        - s-search
+        - spotify_player
+        - spotifyd
+        - starship
+        - stow
+        - task
+        - taskwarrior-tui
+        - tldr
+        - trash-cli
+        - tree
+        - tmux
+        - xdotool
+        - xinit
+        - xorg-server
+        - xplr
+        - xsel
+        - wget
+        - wtfutil
+        - ykman
+        - yq
+        - zoxide
         # work
-        - "coreutils"
-        - "docker"
-        - "glab"
-        - "golang"
-        - "helm"
-        - "helmfile"
-        - "kubectl"
-        - "xorgproto"
+        - awscli
+        - coreutils
+        - docker
+        - glab
+        - golang
+        - google-cloud-sdk
+        - helm
+        - helmfile
+        - kubectl
+        - terraform
+        - xorgproto
+        # tentative
+        - neomutt
       casks:
+        - 1password
+        - 1password-cli
+        - amethyst
+        - alacritty --no-quarantine
+        - bazecor
+        - brave-browser
+        - chromium --no-quarantine
+        - discord
+        - docker
+        - dropbox
+        - iterm2
+        - librewolf --no-quarantine
+        - notesnook
+        - openshot-video-editor
+        - qutebrowser
+        - signal
+        - telegram
+        - tor-browser
+        - veracrypt
+        - whatsapp
+        - yubico-authenticator
+        - yubico-yubikey-manager
         # tentative
         - protonmail-bridge
-        # end
-        - "1password"
-        - "1password-cli"
-        - "amethyst"
-        - "bazecor"
-        - "brave-browser"
-        - "dropbox"
-        - "iterm2"
-        - "notesnook"
-        - "openshot-video-editor"
-        - "qutebrowser"
-        - "signal"
-        - "tor-browser"
-        - "whatsapp"
-        - "yubico-authenticator"
-        - "yubico-yubikey-manager"
-      no_quarantine:
-        - "chromium"
-        - "librewolf"
+    scripts:
+      - name: gvm
+        args: [go1.21, go1.22]
+        # FIXME: see comment in "${INSTALL_SCRIPTS}/darwin/gvm.sh"
+        # args: [go1.21, go1.22, --use, go1.22]
+      - name: helm-plugin
+        args: [diff, https://github.com/databus23/helm-diff]
+    # NOTE: install go packages after installing gvm, above
+    go:
+      - name: slack-term
+        url: github.com/erroneousboat/slack-term
+        version: latest

@@ -1,6 +1,7 @@
 git:
   common:
     internal:
+      # WARN: order here matters!
       - austinsherron/hammerspoon
       - austinsherron/lib
       - austinsherron/scripts

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+
+{{ template "version-check.tmpl" (merge . (dict "type" "filesystem")) }}
+
+{{- range .fs.common }}
+mkdir -p {{ . }}
+{{- end }}
+
+{{- range (index .fs .chezmoi.os) }}
+mkdir -p {{ . }}
+{{- end }}
+
