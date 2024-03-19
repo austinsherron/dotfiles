@@ -2,6 +2,10 @@
 
 ## To-Do
 
+### General
+
+- [ ] Setup atuin sync server
+
 ### Package Management
 
 - [ ] Fix symbolic link issue; seemingly caused by differences in symlink representation across os types
