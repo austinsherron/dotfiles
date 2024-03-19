@@ -3,13 +3,17 @@ import = [
     "{{ env "XDG_CONFIG_HOME" }}/alacritty/keymap.toml"
 ]
 
+[shell]
+program = "{{ eq .chezmoi.os "linux" | ternary "/bin/bash" "/opt/homebrew/bin/bash" }}"
+args = ["-c", '"tmux attach || tmux"']
+
 [window]
 startup_mode = "Fullscreen"
 decorations = "None"
 
 [font]
 normal = { family = "JetBrainsMono Nerd Font Mono", style = "SemiBold" }
-size = {{ eq .chezmoi.os "linux" | ternary 9 10 }}
+size = {{ eq .chezmoi.os "linux" | ternary 9 12 }}
 
 [cursor.style]
 shape = "Block"
