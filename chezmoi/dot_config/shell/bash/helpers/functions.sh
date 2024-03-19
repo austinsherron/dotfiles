@@ -84,7 +84,14 @@ znls() {
 ## git #########################################################################
 
 git-root() {
-    cd "$(git rev-parse --show-toplevel)" || exit
+    local git_root
+    local submodule_parent
+
+    git_root="$(git rev-parse --show-toplevel)"
+    submodule_parent="$(git rev-parse --show-superproject-working-tree)"
+    [[ -n "${submodule_parent}" ]] && git_root="${submodule_parent}"
+
+    cd "${git_root}" || exit
 }
 
 alias gr="git-root"
