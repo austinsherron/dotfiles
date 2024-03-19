@@ -47,23 +47,28 @@
     # [fuzzy]
     fcheckout       = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
+    fdiff           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     fdel            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -d ${BRANCH}
     frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git rdel ${BRANCH}
     ffdel           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -D ${BRANCH}
+    flog            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log ${BRANCH}
     fmerge          = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git merge ${BRANCH}
     fmerc           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git merc ${BRANCH}
     frebase         = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git rebase ${BRANCH}
-    flog            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log ${BRANCH}
-    fdiff           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     # what commits are in that branch that aren't in this one
-    fcmtdiff = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges HEAD..${BRANCH}
+    fcommits-in-this-not-that = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges HEAD..${BRANCH}
     # what commits are in this branch that aren't in that one
-    frcmtdiff = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges ${BRANCH}..HEAD
+    fcommits-in-that-not-this = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges ${BRANCH}..HEAD
     # what commits are in that branch that aren't in this one
-    frcmtdiff = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges HEAD..origin/${BRANCH}
+    fremote-commits-in-this-not-that = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges HEAD..origin/${BRANCH}
     # what commits are in this branch that aren't in that one
-    frrcmtdiff = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges origin/${BRANCH}..HEAD
+    fremote-commits-in-that-not-this = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges origin/${BRANCH}..HEAD
+    # aliases for the four previous (lengthy) aliases
+    fcinthis = fcommits-in-this-not-that
+    fcinthat = fcommits-in-that-not-this
+    frcinthis = fremote-commits-in-this-not-that
+    frcinthat = fremote-commits-in-that-not-this
 
     # [micro]
     a   = add
@@ -71,11 +76,12 @@
     c   = commit
     cl  = clone
     co  = checkout
-    cn  = checkout -b
+    cob = checkout -b
     d   = diff
     f   = fetch
     fc  = fcheckout
-    fd  = fdel
+    fd  = fdiff
+    fD  = fdel
     fm  = fmerge
     fM  = fmerc
     fp  = push --force
@@ -98,13 +104,12 @@
     rv  = revert
     und = undo
     uns = unstage
-    r   = rundo
-    us  = unstage
 
     # [submodules]
     addsub = "!git submodule add https://github.com/austinsherron/$1.git $2"
     # WARN: untested
     rmsub  =  "!git submodule deinit $1 && git rm $1"
+
 [push]
     default = upstream
 [pull]
@@ -112,6 +117,7 @@
 [commit]
     # FIXME: this should be true, see FIXME at signingkey
     gpgsign = false
+
 [url "https://user@hostname"]
     insteadOf = ssh://git@hostname
 [url "https://x-access-token@github.com"]
