@@ -1,0 +1,41 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+source /etc/profile.d/shared_paths.sh
+
+
+{{ template "validate-deps.tmpl" (list "brew") }}
+
+{{ template "version-check.tmpl" (merge . (dict "type" "darwin")) }}
+
+{{- range $tap := .packages.darwin.brew.taps }}
+brew tap {{ $tap }}
+{{- end }}
+
+echo "[INFO] installing brew formulae"
+
+{{- range $formula := .packages.darwin.brew.formulae }}
+brew list {{ $formula }} &> /dev/null || brew install {{ $formula }}
+{{- end }}
+
+echo "[INFO] installing brew casks"
+
+{{- range $cask := .packages.darwin.brew.casks }}
+brew list {{ $cask }} --cask &> /dev/null || brew install {{ $cask }} --cask
+{{- end }}
+
+echo "[INFO] installing go packages"
+
+{{- range $pkg := .packages.darwin.go }}
+which "{{ $pkg.name }}" > /dev/null || go install "{{ $pkg.url }}@{{ $pkg.version }}"
+{{- end }}
+
+echo "[INFO] installing from scripts"
+
+{{- range $script := .packages.darwin.scripts }}
+{{ print (env "SCRIPTS_ROOT") "/install/" $.chezmoi.os "/" $script.name ".sh" }} {{ $script.args | join " " }}
+{{- end }}
+
+{{- end }}
