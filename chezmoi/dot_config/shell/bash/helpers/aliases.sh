@@ -21,6 +21,7 @@ alias zx="zoxide"
 
 ## reload
 
+alias pfload="source ${PROFILE}"
 alias rcload="source ${RC}"
 alias txload="tmux source-file ${TMUX_CONF_PUB}"
 
@@ -38,18 +39,6 @@ alias dpdot="deploy-dot"
 alias dpdotf="deploy-dot-force"
 alias dpd="dpdot"
 alias dpdf="dpdotf"
-
-### edit
-
-## shell + tmux
-
-alias rc="${EDITOR} ${RC}; rcload"
-alias txrc="${EDITOR} ${TMUX_CONF}; txload"
-
-## editors
-
-alias nvrc="${EDITOR} ${NVIM_ROOT_PUB}/init.lua"
-alias vrc="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.vimrc"
 
 ## misc (task, git, hyper, kube)
 
