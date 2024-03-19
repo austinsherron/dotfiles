@@ -2,16 +2,29 @@
 
 ## To-Do
 
-### Linux
+### Package Management
 
-- [x] Automate git-credential-manager installation/configuration
-    - [x] Incorporate this into dotfiles init/bootstrapping
+- [ ] Fix symbolic link issue; seemingly caused by differences in symlink representation across os types
+    - [ ] My idea for a solution involves copying scripts/manifest to .chezmoiscripts/.chezmoidata before runs
+- [ ] Add mechanism to remove from system packages that are removed from manifests
+- [ ] Add post-install hooks for git repos
+
+#### Linux
+
+- [ ] Update install script to use pkgmgr to install scripts
 
 ### tmux
 
 - [ ] Investigate incorporating at least pieces of oh-my-tmux
 
 ## Done
+
+### Package Management
+
+#### Linux
+
+- [x] Automate git-credential-manager installation/configuration
+    - [x] Incorporate this into dotfiles init/bootstrapping
 
 ### tmux
 
