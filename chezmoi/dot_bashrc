@@ -56,6 +56,8 @@ export INSTALL_SCRIPTS="${CODE_ROOT}/scripts/install"
 
 ### shell
 
+export PROFILE_NAME="${SHELL_NAME}_profile"
+export PROFILE="${LEGACY_CONFIG_ROOT_PUB}/.${PROFILE_NAME}"
 export RC_NAME="${SHELL_NAME}rc"
 export RC="${LEGACY_CONFIG_ROOT_PUB}/.${RC_NAME}"
 export EXTENSIONS_ROOT="${SHELL_ROOT}/extensions"
