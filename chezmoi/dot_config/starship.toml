@@ -138,9 +138,9 @@ format = "[$added]($added_style) [$deleted]($deleted_style)"
 [git_status]
 format = "([$conflicted$modified$staged$ahead_behind]($style))"
 style = "yellow"
-conflicted = "󰓡 "
-modified = " "
-staged = " "
+conflicted = " "
+modified = " "
+staged = " "
 untracked = " "
 
 ## languages ###################################################################
@@ -187,7 +187,7 @@ detect_folders = [
     "gke",
     "helm",
     "k8s",
-    "kubernetes"
+    "kubernetes",
 ]
 detect_files = [
     "Chart.yaml",
@@ -195,7 +195,7 @@ detect_files = [
     "helmfile.yaml",
     "helmfile.yml",
     "values.yaml",
-    "values.yml"
+    "values.yml",
 ]
 
 [[kubernetes.contexts]]
