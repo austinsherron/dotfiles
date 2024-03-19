@@ -46,17 +46,10 @@ echo "[INFO] installing pip3 packages"
 {{ $sudo }}pip3 show {{ $pkg.name }} &> /dev/null || pip3 install {{ $pkg.name }}
 {{- end }}
 
-OS="$(uname | tr '[:upper:]' '[:lower:]')"
-INSTALL_ROOT="${SCRIPTS_ROOT}/install/${OS}"
-
-if [[ ! -d "${INSTALL_ROOT}" ]]; then
-    echo "[ERROR] ${INSTALL_ROOT} dir does not exist"
-    exit 1
-fi
-
 echo "[INFO] installing from scripts"
 
+# TODO: test this
 {{- range $script := .packages.linux.scripts }}
-    "${INSTALL_ROOT}"/{{ $script }}.sh
+pkgmgr -s {{ $script }}
 {{- end }}
 {{- end }}

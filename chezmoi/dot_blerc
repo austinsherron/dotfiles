@@ -1,0 +1,7 @@
+# TODO: configure ble.sh
+
+# disable shell bells
+
+bleopt edit_abell=
+bleopt edit_vbell=
+

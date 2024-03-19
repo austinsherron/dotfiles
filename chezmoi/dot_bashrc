@@ -3,6 +3,10 @@
 
 ## bootstrap ###################################################################
 
+### ble.sh
+
+[[ $- == *i* ]] && source "${XDG_DATA_HOME}"/blesh/ble.sh --noattach
+
 ### constants
 
 SHELL_NAME="$(basename "${SHELL}")"
@@ -115,4 +119,8 @@ export PROMPT_COMMAND="history -a; history -n"
 source "${HELPERS_ROOT}/aliases.sh"
 source "${HELPERS_ROOT}/extensions.sh"
 source "${HELPERS_ROOT}/tools.sh"
+
+## ble.sh ######################################################################
+
+[[ ${BLE_VERSION-} ]] && ble-attach
 

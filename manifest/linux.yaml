@@ -140,3 +140,6 @@ packages:
       - xkeysnail
       - xplr
       - zoom
+      # generic
+      # TODO: test this
+      - ble
