@@ -103,8 +103,9 @@ packages:
         # tentative
         - protonmail-bridge
     scripts:
+      # NOTE: ble.sh should come before atuin
       - name: ble
-        source: generic
+      - name: atuin
       - name: gvm
         args: [go1.22]
         # FIXME: see comment in "${INSTALL_SCRIPTS}/darwin/gvm.sh"

@@ -20,3 +20,9 @@ source "${EXTENSIONS_ROOT}/oh-my-bash.sh"
 if which starship > /dev/null 2>&1; then
     eval "$(starship init bash)"
 fi
+
+## atuin #######################################################################
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+eval "$(atuin init bash)"
+
