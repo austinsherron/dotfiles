@@ -29,6 +29,7 @@ packages:
         - jira-cli
         - jq
         - lazygit
+        - lsd
         - lua
         - luarocks
         - neovim
