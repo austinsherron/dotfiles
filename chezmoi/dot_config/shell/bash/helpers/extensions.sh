@@ -3,9 +3,7 @@
 
 ## bash completion #############################################################
 
-if [[ -f "${COMPLETION_PATH}" ]]; then
-    . ${COMPLETION_PATH}
-fi
+[[ -f "${COMPLETION_PATH}" ]] && . ${COMPLETION_PATH}
 
 ## fzf completion ##############################################################
 
@@ -17,6 +15,10 @@ source "${EXTENSIONS_ROOT}/oh-my-bash.sh"
 
 ## starship ####################################################################
 
-if which starship > /dev/null 2>&1; then
-    eval "$(starship init bash)"
-fi
+which starship &> /dev/null && eval "$(starship init bash)"
+
+## atuin #######################################################################
+
+# FIXME: this doesn't activate atuin
+which atuin &> /dev/null && eval "$(atuin init bash)"
+

@@ -141,3 +141,8 @@ packages:
       - xkeysnail
       - xplr
       - zoom
+      # generic
+      # TODO: test ble.sh/atuin linux installation
+      # NOTE: ble.sh should come before atuin
+      - ble
+      - atuin

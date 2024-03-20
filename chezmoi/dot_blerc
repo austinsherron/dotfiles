@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+
+# TODO: configure ble.sh
+
+## general #####################################################################
+
+# disable shell bells
+bleopt edit_abell=
+bleopt edit_vbell=
+
+# disable exit status mark (i.e.: "[ble: exit ???]")
+bleopt exec_errexit_mark=
+
+# enable case-insensitive completion
+bind 'set completion-ignore-case on'
+
+## vi mode #####################################################################
+
+# enable vi mode
+bleopt default_keymap=vi
+
+# change cursor shape based on current mode
+function blerc-vim-mode-cursor() {
+    ble-bind -m vi_nmap --cursor 2
+    ble-bind -m vi_imap --cursor 5
+    ble-bind -m vi_omap --cursor 4
+    ble-bind -m vi_xmap --cursor 2
+    ble-bind -m vi_cmap --cursor 0
+}
+
+# key bindings
+function blerc-vim-mode-bindings() {
+    # cancel input
+    ble-bind -m vi_imap -f 'C-c' discard-line
+    ble-bind -m vi_nmap -f 'C-c' discard-line
+
+    # delete previous word
+    ble-bind -m vi_imap -f 'M-C-?' kill-backward-cword
+    ble-bind -m vi_imap -f 'M-DEL' kill-backward-cword
+    ble-bind -m vi_imap -f 'M-C-h' kill-backward-cword
+    ble-bind -m vi_imap -f 'M-BS'  kill-backward-cword
+}
+
+# entry point for vi mode settings
+function blerc-vim-mode-hook() {
+    # disable mode indicator
+    bleopt keymap_vi_mode_show=
+
+    blerc-vim-mode-cursor
+    blerc-vim-mode-bindings
+
+    # surround.vim gestures
+    source "$_ble_base/lib/vim-surround.sh"
+}
+
+# loads vi mode settings
+blehook/eval-after-load keymap_vi blerc-vim-mode-hook
+

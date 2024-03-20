@@ -3,6 +3,10 @@
 
 ## bootstrap ###################################################################
 
+### ble.sh
+
+[[ $- == *i* ]] && source "${XDG_DATA_HOME}"/blesh/ble.sh --noattach
+
 ### constants
 
 SHELL_NAME="$(basename "${SHELL}")"
@@ -110,6 +114,9 @@ export LUA_PATH
 # append to + reload history = history shared b/w tmux panes, amongst other things
 export PROMPT_COMMAND="history -a; history -n"
 
+# set timeout to 0 (for escape-time)
+stty time 0
+
 ## helpers #####################################################################
 
 # NOTE: ensure aliases are loaded after extensions, as oh-my-bash foists on me some
@@ -117,4 +124,8 @@ export PROMPT_COMMAND="history -a; history -n"
 source "${HELPERS_ROOT}/extensions.sh"
 source "${HELPERS_ROOT}/aliases.sh"
 source "${HELPERS_ROOT}/tools.sh"
+
+## ble.sh ######################################################################
+
+[[ ${BLE_VERSION-} ]] && ble-attach
 

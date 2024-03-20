@@ -7,6 +7,11 @@ set keymap vi-command
 # don't try to tab complete hidden files
 set match-hidden-files off
 
+# set "escape-time" to 0
+$if Bash
+  set keyseq-timeout 0
+$endif
+
 {{ if eq .chezmoi.os "darwin" }}
 # case-insensitive tab completion
 set completion-ignore-case on
