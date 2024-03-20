@@ -35,6 +35,9 @@ function blerc-vim-mode-bindings() {
     ble-bind -m vi_imap -f 'C-c' discard-line
     ble-bind -m vi_nmap -f 'C-c' discard-line
 
+    # history search in normal mode
+    ble-bind -m vi_nmap -f 'C-r' history-isearch-backward
+
     # delete previous word
     ble-bind -m vi_imap -f 'M-C-?' kill-backward-cword
     ble-bind -m vi_imap -f 'M-DEL' kill-backward-cword
