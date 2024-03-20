@@ -15,7 +15,7 @@
 
 #### Linux
 
-- [ ] Update install script to use pkgmgr to install scripts
+- [ ] Install relevant packages that have been installed on darwin
 
 ### tmux
 
@@ -29,6 +29,7 @@
 
 - [x] Automate git-credential-manager installation/configuration
     - [x] Incorporate this into dotfiles init/bootstrapping
+- [x] Update install script to use pkgmgr to install scripts
 
 ### tmux
 
