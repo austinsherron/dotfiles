@@ -5,6 +5,7 @@
 ### General
 
 - [ ] Setup atuin sync server
+- [ ] Transition to ulogger
 
 ### Package Management
 

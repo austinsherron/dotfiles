@@ -8,7 +8,7 @@ These files have been a work in progress--as they always should be, I think!--bu
 
 These files are shared across two laptops: my work computer, a 2023 M3 MacBook, and my personal laptop, a System76 Darter Pro running Pop!_OS.
 
-I use chezmoi and some home-baked os/host based script injection to handle differences across machines. I define my environments "pseudo-declaratively" via the yaml files in the manifest directory and chezmoi scripts.
+I use chezmoi and some home-baked os/host-based script injection to handle differences across machines. I define my environments "pseudo-declaratively" via yaml package manifest files and chezmoi scripts.
 
 ### Structure
 
@@ -38,7 +38,7 @@ I've recently adopted chezmoi; I'm really liking it so far. I think I may be usi
 
 ## Future Work
 
-* I'd like some mechanism to live sync b/w machines shared state not suitable for a git repo, i.e.: DBs for tools like zoxide, spell files, shell history, etc.
+* I'd like some mechanism to live sync b/w machines shared state not suitable for a git repo, i.e.: DBs for tools like zoxide, spell files, --shell history--, etc.
 * I'd like to play around with [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) and [Timewarrior](https://github.com/GothenburgBitFactory/timewarrior)
 * I'm pretty comfortable in the Bash universe, but I've heard good things about [Zsh](https://www.zsh.org), and I've always had a fascination with [Fish](https://fishshell.com). I may try my experiment with some other shells in the near-mid term, but a wholesale shell migration *feels* like it would be a large undertaking
 * I'm thinking of exploring [Nix](https://github.com/NixOS/nix) and [home-manager](https://github.com/nix-community/home-manager)

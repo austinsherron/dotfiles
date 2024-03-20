@@ -1,0 +1,7 @@
+filter_mode = "host"
+inline_height = 30
+keymap_mode = "vim-normal"
+
+[keymap_cursor]
+vim_insert = "blink-bar"
+vim_normal = "steady-block"
