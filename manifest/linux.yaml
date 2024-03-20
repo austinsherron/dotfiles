@@ -138,7 +138,6 @@ packages:
       - tlp
       - ungoogled-chromium
       - veracrypt
-      - xkeysnail
       - xplr
       - zoom
       # generic
