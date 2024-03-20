@@ -1,5 +1,7 @@
 fs:
   darwin:
+    - path: .bash_completions
+    - path: .local/state/logs
     - path: Pictures/Screenshots
     - path: Remote
     - path: Workspace
