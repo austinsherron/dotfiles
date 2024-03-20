@@ -104,13 +104,15 @@ packages:
         # tentative
         - protonmail-bridge
     scripts:
+      # NOTE: ble.sh should come before atuin
+      - name: ble
+      - name: atuin
       - name: gvm
         args: [go1.22]
         # FIXME: see comment in "${INSTALL_SCRIPTS}/darwin/gvm.sh"
         # args: [go1.22, --use, go1.22]
       - name: helm-plugin
         args: [diff, https://github.com/databus23/helm-diff]
-    # NOTE: install go packages after installing gvm, above
     go:
       - name: slack-term
         url: github.com/erroneousboat/slack-term
