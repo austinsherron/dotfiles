@@ -116,8 +116,10 @@ export PROMPT_COMMAND="history -a; history -n"
 
 ## helpers #####################################################################
 
-source "${HELPERS_ROOT}/aliases.sh"
+# NOTE: ensure aliases are loaded after extensions, as oh-my-bash foists on me some
+# unwanted aliases
 source "${HELPERS_ROOT}/extensions.sh"
+source "${HELPERS_ROOT}/aliases.sh"
 source "${HELPERS_ROOT}/tools.sh"
 
 ## ble.sh ######################################################################

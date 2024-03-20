@@ -6,6 +6,7 @@
 alias c="clear"
 alias db="dropbox"
 alias g="git"
+alias ls="lsd"
 alias nv="nvim"
 alias spt="spotify_player"
 alias tk="task"
