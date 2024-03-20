@@ -178,40 +178,40 @@ SUP_ENV_BAK="${XDG_}"
 
 # NOTE: wrapped in function so it can be injected on-demand, as these env vars wreak
 # general havoc
-function sup-env() {
-    if ! which gvm &> /dev/null; then
-        echo "[ERROR] gvm must be installed to inject superman env"
-        return 1
-    fi
+# function sup-env() {
+#     if ! which gvm &> /dev/null; then
+#         echo "[ERROR] gvm must be installed to inject superman env"
+#         return 1
+#     fi
+#
+#     if [[ -z ${GOPATH+x} ]]; then
+#         echo "[ERROR] GOPATH must be set to initialized superman repo env"
+#         return 1
+#     fi
+#
+#     if [[ ! -f "${SYNC_TOOLCHAIN}" ]]; then
+#         echo "[WARN] granica environment script could not be located"
+#         echo "[INFO] running sync_toolchain.py --install"
+#         sudo -E ${PROJECT_N}/utils/git-hooks/sync_toolchain.py --install
+#     fi
+#
+#     echo "export DYLD_LIBRARY_PATH=\"${DYLD_LIBRARY_PATH}\"" >|
+#     echo "export PKG_CONFIG_PATH"
+#
+#     # NOTE: ~ output of superman:utils/git-hooks/sync_toolchain.py --install
+#     if [[ -f ${PROJECT_N}/sync_toolchain.py ]]; then
+#         eval $(${SYNC_TOOLCHAIN} --env)
+#     else
+#         echo "[ERROR] granica environment script could not be located"
+#         return 1
+#     fi
+# }
 
-    if [[ -z ${GOPATH+x} ]]; then
-        echo "[ERROR] GOPATH must be set to initialized superman repo env"
-        return 1
-    fi
-
-    if [[ ! -f "${SYNC_TOOLCHAIN}" ]]; then
-        echo "[WARN] granica environment script could not be located"
-        echo "[INFO] running sync_toolchain.py --install"
-        sudo -E ${PROJECT_N}/utils/git-hooks/sync_toolchain.py --install
-    fi
-
-    echo "export DYLD_LIBRARY_PATH=\"${DYLD_LIBRARY_PATH}\"" >|
-    echo "export PKG_CONFIG_PATH"
-
-    # NOTE: ~ output of superman:utils/git-hooks/sync_toolchain.py --install
-    if [[ -f ${PROJECT_N}/sync_toolchain.py ]]; then
-        eval $(${SYNC_TOOLCHAIN} --env)
-    else
-        echo "[ERROR] granica environment script could not be located"
-        return 1
-    fi
-}
-
-function unset-sup-env() {
-    mapfile -t sup_env < <(python3 "${SYNC_TOOLCHAIN}" --env | awk '{print $2}' | cut -d = -f1)
-
-    for var in "${sup_env[@]}"; do
-        echo "unset ${var}"
-    done
-}
+# function unset-sup-env() {
+#     mapfile -t sup_env < <(python3 "${SYNC_TOOLCHAIN}" --env | awk '{print $2}' | cut -d = -f1)
+#
+#     for var in "${sup_env[@]}"; do
+#         echo "unset ${var}"
+#     done
+# }
 
