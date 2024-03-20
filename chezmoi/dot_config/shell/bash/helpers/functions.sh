@@ -8,7 +8,7 @@ source "${CODE_ROOT}/lib/bash/utils.sh"
 
 declare -A CM_ALIASES=([a]=apply [d]=diff)
 
-cm() {
+function cm() {
     if [[ -n "${CM_ALIASES[${1}]+x}" ]]; then
         chezmoi "${CM_ALIASES[${1}]}"
     else
@@ -19,31 +19,31 @@ cm() {
 
 ## clipboard ###################################################################
 
-clip-clear() {
+function clip-clear() {
     pbcopy < /dev/null
 }
 
-diff-clip() {
+function diff-clip() {
     tmp="$(mktemp)"
     pbpaste >| "${tmp}"
     diff "${tmp}" "${1}" && rm "${tmp}"
 }
 
-pbcf() {
+function pbcf() {
     pbcopy < "${1}"
 }
 
-pbpf() {
+function pbpf() {
     pbpaste > "${1}"
 }
 
-pbpo() {
+function pbpo() {
     pbpaste > "${1}" && ${EDITOR} "${1}"
 }
 
 ## files #######################################################################
 
-symlink() {
+function symlink() {
     if [[ "$#" -lt 2 ]]; then
         echo "[ERROR] symlink: two paths are required"
         return 1
@@ -53,14 +53,14 @@ symlink() {
 }
 
 # TODO: parameterize find pattern, create inverse function
-unhide() {
+function unhide() {
   GLOBIGNORE=".:.."
   for file in .*; do
      mv -n "$file" "${file#.}"
   done
 }
 
-uz() {
+function uz() {
   filename="${1}"
   wo_extension="${filename%.*}"
 
@@ -69,21 +69,25 @@ uz() {
 
 ## filesystem ##################################################################
 
-nls() {
+function nls() {
     ls $1 | wc -l
 }
 
-zls() {
+function zls() {
     ( zd $1 && ls )
 }
 
-znls() {
+function znls() {
     ( zd $1 && ls | wc -l )
+}
+
+function zopen() {
+    ( zd $1 && open . )
 }
 
 ## git #########################################################################
 
-git-root() {
+function git-root() {
     local git_root
     local submodule_parent
 
@@ -96,13 +100,13 @@ git-root() {
 
 alias gr="git-root"
 
-git-ignore() {
+function git-ignore() {
     ${EDITOR} "$(git-root)/.gitignore"
 }
 
 alias gi="git-ignore"
 
-clone-external() {
+function clone-external() {
     local repo="${1}"
     local repo_name
 
@@ -113,7 +117,7 @@ clone-external() {
 
 ## gpg #########################################################################
 
-gpg-export() {
+function gpg-export() {
     mkdir gpg-keychain
     cd gpg-keychain || exit
 
@@ -133,7 +137,7 @@ gpg-export() {
 
 ## logs ########################################################################
 
-log-ls() {
+function log-ls() {
     if [[ -z "${LOG_ROOT+x}" ]]; then
         echo "[ERROR] log-ls: LOG_ROOT is not set"
         return 1
@@ -142,7 +146,7 @@ log-ls() {
     ls "${LOG_ROOT}"
 }
 
-view-log() {
+function view-log() {
     if [[ -z "${LOG_ROOT+x}" ]]; then
         echo "[ERROR] log: LOG_ROOT is not set"
         return 1
@@ -173,7 +177,7 @@ alias vl="view-log"
 
 ## nvim ########################################################################
 
-editor() {
+function editor() {
     if [[ -n "$NVIM_LISTEN_ADDRESS" ]]; then
         alias nvim=nvr -cc split --remote-wait +'set bufhidden=wipe'
         export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
@@ -186,17 +190,17 @@ editor() {
 
 ## system ######################################################################
 
-host-id() {
+function host-id() {
     hostname -s
 }
 
-os-type() {
+function os-type() {
     uname | tr '[:upper:]' '[:lower:]'
 }
 
 ## tmux ########################################################################
 
-tmux-env() {
+function tmux-env() {
     [[ -n "${1+x}" ]] && local var="TMUX_$(to_upper "${1}")"
 
     if [[ $# -eq 0 ]]; then
@@ -215,7 +219,7 @@ tmux-env() {
 
 alias txenv="tmux-env"
 
-tmux-layout() {
+function tmux-layout() {
     local var="$(tmux display-message -pF '#W')_layout"
 
     if [[ $# -eq 0 ]]; then
@@ -232,7 +236,7 @@ tmux-layout() {
 
 alias txlyt="tmux-layout"
 
-tmux-cmd-popup() {
+function tmux-cmd-popup() {
     if [[ $# -lt 1 ]]; then
         echo "[ERROR] tmux-cmd-popup: one positional argument, cmd, required"
         return 1
