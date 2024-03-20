@@ -1,6 +1,6 @@
 import = [
     "{{ env "XDG_CONFIG_HOME" }}/alacritty/appearance.toml",
-    "{{ env "XDG_CONFIG_HOME" }}/alacritty/keymap.toml"
+    "{{ env "XDG_CONFIG_HOME" }}/alacritty/keymap/{{ .chezmoi.os }}.toml"
 ]
 
 [shell]
@@ -8,8 +8,11 @@ program = "{{ eq .chezmoi.os "linux" | ternary "/bin/bash" "/opt/homebrew/bin/ba
 args = ["-c", '"tmux attach || tmux"']
 
 [window]
-startup_mode = "Fullscreen"
-decorations = "None"
+startup_mode = "{{ eq .chezmoi.os "linux" | ternary "Fullscreen" "Maximized" }}"
+decorations = "{{ eq .chezmoi.os "linux" | ternary "None" "Buttonless" }}"
+{{- if eq .chezmoi.os "darwin" }}
+option_as_alt = "Both"
+{{- end }}
 
 [font]
 normal = { family = "JetBrainsMono Nerd Font Mono", style = "SemiBold" }
