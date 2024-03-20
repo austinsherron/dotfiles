@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 
-# TODO: configure ble.sh
+# TODO: continue to configure based on recipes and how-tos in wiki:
+#   https://github.com/akinomyoga/ble.sh
 
 ## general #####################################################################
 
