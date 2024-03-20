@@ -1,5 +1,10 @@
 fs:
-  darwin: []
+  darwin:
+    - path: Pictures/Screenshots
+    - path: Remote
+    - path: Workspace
+    - path: Workspace/external
+    - path: Workspace/workspace
   linux:
     - path: .local/state/logs
     - path: Media
@@ -13,6 +18,7 @@ fs:
       src: Videos
       dst: Media
     - path: Media/Pictures/Screenshots
+    - path: Remote
     - path: Workspace
     - path: Workspace/external
     - path: Workspace/workspace
