@@ -1,4 +1,18 @@
 fs:
-  common: []
   darwin: []
-  linux: []
+  linux:
+    - path: .local/state/logs
+    - path: Media
+    - path: Media/Music
+      src: Music
+      dst: Media
+    - path: Media/Pictures
+      src: Pictures
+      dst: Media
+    - path: Media/Videos
+      src: Videos
+      dst: Media
+    - path: Media/Pictures/Screenshots
+    - path: Workspace
+    - path: Workspace/external
+    - path: Workspace/workspace
