@@ -1,31 +1,112 @@
 #!/usr/bin/env bash
 
 
-## important paths #############################################################
-
-## granica
-
-export WORK_ROOT="${CODE_ROOT}/granica"
-
-## environment #################################################################
-
-## context
+## constants ###################################################################
 
 export SCREEN_RELEASE="1.28.0"
 
-## required: krypton:tellus-multitenant helmdist
+## important paths #############################################################
 
-if [[ -z "${ALERTING_PAGERDUTY_TOKEN+x}" ]]; then
-    export ALERTING_PAGERDUTY_TOKEN="{{ (onepasswordDetailsFields "myzhr6t5daozr6f5pc2sdbpkxi" "" "granica").password.value }}"
-fi
+export WORK_ROOT="${CODE_ROOT}/granica"
+export PROJECT_N="${GOPATH}/src/project.n"
+export TELLUS_HELMDIST="${WORK_ROOT}/krypton/tellus-multitenant/helmdist"
+export TERRAFORM_SA_KEY_PATH="/var/tmp/terraform-service-account-key.json"
 
-if [[ -z "${ALERTING_SLACK_TOKEN+x}" ]]; then
-    export ALERTING_SLACK_TOKEN="{{ (onepasswordDetailsFields "mxqsegi7a7mitjidym22e23ioi" "" "granica").password.value }}"
-fi
+## aliases #####################################################################
+
+### rename
+
+alias gl="glab"
+alias hf="helmfile"
+alias kc="kubectl"
+alias kctx="kubectx"
+alias tf="terraform"
+alias tg="terragrunt"
+
+### gcloud
+
+alias gcp-auth="gcloud auth login"
+alias gcp-ssh-uat="gcloud compute ssh projectn@project-n-admin-server-255d26 --project=n-hawkeye-dev --zone=us-central1-c"
+
+### glab
+
+alias gl-mr-new="glab mr create -a austin.sherron"
+alias gl-ci="glab ci view"
+alias gl-merge="glab mr merge"
 
 ## functions ###################################################################
 
-rel-diff() {
+### aws
+
+function aws-set-profile() {
+    export AWS_PROFILE="$(aws configure list-profiles | fzf --height=8 +i +m -e)"
+}
+
+alias asp="aws-set-profile"
+
+function aws-current-profile() {
+    echo "${AWS_PROFILE}"
+}
+
+alias acp="aws-current-profile"
+
+### glab
+
+function gl-mr-view {
+    glab mr view ${@}
+}
+
+alias gl-mr="gl-mr-view"
+
+### helmfile
+
+### jira
+
+function jr-ls() {
+    jira issue list -a $(jira me) -s "To Do" -s "In Progress"
+}
+
+function jr-rls() {
+    jira issue list -r $(jira me)
+}
+
+function jr-new() {
+    jira issue create -a $(jira me)
+}
+
+function jr-edit() {
+    if [[ $# -lt 1 ]]; then
+        echo "[ERROR] jr edit: 'issue' argument is required"
+        return 1
+    fi
+
+    jira issue edit HAWK-${issue}
+}
+
+function jr-gimme() {
+    if [[ $# -lt 1 ]]; then
+        echo "[ERROR] jr edit: 'issue' argument is required"
+        return 1
+    fi
+
+    jira issue edit HAWK-${issue} -a $(jira me)
+}
+
+### kubectl
+
+function kcsn() {
+    local namespace="${1:-""}"
+    [[ -z "${namespace}" ]] && namespace="$(kubectl get namespace | tail --lines=+2 | awk '{print $1}' | fzf --height=8 +i +m -e)"
+
+    kubectl config set-context --current --namespace "${namespace}"
+}
+
+### misc
+
+declare -A TELLUS_HELMFILES=([aws]=helmfile.yaml [gcp]=helmfile-gke.yaml)
+TELLUS_CONTEXT_BASE="tellus-multitenant-"
+
+function rel-diff() {
     local mod="--oneline"
     local filter="HAWK"
 
@@ -46,5 +127,91 @@ rel-diff() {
     done
 
     git log ${mod} release-${SCREEN_RELEASE}-qtm-screen..master | grep "${filter}"
+}
+
+## tools #######################################################################
+
+## gcp
+
+export GOOGLE_APPLICATION_CREDENTIALS="${TERRAFORM_SA_KEY_PATH}"
+
+## glab
+
+if [[ -z "${GITLAB_TOKEN+x}" ]]; then
+    export GITLAB_TOKEN="{{ (onepasswordDetailsFields "gbbyczz7ku2kx5ah2ryupcphoe" "" "my").credential.value }}"
+fi
+
+## jira
+
+if [[ -z "${JIRA_API_TOKEN+x}" ]]; then
+    export JIRA_API_TOKEN="{{ (onepasswordDetailsFields "s22btzdr2q6futjzovqapqtolm" "" "my").credential.value }}"
+fi
+
+## environment #################################################################
+
+## required: krypton:tellus-multitenant/helmdist
+
+if [[ -z "${ALERTING_PAGERDUTY_TOKEN+x}" ]]; then
+    export ALERTING_PAGERDUTY_TOKEN="{{ (onepasswordDetailsFields "myzhr6t5daozr6f5pc2sdbpkxi" "" "granica").password.value }}"
+fi
+
+if [[ -z "${ALERTING_SLACK_TOKEN+x}" ]]; then
+    export ALERTING_SLACK_TOKEN="{{ (onepasswordDetailsFields "mxqsegi7a7mitjidym22e23ioi" "" "granica").password.value }}"
+fi
+
+if [[ -z "${SCREEN_ALERTING_PAGERDUTY_TOKEN+x}" ]]; then
+    export SCREEN_ALERTING_PAGERDUTY_TOKEN="{{ (onepasswordDetailsFields "v6dqa2fs7nlmawgrdd37j2sdry" "" "granica").password.value }}"
+fi
+
+## required: krypton:tellus-multitenant/gke
+
+if [[ ! -s "${TERRAFORM_SA_KEY_PATH}" ]]; then
+    echo "{{ onepasswordRead "op://engineering/terraform/key.json" "granica" }}" > ${TERRAFORM_SA_KEY_PATH}
+fi
+
+## environment #################################################################
+
+# TODO: finish implementing superman env manipulation utilities
+
+SYNC_TOOLCHAIN="${PROJECT_N}/sync_toolchain.py"
+SUP_ENV_BAK="${XDG_}"
+
+# NOTE: wrapped in function so it can be injected on-demand, as these env vars wreak
+# general havoc
+function sup-env() {
+    if ! which gvm &> /dev/null; then
+        echo "[ERROR] gvm must be installed to inject superman env"
+        return 1
+    fi
+
+    if [[ -z ${GOPATH+x} ]]; then
+        echo "[ERROR] GOPATH must be set to initialized superman repo env"
+        return 1
+    fi
+
+    if [[ ! -f "${SYNC_TOOLCHAIN}" ]]; then
+        echo "[WARN] granica environment script could not be located"
+        echo "[INFO] running sync_toolchain.py --install"
+        sudo -E ${PROJECT_N}/utils/git-hooks/sync_toolchain.py --install
+    fi
+
+    echo "export DYLD_LIBRARY_PATH=\"${DYLD_LIBRARY_PATH}\"" >|
+    echo "export PKG_CONFIG_PATH"
+
+    # NOTE: ~ output of superman:utils/git-hooks/sync_toolchain.py --install
+    if [[ -f ${PROJECT_N}/sync_toolchain.py ]]; then
+        eval $(${SYNC_TOOLCHAIN} --env)
+    else
+        echo "[ERROR] granica environment script could not be located"
+        return 1
+    fi
+}
+
+function unset-sup-env() {
+    mapfile -t sup_env < <(python3 "${SYNC_TOOLCHAIN}" --env | awk '{print $2}' | cut -d = -f1)
+
+    for var in "${sup_env[@]}"; do
+        echo "unset ${var}"
+    done
 }
 

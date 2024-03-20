@@ -8,37 +8,6 @@
 export MACHINE="MacBook"
 export MACHINE_NICKNAME="🍎📖"
 
-## aliases #####################################################################
-
-### rename
-
-alias gl="glab"
-alias kc="kubectl"
-alias kctx="kubectx"
-alias tf="terraform"
-alias tg="terragrunt"
-
-### gcloud
-
-alias gcp-auth="gcloud auth login"
-
-## functions ###################################################################
-
-### kubectl
-
-kcsn() {
-    local namespace="$(kubectl get namespace | tail --lines=+2 | awk '{print $1}' | fzf --height=8 +i +m -e)"
-    kubectl config set-context --current --namespace "${namespace}"
-}
-
-## tools #######################################################################
-
-## glab
-
-if [[ -z "${GITLAB_TOKEN+x}" ]]; then
-    export GITLAB_TOKEN="{{ (onepasswordDetailsFields "dkrn7o7kv7eoi3ddclsabely4m" "" "my").credential.value }}"
-fi
-
 ## work ########################################################################
 
 source "${HOST_ROOT}/workrc"
