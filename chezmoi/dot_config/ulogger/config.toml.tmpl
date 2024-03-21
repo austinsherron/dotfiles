@@ -1,0 +1,20 @@
+root = "{{ env "HOME" }}/.local/state/logs"
+
+[type]
+default = "default"
+
+[level]
+current = "WARN"
+default = "WARN"
+
+[level.overrides]
+chezmoi = "INFO"
+
+[path]
+default = "default.log"
+chezmoi = "chezmoi.log"
+cron = "cron.log"
+pkg = "pkg.log"
+shell = "shell.log"
+snapshot = "snapshot/out.log"
+status = "status.log"
