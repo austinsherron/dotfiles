@@ -19,6 +19,5 @@ which starship &> /dev/null && eval "$(starship init bash)"
 
 ## atuin #######################################################################
 
-# FIXME: this doesn't activate atuin
-which atuin &> /dev/null && eval "$(atuin init bash)"
+which atuin &> /dev/null && eval "$(atuin init bash --disable-up-arrow)"
 
