@@ -78,6 +78,11 @@ alias gh-pr-view="gh pr view"
 
 alias gh-repo-ls="gh repo ls --no-archived"
 
+### logs
+
+alias vl="ulogger view -t"
+alias logls="ulogger list"
+
 ### repls
 
 alias hs-pop="tmux-cmd-popup \"hs\""
