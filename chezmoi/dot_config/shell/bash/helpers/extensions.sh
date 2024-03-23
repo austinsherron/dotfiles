@@ -3,7 +3,7 @@
 
 ## bash completion #############################################################
 
-[[ -f "${COMPLETION_PATH}" ]] && . ${COMPLETION_PATH}
+[[ -f "${COMPLETION_PATH}" ]] && . "${COMPLETION_PATH}"
 
 ## fzf completion ##############################################################
 
@@ -19,5 +19,5 @@ which starship &> /dev/null && eval "$(starship init bash)"
 
 ## atuin #######################################################################
 
-which atuin &> /dev/null && eval "$(atuin init bash --disable-up-arrow)"
+source "${EXTENSIONS_ROOT}/atuin.sh"
 

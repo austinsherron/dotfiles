@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC1091
 
+
+## gcalcli #####################################################################
+
+# TODO: add setup/config
 
 ## neovim ######################################################################
 
@@ -9,16 +14,14 @@ export NVIM_AUTO_INSTALL_PACKAGES=true
 
 ## nix #########################################################################
 
-if [ -e /home/austin/.nix-profile/etc/profile.d/nix.sh ]; then
-    . /home/austin/.nix-profile/etc/profile.d/nix.sh;
-fi
+[[ -e /home/austin/.nix-profile/etc/profile.d/nix.sh ]] && . /home/austin/.nix-profile/etc/profile.d/nix.sh
 
 ## nvm ########################################################################
 
 export NVM_DIR="${LEGACY_CONFIG_ROOT_PUB}/.nvm"
 
-[ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"                    # load nvm
-[ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion"  # load completions
+[[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"                    # load nvm
+[[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"  # load completions
 
 ## zoxide ######################################################################
 
