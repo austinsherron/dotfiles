@@ -5,7 +5,7 @@
 
 ### ble.sh
 
-[[ $- == *i* ]] && source "${XDG_DATA_HOME}"/blesh/ble.sh --noattach
+[[ $- == *i* ]] && source "${XDG_DATA_HOME}/blesh/ble.sh" --noattach
 
 ### constants
 
@@ -90,6 +90,7 @@ source "${HOST_CONFIG_ROOT}/inject-host.sh"
 export PATH="${PATH}:${SYS_ROOT}/nvim/bin"              # neovim
 export PATH="${PATH}:${GO_ROOT}/bin:${GOPATH}/bin"      # golang
 export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"         # java
+export PATH="${PATH}:${HOME}/.cargo/bin"                # cargo
 
 ### pythonpath
 

@@ -12,8 +12,7 @@ function cm() {
     if [[ -n "${CM_ALIASES[${1}]+x}" ]]; then
         chezmoi "${CM_ALIASES[${1}]}"
     else
-        # shellcheck disable=SC2068
-        chezmoi ${@}
+        chezmoi "${@}"
     fi
 }
 
@@ -70,19 +69,21 @@ function uz() {
 ## filesystem ##################################################################
 
 function nls() {
-    ls $1 | wc -l
+    # shellcheck disable=SC2012
+    ls "${1}" | wc -l
 }
 
 function zls() {
-    ( zd $1 && ls )
+    ( zd "${1}" && ls )
 }
 
 function znls() {
-    ( zd $1 && ls | wc -l )
+    # shellcheck disable=SC2012
+    ( zd "${1}" && ls | wc -l )
 }
 
 function zopen() {
-    ( zd $1 && open . )
+    ( zd "${1}" && open . )
 }
 
 ## git #########################################################################
@@ -135,46 +136,6 @@ function gpg-export() {
     cd - || exit
 }
 
-## logs ########################################################################
-
-function log-ls() {
-    if [[ -z "${LOG_ROOT+x}" ]]; then
-        echo "[ERROR] log-ls: LOG_ROOT is not set"
-        return 1
-    fi
-
-    ls "${LOG_ROOT}"
-}
-
-function view-log() {
-    if [[ -z "${LOG_ROOT+x}" ]]; then
-        echo "[ERROR] log: LOG_ROOT is not set"
-        return 1
-    fi
-
-    local log_name=""
-
-    if [[ -z "${DEFAULT_LOG_TYPE+x}" ]] && [[ "$#" -eq 0 ]]; then
-        echo "[ERROR] log: unable to determine log type: none provided and no default set"
-        return 1
-    elif [[ "$#" -eq 0 ]]; then
-        log_name="${DEFAULT_LOG_TYPE}"
-    else
-        log_name="${1}"
-    fi
-
-    local log_path="${LOG_ROOT}/${log_name}.log"
-
-    if [[ ! -f "${log_path}" ]]; then
-        echo "[ERROR] log: '${log_path}' is not a log file'"
-        return 1
-    fi
-
-    ${EDITOR:-vim} "${log_path}"
-}
-
-alias vl="view-log"
-
 ## nvim ########################################################################
 
 function editor() {
@@ -198,10 +159,15 @@ function os-type() {
     uname | tr '[:upper:]' '[:lower:]'
 }
 
+function inspect-path() {
+    echo "${PATH}" | tr ':' '\n'
+}
+
 ## tmux ########################################################################
 
 function tmux-env() {
-    [[ -n "${1+x}" ]] && local var="TMUX_$(to_upper "${1}")"
+    local var
+    [[ -n "${1+x}" ]] && var="TMUX_$(to_upper "${1}")"
 
     if [[ $# -eq 0 ]]; then
         tmux show-environment
@@ -220,7 +186,8 @@ function tmux-env() {
 alias txenv="tmux-env"
 
 function tmux-layout() {
-    local var="$(tmux display-message -pF '#W')_layout"
+    local var
+    var="$(tmux display-message -pF '#W')_layout"
 
     if [[ $# -eq 0 ]]; then
         tmux-env "${var}"
@@ -243,6 +210,8 @@ function tmux-cmd-popup() {
     fi
 
     local cmd="${1}" && shift
-    tmux popup -w 70% -h 90% ${@} -d "$(pwd)" "${cmd}"
+    tmux popup -w 70% -h 90% "${@}" -d "$(pwd)" "${cmd}"
 }
+
+alias txpop="tmux-cmd-popup"
 

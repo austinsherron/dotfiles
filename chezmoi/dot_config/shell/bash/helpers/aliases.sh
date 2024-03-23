@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2139
 
 
 ## rename ######################################################################
@@ -22,8 +23,8 @@ alias zx="zoxide"
 
 ## reload
 
-alias pfload="source ${PROFILE}"
-alias rcload="source ${RC}"
+alias pfload="source \"${PROFILE}\""
+alias rcload="source \"${RC}\""
 alias txload="tmux source-file ${TMUX_CONF_PUB}"
 
 ## deploy (chezmoi) + reload
