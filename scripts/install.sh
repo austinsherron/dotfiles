@@ -5,12 +5,17 @@ set -Eeuo pipefail
 
 ## dotfiles installation ######################################################
 
+DOTFILES="$(dirname "$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )")"
+
+## run os agnostic bootstrap script
+
+"${DOTFILES}/scripts/bootstrap/common.sh"
+
 ## run os specific bootstrap script
 
-DOTFILES="$(dirname $( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P ))"
-
 OS="$(uname | tr '[:upper:]' '[:lower:]')"
-source "${DOTFILES}/scripts/bootstrap/${OS}/main.sh"
+
+"${DOTFILES}/scripts/bootstrap/${OS}/main.sh"
 
 ## install chezmoi config
 

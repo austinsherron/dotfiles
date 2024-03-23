@@ -41,9 +41,11 @@ packages:
         - pinentry
         - python-toml
         - rg
+        - rq --no-quarantine
         - rust
         - qt5
         - s-search
+        - shellharden
         - spotify_player
         - spotifyd
         - starship
@@ -54,6 +56,7 @@ packages:
         - trash-cli
         - tree
         - tmux
+        - xclip
         - xdotool
         - xinit
         - xorg-server
@@ -79,6 +82,7 @@ packages:
         # tentative
         - neomutt
       casks:
+        # personal
         - 1password
         - 1password-cli
         - amethyst
@@ -101,12 +105,14 @@ packages:
         - whatsapp
         - yubico-authenticator
         - yubico-yubikey-manager
+        # work
+        - tailscale
         # tentative
         - protonmail-bridge
     scripts:
       # NOTE: ble.sh should come before atuin
-      - name: ble
-      - name: atuin
+      - ble
+      - atuin
       - name: gvm
         args: [go1.22]
         # FIXME: see comment in "${INSTALL_SCRIPTS}/darwin/gvm.sh"

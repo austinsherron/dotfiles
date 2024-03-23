@@ -13,43 +13,15 @@ source /etc/profile.d/shared_paths.sh
 # validate internal dependencies
 {{ template "validate-deps.tmpl" (list "pkgmgr" "check-pkg") }}
 
+# check if the manifest has changed since the last run
 {{ template "version-check.tmpl" (merge . (dict "type" "linux")) }}
 
-echo "[INFO] installing apt packages"
+{{ template "pkgmgr-install.tmpl" (dict "mgr" "apt" "pkgs" .packages.linux.apt) }}
+{{ template "pkgmgr-install.tmpl" (dict "mgr" "flatpak" "pkgs" .packages.linux.flatpak) }}
+{{ template "pkgmgr-install.tmpl" (dict "mgr" "snap" "pkgs" .packages.linux.snap) }}
 
-{{- range $pkg := .packages.linux.apt }}
-pkgmgr -p "{{ $pkg }}" -m apt
-{{- end }}
+{{ template "scripts-install.tmpl" .packages.linux.scripts }}
+{{ template "pip3-install.tmpl" .packages.linux.pip3 }}
+{{ template "luarocks-install.tmpl" .packages.linux.luarocks }}
 
-echo "[INFO] installing flatpak packages"
-
-{{- range $pkg := .packages.linux.flatpak }}
-pkgmgr -p "{{ $pkg }}" -m flatpak
-{{- end }}
-
-echo "[INFO] installing snap packages"
-
-{{- range $pkg := .packages.linux.snap }}
-pkgmgr -p "{{ $pkg }}" -m snap
-{{- end }}
-
-echo "[INFO] installing lua rocks"
-
-{{- range $pkg := .packages.linux.luarocks }}
-luarocks show {{ $pkg.name }} &> /dev/null || sudo luarocks install {{ $pkg.name }} {{ $pkg.version }}
-{{- end }}
-
-echo "[INFO] installing pip3 packages"
-
-{{- range $pkg := .packages.linux.pip3 }}
-{{- $sudo := (hasKey $pkg "sudo") | ternary "sudo " "" }}
-{{ $sudo }}pip3 show {{ $pkg.name }} &> /dev/null || pip3 install {{ $pkg.name }}
-{{- end }}
-
-echo "[INFO] installing from scripts"
-
-# TODO: test this
-{{- range $script := .packages.linux.scripts }}
-pkgmgr -s {{ $script }}
-{{- end }}
 {{- end }}

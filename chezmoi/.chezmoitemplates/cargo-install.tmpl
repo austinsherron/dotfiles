@@ -1,0 +1,5 @@
+echo "[INFO] installing cargo packages"
+
+{{- range $pkg := . }}
+cargo --list | awk '{print $1}' | grep -q "^{{ $pkg }}" &> /dev/null || cargo install {{ $pkg }}
+{{- end }}

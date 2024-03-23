@@ -7,44 +7,22 @@ source /etc/profile.d/shared_paths.sh
 
 
 {{ template "validate-deps.tmpl" (list "brew") }}
-
+{{ template "validate-deps.tmpl" (list "pkgmgr" "check-pkg") }}
 {{ template "version-check.tmpl" (merge . (dict "type" "darwin")) }}
 
+echo "[INFO] adding brew taps"
+
 {{- range $tap := .packages.darwin.brew.taps }}
-brew tap {{ $tap }}
+pkgmgr --tap {{ $tap }}
 {{- end }}
 
-echo "[INFO] installing brew formulae"
-
-{{- range $formula := .packages.darwin.brew.formulae }}
-brew list {{ $formula }} &> /dev/null || brew install {{ $formula }}
-{{- end }}
-
-echo "[INFO] installing brew casks"
-
-{{- range $cask := .packages.darwin.brew.casks }}
-brew list {{ $cask }} --cask &> /dev/null || brew install {{ $cask }} --cask
-{{- end }}
-
-echo "[INFO] installing from scripts"
-
-{{- range $script := .packages.darwin.scripts }}
-# assume the script is os specific
-SCRIPT_PATH="${SCRIPTS_ROOT}/install/{{ $.chezmoi.os }}/{{ $script.name }}.sh"
-# but if the os specific path doesn't exist, it may be an os-agnostic script
-[[ ! -f "${SCRIPT_PATH}" ]] && SCRIPT_PATH="${SCRIPTS_ROOT}/install/generic/{{ $script.name }}.sh"
-# if that doesn't exist, fail
-[[ ! -f "${SCRIPT_PATH}" ]] && echo "[ERROR] the script ${SCRIPT_PATH} doesn't exist" && exit 1
-"${SCRIPT_PATH}" {{ dig "args" list $script | join " " }}
-{{- end }}
+{{ template "pkgmgr-install.tmpl" (dict "mgr" "brew" "pkgs" .packages.darwin.brew.formulae "type" "formulae") }}
+{{ template "pkgmgr-install.tmpl" (dict "mgr" "brew" "pkgs" .packages.darwin.brew.casks "args" "--cask" "type" "casks") }}
 
 # NOTE: at the time of writing, go packages must be installed after scripts due to
 # dependency on gvm
 
-echo "[INFO] installing go packages"
-
-{{- range $pkg := .packages.darwin.go }}
-which "{{ $pkg.name }}" > /dev/null || go install "{{ $pkg.url }}@{{ $pkg.version }}"
-{{- end }}
+{{ template "scripts-install.tmpl" .packages.darwin.scripts }}
+{{ template "go-install.tmpl" .packages.darwin.go }}
 
 {{- end }}
