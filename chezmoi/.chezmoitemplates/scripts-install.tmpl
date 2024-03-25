@@ -1,0 +1,10 @@
+echo "[INFO] installing from scripts"
+
+{{- range $script := . }}
+{{- if typeIs "string" $script }}
+pkgmgr -s {{ $script }}
+{{- else }}
+{{- $args := (dig "args" list $script) | join " " }}
+pkgmgr -s {{ $script.name }} {{ $args }}
+{{- end }}
+{{- end }}

@@ -81,31 +81,6 @@ packages:
       - task --classic
       - whatsapp-for-linux
       - yq
-    luarocks:
-      - name: bit32
-        version: 5.3.5.1-1
-      - name: busted
-        version: 2.1.2-3
-      - name: luacov
-        version: 0.15.0-1
-      - name: luafilesystem
-        version: 1.8.0-1
-      - name: see
-        version: 0.1-1
-      - name: yaml
-        version: 1.1.2-1
-    pip3:
-      - name: SQLAlchemy
-      - name: coverage
-      - name: flask
-      - name: neovim-remote
-      - name: progressbar2
-      - name: pyopenssl
-      - name: rope
-      - name: selenium
-      - name: selenium-driver-updater
-      - name: webdriver-auto-update
-      - name: webdriver-manager
     scripts:
       - 1password
       - alacritty
@@ -145,3 +120,28 @@ packages:
       # NOTE: ble.sh should come before atuin
       - ble
       - atuin
+    pip3:
+      - SQLAlchemy
+      - coverage
+      - flask
+      - neovim-remote
+      - progressbar2
+      - pyopenssl
+      - rope
+      - selenium
+      - selenium-driver-updater
+      - webdriver-auto-update
+      - webdriver-manager
+    luarocks:
+      - name: bit32
+        version: 5.3.5.1-1
+      - name: busted
+        version: 2.1.2-3
+      - name: luacov
+        version: 0.15.0-1
+      - name: luafilesystem
+        version: 1.8.0-1
+      - name: see
+        version: 0.1-1
+      - name: yaml
+        version: 1.1.2-1

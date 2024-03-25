@@ -1,3 +1,9 @@
+# TODO: impl import resolution in tools:utils/data/tq
+import = [
+    "{{ env "XDG_CONFIG_HOME" }}/ulogger/external.toml",
+    "{{ env "XDG_CONFIG_HOME" }}/ulogger/actions.toml"
+]
+
 root = "{{ env "HOME" }}/.local/state/logs"
 
 [type]
@@ -11,10 +17,17 @@ default = "WARN"
 chezmoi = "INFO"
 
 [path]
-default = "default.log"
-chezmoi = "chezmoi.log"
-cron = "cron.log"
-pkg = "pkg.log"
-shell = "shell.log"
-snapshot = "snapshot/out.log"
-status = "status.log"
+extension = "log"
+default = "default"
+
+[path.file]
+chezmoi = "chezmoi"
+cron = "cron"
+pkg = "pkg"
+shell = "shell"
+snapshot = "snapshot"
+status = "status"
+
+[path.directory]
+snapshot = "snapshot"
+chezmoi = "chezmoi"

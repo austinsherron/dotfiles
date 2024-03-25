@@ -1,0 +1,8 @@
+echo "[INFO] installing {{ .mgr }} {{ (dig "type" "packages" .) }}"
+
+{{- $args := dig "args" "" . }}
+{{- $mgr := .mgr }}
+
+{{- range $pkg := .pkgs }}
+pkgmgr install -p {{ $pkg }} {{ $args }} -m {{ $mgr }}
+{{- end }}

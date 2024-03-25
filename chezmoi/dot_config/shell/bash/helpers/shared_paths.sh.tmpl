@@ -17,6 +17,7 @@ export XDG_STATE_HOME=~/.local/state
 export ADMIN_HOME="{{ .chezmoi.homeDir }}"
 export WORKSPACE="${ADMIN_HOME}/Workspace"
 export CODE_ROOT="${WORKSPACE}/workspace"
+export BASH_TOOLS="${CODE_ROOT}/bash-tools"
 
 ## logs
 
@@ -34,11 +35,11 @@ export CONFIG_ROOT_PUB="${HOME}/.config"
 ## packages
 
 export EXTERNAL_PKGS="${WORKSPACE}/external"    # external
-export TOOLS_ROOT="${CODE_ROOT}/tools"          # internal
+export TOOLS_ROOT="${BASH_TOOLS}/tools"         # internal
 
 ## scripts
 
-export SCRIPTS_ROOT="${CODE_ROOT}/scripts"
+export SCRIPTS_ROOT="${BASH_TOOLS}/scripts"
 
 ## executables (system-wide)
 {{ if eq .chezmoi.os "linux" }}
