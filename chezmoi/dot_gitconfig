@@ -5,6 +5,7 @@
     # signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 [core]
     excludesfile = /Users/austinsherron/.gitignore
+    pager        = delta
 [alias]
     checkoutr   = checkout
     diff        = diff -M
@@ -143,3 +144,21 @@
     helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
     useHttpPath = true
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+[delta]
+    features = decorations
+    line-numbers-left-format = ""
+    line-numbers-right-format = "│ "
+    side-by-side = true
+[delta "interactive"]
+    keep-plus-minus-markers = false
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax

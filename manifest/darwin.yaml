@@ -20,6 +20,7 @@ packages:
         - gh
         - git
         - git-credential-manager
+        - git-delta
         - google-chrome
         - grep
         - gpg
