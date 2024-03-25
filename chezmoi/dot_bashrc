@@ -96,7 +96,6 @@ export PATH="${PATH}:/usr/local/ulogger/bin"            # ulogger
 ### pythonpath
 
 ## FIXME: I hate having to manually add things here
-export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/lib/python"
 export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/interview-prep/utils"
 export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/finance/src"
 export PYTHONPATH="${PYTHONPATH}:${CODE_ROOT}/py-toolbox/tools"

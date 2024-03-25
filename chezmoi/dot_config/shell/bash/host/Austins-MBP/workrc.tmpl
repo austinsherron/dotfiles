@@ -39,7 +39,8 @@ alias gl-merge="glab mr merge"
 ### aws
 
 function aws-set-profile() {
-    export AWS_PROFILE="$(aws configure list-profiles | fzf --height=8 +i +m -e)"
+    AWS_PROFILE="$(aws configure list-profiles | fzf --height=8 +i +m -e)"
+    export AWS_PROFILE
 }
 
 alias asp="aws-set-profile"
@@ -53,7 +54,7 @@ alias acp="aws-current-profile"
 ### glab
 
 function gl-mr-view {
-    glab mr view ${@}
+    glab mr view "${@}"
 }
 
 alias gl-mr="gl-mr-view"
@@ -63,33 +64,29 @@ alias gl-mr="gl-mr-view"
 ### jira
 
 function jr-ls() {
-    jira issue list -a $(jira me) -s "To Do" -s "In Progress"
+    jira issue list -a "$(jira me)" -s "To Do" -s "In Progress"
 }
 
 function jr-rls() {
-    jira issue list -r $(jira me)
+    jira issue list -r "$(jira me)"
 }
 
 function jr-new() {
-    jira issue create -a $(jira me)
+    jira issue create -a "$(jira me)"
 }
 
 function jr-edit() {
-    if [[ $# -lt 1 ]]; then
-        echo "[ERROR] jr edit: 'issue' argument is required"
-        return 1
-    fi
+    validate_num_args 1 $# || return 1
 
-    jira issue edit HAWK-${issue}
+    local issue="${1}"
+    jira issue edit HAWK-"${issue}"
 }
 
 function jr-gimme() {
-    if [[ $# -lt 1 ]]; then
-        echo "[ERROR] jr edit: 'issue' argument is required"
-        return 1
-    fi
+    validate_num_args 1 $# || return 1
 
-    jira issue edit HAWK-${issue} -a $(jira me)
+    local issue="${1}"
+    jira issue edit HAWK-"${issue}" -a "$(jira me)"
 }
 
 ### kubectl
@@ -99,34 +96,6 @@ function kcsn() {
     [[ -z "${namespace}" ]] && namespace="$(kubectl get namespace | tail --lines=+2 | awk '{print $1}' | fzf --height=8 +i +m -e)"
 
     kubectl config set-context --current --namespace "${namespace}"
-}
-
-### misc
-
-declare -A TELLUS_HELMFILES=([aws]=helmfile.yaml [gcp]=helmfile-gke.yaml)
-TELLUS_CONTEXT_BASE="tellus-multitenant-"
-
-function rel-diff() {
-    local mod="--oneline"
-    local filter="HAWK"
-
-    while [[ $# -gt 1 ]]; do
-        case $1 in
-            -v)
-                mod=""
-                shift
-                ;;
-            -a)
-                filter=""
-                shift
-                ;;
-            *)
-                echo "[ERROR] unrecognized parameter '${1}'"
-                return 1
-        esac
-    done
-
-    git log ${mod} release-${SCREEN_RELEASE}-qtm-screen..master | grep "${filter}"
 }
 
 ## tools #######################################################################
@@ -174,44 +143,39 @@ fi
 # TODO: finish implementing superman env manipulation utilities
 
 SYNC_TOOLCHAIN="${PROJECT_N}/sync_toolchain.py"
-SUP_ENV_BAK="${XDG_}"
+OG_PKG_CONFIG_PATH="/Users/austin/.gvm/pkgsets/go1.22/global/overlay/lib/pkgconfig:/Users/austin/.gvm/pkgsets/go1.21/global/overlay/lib/pkgconfig:"
+OG_DYLD_LIBRARY_PATH="/Users/austin/.gvm/pkgsets/go1.22/global/overlay/lib:/Users/austin/.gvm/pkgsets/go1.21/global/overlay/lib"
 
 # NOTE: wrapped in function so it can be injected on-demand, as these env vars wreak
 # general havoc
-# function sup-env() {
-#     if ! which gvm &> /dev/null; then
-#         echo "[ERROR] gvm must be installed to inject superman env"
-#         return 1
-#     fi
-#
-#     if [[ -z ${GOPATH+x} ]]; then
-#         echo "[ERROR] GOPATH must be set to initialized superman repo env"
-#         return 1
-#     fi
-#
-#     if [[ ! -f "${SYNC_TOOLCHAIN}" ]]; then
-#         echo "[WARN] granica environment script could not be located"
-#         echo "[INFO] running sync_toolchain.py --install"
-#         sudo -E ${PROJECT_N}/utils/git-hooks/sync_toolchain.py --install
-#     fi
-#
-#     echo "export DYLD_LIBRARY_PATH=\"${DYLD_LIBRARY_PATH}\"" >|
-#     echo "export PKG_CONFIG_PATH"
-#
-#     # NOTE: ~ output of superman:utils/git-hooks/sync_toolchain.py --install
-#     if [[ -f ${PROJECT_N}/sync_toolchain.py ]]; then
-#         eval $(${SYNC_TOOLCHAIN} --env)
-#     else
-#         echo "[ERROR] granica environment script could not be located"
-#         return 1
-#     fi
-# }
+function sup-env-setup() {
+    if ! which gvm &> /dev/null; then
+        echo "[ERROR] gvm must be installed to inject superman env"
+        return 1
+    fi
 
-# function unset-sup-env() {
-#     mapfile -t sup_env < <(python3 "${SYNC_TOOLCHAIN}" --env | awk '{print $2}' | cut -d = -f1)
-#
-#     for var in "${sup_env[@]}"; do
-#         echo "unset ${var}"
-#     done
-# }
+    if [[ -z ${GOPATH+x} ]]; then
+        echo "[ERROR] GOPATH must be set to initialize superman repo env"
+        return 1
+    fi
+
+    if [[ ! -f "${SYNC_TOOLCHAIN}" ]]; then
+        echo "[WARN] granica environment script could not be located"
+        echo "[INFO] running sync_toolchain.py --install"
+        sudo -E "${PROJECT_N}"/utils/git-hooks/sync_toolchain.py --install
+    fi
+
+    # NOTE: ~ output of superman:utils/git-hooks/sync_toolchain.py --install
+    if [[ -f ${PROJECT_N}/sync_toolchain.py ]]; then
+        eval "$("${SYNC_TOOLCHAIN}" --env)"
+    else
+        echo "[ERROR] granica environment script could not be located"
+        return 1
+    fi
+}
+
+function sup-env-teardown() {
+    export DYLD_LIBRARY_PATH="${OG_DYLD_LIBRARY_PATH}"
+    export PKG_CONFIG_PATH="${OG_PKG_CONFIG_PATH}"
+}
 

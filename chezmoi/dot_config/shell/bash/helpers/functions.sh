@@ -52,6 +52,36 @@ function symlink() {
     ln -s "$(realpath "${1}")" "$(realpath "${2}")"
 }
 
+function symlinks() {
+    local path="" ; local broken="" ; local valid="" ; local clean=""
+
+    while [[ $# -gt 0 ]]; do
+        case "${1}" in
+            -b) broken="true" ; shift ;;
+            -v) valid="true" ; shift ;;
+            -c) clean="true" ; shift ;;
+            *) path="${1}" ; shift ;;
+        esac
+    done
+
+    validate_required_positional "path" "${path}"
+    validate_mutually_exclusive "${broken}" "-b" "${valid}" "-v"
+
+    find "${path}" -type l | while read -r file; do
+        if [[ -e "${file}" ]] && [[ -n "${broken}" ]]; then
+            continue
+        fi
+
+        if [[ ! -e "${file}" ]] && [[ -z "${broken}" ]]; then
+            continue
+        fi
+
+        [[ -n "${clean}" ]] && echo -n "cleaning "
+        echo "${file} -> $(realpath "${file}")"
+        [[ -n "${clean}" ]] && echo "unlink ${file}"
+    done
+}
+
 # TODO: parameterize find pattern, create inverse function
 function unhide() {
   GLOBIGNORE=".:.."
@@ -162,6 +192,11 @@ function os-type() {
 
 function inspect-path() {
     echo "${PATH}" | tr ':' '\n'
+}
+
+function search-path() {
+    local pattern="${1}"
+    inspect-path | grep "${pattern}"
 }
 
 ## tmux ########################################################################
