@@ -3,24 +3,22 @@
 set -Eeuo pipefail
 
 
-TOOLS_REPO="https://github.com/austinsherron/tools"
-TOOLS_ROOT="${HOME}/Workspace/workspace/tools"
+BASH_TOOLS_REPO="https://github.com/austinsherron/bash-tools"
+BASH_TOOLS="${HOME}/Workspace/workspace/bash-tools"
+TOOLS_ROOT="${BASH_TOOLS}/tools"
 
-if [[ ! -d "${TOOLS_ROOT}" ]]; then
-    echo "[INFO] tools repo doesn't exist; cloning ${TOOLS_REPO} to ${TOOLS_ROOT}"
-
-    mkdir -p "${TOOLS_ROOT}"
-    git clone https://github.com/austinsherron/tools "${TOOLS_ROOT}"
+if [[ -d "${BASH_TOOLS}" ]]; then
+    echo "[INFO] bash-tools repo already exists"
 else
-    echo "[INFO] tools repo already exists"
+    echo "[INFO] bash-tools repo doesn't exist; cloning ${BASH_TOOLS_REPO} to ${BASH_TOOLS}"
+    mkdir -p "${BASH_TOOLS}"
+    git clone https://github.com/austinsherron/bash-tools "${BASH_TOOLS}"
 fi
 
+echo "[INFO] installing bash-tools"
+"${TOOLS_ROOT}/install/install.sh"
 
-echo "[INFO] installing tools"
-
-"${TOOLS_INSTALL}/tools/install/install.sh"
-
-if ! ulogger; then
+if ! which ulogger &> /dev/null; then
     echo "[ERROR] ulogger is not installed after bootstrapping tools; something is wrong..."
     exit 1
 fi

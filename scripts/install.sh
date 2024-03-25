@@ -28,13 +28,17 @@ CHEZMOI_TOML_SRC="${CHEZMOI_SRC}/dot_config/chezmoi/chezmoi.toml"
 CHEZMOI_TOML_DST="${CHEZMOI_DST}/chezmoi.toml"
 
 if [[ ! -d "${CHEZMOI_DST}" ]]; then
-    echo "[INFO] creating ${CHEZMOI_DST}"
+    echo "[INFO] creating ${CHEZMOI_DST} dir"
     mkdir "${CHEZMOI_DST}"
+else
+    echo "[INFO] ${CHEZMOI_DST} dir already exists"
 fi
 
 if [[ ! -f "${CHEZMOI_TOML_DST}" ]]; then
     echo "[INFO] copying ${CHEZMOI_TOML_SRC} to ${CHEZMOI_TOML_DST}"
     cp "${CHEZMOI_TOML_SRC}" "${CHEZMOI_TOML_DST}"
+else
+    echo "[INFO] ${CHEZMOI_TOML_DST} already exists"
 fi
 
 ## apply chezmoi
