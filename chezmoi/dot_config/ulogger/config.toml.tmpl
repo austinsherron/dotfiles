@@ -5,29 +5,18 @@ import = [
 ]
 
 root = "{{ env "HOME" }}/.local/state/logs"
-
-[type]
-default = "default"
+type = "default"
 
 [level]
 current = "WARN"
 default = "WARN"
 
-[level.overrides]
-chezmoi = "INFO"
+[snapshot]
+directory = "snapshot"
 
-[path]
-extension = "log"
-default = "default"
+[chezmoi]
+level = "INFO"
+directory = "chezmoi"
 
-[path.file]
-chezmoi = "chezmoi"
-cron = "cron"
-pkg = "pkg"
-shell = "shell"
-snapshot = "snapshot"
-status = "status"
-
-[path.directory]
-snapshot = "snapshot"
-chezmoi = "chezmoi"
+[install]
+level = "INFO"
