@@ -84,7 +84,7 @@ set -g status on
 set-option -g status-position top
 
 # shortcut for changing status bar position
-bind-key s run-shell "toggle-status-bar"
+bind-key s run-shell "tmux-toggle-status-bar"
 
 # FIXME: not only is this not working, it seems that it's preventing tmux-resurrect from auto-restoring on session start
 # set window names to automatically update based on the current directory
@@ -169,8 +169,8 @@ bind-key -n M-z kill-window
 ## move
 
 # shift left/right
-bind-key -n M-S run-shell "shift-window -d l"
-bind-key -n M-s run-shell "shift-window -d r"
+bind-key -n M-S run-shell "tmux-shift-window -d l"
+bind-key -n M-s run-shell "tmux-shift-window -d r"
 
 #### panes
 
@@ -214,19 +214,19 @@ bind-key v command-prompt -p "(resize-pane vertically)" "resize-pane -y %1%%"
 # h for resizing horizontally
 bind-key h command-prompt -p "(resize-pane horizontally)" "resize-pane -x %1%%"
 
-## resizing using resize-layout
+## resizing using tmux-resize-layout
 
 # r for resizing based on configured layouts
-bind-key r command-prompt -p "(resize-layout)" "run-shell \"resize-layout -l '%1'\""
+bind-key r command-prompt -p "(tmux-resize-layout)" "run-shell \"tmux-resize-layout -l '%1'\""
 # alt-r for resizing based on configured layouts
-bind-key R run-shell "resize-layouts"
+bind-key R run-shell "tmux-resize-layouts"
 
 ## hooks #######################################################################
 
 # resize all windows when tmux client attaches and resizes
-set-hook -g client-attached 'run-shell "resize-layouts"'
-set-hook -g client-resized 'run-shell "resize-layouts"'
-# set-hook -g window-pane-changed 'run-shell "resize-layouts"'
+set-hook -g client-attached 'run-shell "tmux-resize-layouts"'
+set-hook -g client-resized 'run-shell "tmux-resize-layouts"'
+# set-hook -g window-pane-changed 'run-shell "tmux-resize-layouts"'
 
 ## plugins #####################################################################
 
