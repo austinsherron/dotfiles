@@ -10,29 +10,29 @@ function __do_filesystem_update() {
     local src="${2:-}"
     local dst="${3:-}"
 
-    if [[ -d "${PATH}" ]]; then
-        echo "[INFO] dir=${PATH} already exists"
+    if [[ -d "${FS_PATH}" ]]; then
+        ulogger info "dir=${FS_PATH} already exists"
         return 0
     fi
 
-    echo "[INFO] creating dir=${PATH}"
-    echo "mkdir -p ${PATH}"
+    echo "[INFO] creating dir=${FS_PATH}"
+    mkdir -p "${FS_PATH}"
 
-    [[ ! -d "${SRC}" ]] && echo "[ERROR] dir=${SRC} doesn't exist"
-    [[ ! -d "${DST}" ]] && echo "[ERROR] dir=${DST} doesn't exist"
+    [[ ! -d "${SRC}" ]] && ulogger error "dir=${SRC} doesn't exist"
+    [[ ! -d "${DST}" ]] && ulogger error "dir=${DST} doesn't exist"
 
-    echo "[INFO] moving ${SRC} to ${DST}"
-    echo "mv ${SRC} ${DST}"
+    ulogger info "moving ${SRC} to ${DST}"
+    mv "${SRC}" "${DST}"
 }
 
 {{- range (index .fs .chezmoi.os) }}
-PATH="${HOME}/{{ .path }}"
+FS_PATH="${HOME}/{{ .path }}"
 SRC="{{ (dig "src" "" .) }}"
 DST="{{ (dig "dst" "" .) }}"
 
 [[ -n "${SRC}" ]] && SRC="${HOME}/${SRC}"
 [[ -n "${DST}" ]] && DST="${HOME}/${DST}"
 
-__do_filesystem_update "${PATH}" "${SRC}" "${DST}"
+__do_filesystem_update "${FS_PATH}" "${SRC}" "${DST}"
 {{- end }}
 

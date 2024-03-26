@@ -2,21 +2,19 @@
 #!/usr/bin/env bash
 
 
-# TODO: replace echos w/ logger calls
-
 ## custom ######################################################################
 
 if [[ -z "${COMPLETION_DIR+x}" ]]; then
-    # echo "[ERROR] completion dir env var is unset"
+    ulogger error "completion dir env var is unset"
     return 1
 fi
 
 if [[ ! -d "${COMPLETION_DIR}" ]]; then
-    # echo "[INFO] creating completion dir='${COMPLETION_DIR}'"
+    ulogger info "creating completion dir='${COMPLETION_DIR}'"
     mkdir "${COMPLETION_DIR}"
 fi
 
-# echo "[INFO] loading contents of completion dir='${COMPLETION_DIR}'"
+ulogger info "loading contents of completion dir='${COMPLETION_DIR}'"
 
 for FILE in "${COMPLETION_DIR}"/*; do
     source "${FILE}"
@@ -25,17 +23,17 @@ done
 ## homebrew ####################################################################
 
 if ! which brew > /dev/null; then
-    # echo "[ERROR] brew is not installed"
+    ulogger error "brew is not installed"
     retrun 1
 fi
 
 if [[ -z "${SYS_CONFIG+x}" ]]; then
-    # echo "[ERROR] SYS_CONFIG dir is not set"
+    ulogger error "SYS_CONFIG dir is not set"
     return 1
 fi
 
 if [[ ! -d "${SYS_CONFIG}" ]]; then
-    # echo "[ERROR] SYS_CONFIG dir does not exist"
+    ulogger error "SYS_CONFIG dir does not exist"
     return 1
 fi
 
@@ -43,14 +41,14 @@ BREW_COMPLETION_ROOT="${SYS_CONFIG}/profile.d"
 BREW_COMPLETION_SCRIPT="${BREW_COMPLETION_ROOT}/bash_completion.sh"
 BREW_COMPLETION_DIR="${BREW_COMPLETION_ROOT}/bash_completion.d"
 
-if [[ -f "${BREW_COMPLETION_SCRIPT}" ]] && [[ ! -d "${BREW_COMPLETION_DIR}/" ]]; then
-    # echo "[WARN] homebrew completion script='${BREW_COMPLETION_SCRIPT}' does not exist"
-    # echo "[WARN] homebrew completion dir=${BREW_COMPLETION_DIR} does not exist"
+if [[ ! -f "${BREW_COMPLETION_SCRIPT}" ]] && [[ ! -d "${BREW_COMPLETION_DIR}/" ]]; then
+    ulogger warn "homebrew completion script='${BREW_COMPLETION_SCRIPT}' does not exist"
+    ulogger warn "homebrew completion dir=${BREW_COMPLETION_DIR} does not exist"
     return 0
 fi
 
 if [[ -f "${BREW_COMPLETION_SCRIPT}" ]]; then
-    # echo "[INFO] loading homebrew completion script='${BREW_COMPLETION_SCRIPT}'"
+    ulogger info "loading homebrew completion script='${BREW_COMPLETION_SCRIPT}'"
     source "${BREW_COMPLETION_SCRIPT}"
 fi
 
@@ -58,7 +56,7 @@ if [[ ! -d "${BREW_COMPLETION_DIR}/" ]]; then
     return 0
 fi
 
-# echo "[INFO] loading contents of homebrew completion dir='${BREW_COMPLETION_DIR}'"
+ulogger info "loading contents of homebrew completion dir='${BREW_COMPLETION_DIR}'"
 
 for FILE in "${BREW_COMPLETION_DIR}/"*; do
   source "${FILE}"

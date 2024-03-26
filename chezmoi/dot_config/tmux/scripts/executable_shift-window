@@ -56,12 +56,12 @@ done
 
 
 if [[ -z "${DIRECTION}" ]]; then
-    echo "-d|--direction is a required parameter"
+    ulogger error "-d|--direction is a required parameter"
     exit 1
 fi
 
 if [[ "${DIRECTION}" != +(l|left|r|right) ]]; then
-    echo "-d|--direction must be one of l[eft]|r[ight]"
+    ulogger error "-d|--direction must be one of l[eft]|r[ight]"
     exit 1
 fi
 

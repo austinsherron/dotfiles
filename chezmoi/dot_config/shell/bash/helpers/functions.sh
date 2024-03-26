@@ -45,7 +45,7 @@ function pbpo() {
 
 function symlink() {
     if [[ "$#" -lt 2 ]]; then
-        echo "[ERROR] symlink: two paths are required"
+        ulogger error "symlink: two paths are required" -t shell -p util
         return 1
     fi
 
@@ -214,7 +214,7 @@ function tmux-env() {
     elif [[ $# -eq 2 ]]; then
         tmux setenv "${var}" "${2}"
     else
-        echo "[ERROR] tmux-env: zero, one, or two arguments, var_name/var_val, required"
+        ulogger error "tmux-env: zero, one, or two arguments, var_name/var_val, required" -t shell -p util
         return 1
     fi
 }
@@ -232,7 +232,7 @@ function tmux-layout() {
     elif [[ $# -eq 1 ]]; then
         tmux-env "${var}" "${1}"
     else
-        echo "[ERROR] tmux-layout: zero or one arguments, layout|-c (clear) expected"
+        ulogger error "tmux-layout: zero or one arguments, layout|-c (clear) expected" -t shell -p util
         return 1
     fi
 }
@@ -241,7 +241,7 @@ alias txlyt="tmux-layout"
 
 function tmux-cmd-popup() {
     if [[ $# -lt 1 ]]; then
-        echo "[ERROR] tmux-cmd-popup: one positional argument, cmd, required"
+        ulogger error "tmux-cmd-popup: one positional argument, cmd, required" -t shell -p util
         return 1
     fi
 

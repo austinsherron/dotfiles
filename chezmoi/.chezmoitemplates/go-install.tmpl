@@ -1,4 +1,4 @@
-echo "[INFO] installing go packages"
+ulogger info "installing go packages"
 
 {{- range $pkg := . }}
 which "{{ $pkg.name }}" &> /dev/null || go install "{{ $pkg.url }}@{{ $pkg.version }}"

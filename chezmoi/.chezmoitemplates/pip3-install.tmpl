@@ -1,4 +1,4 @@
-echo "[INFO] installing pip3 packages"
+ulogger info "installing pip3 packages"
 
 {{- range $pkg := . }}
 pip3 show {{ $pkg }} &> /dev/null || pip3 install {{ $pkg }}

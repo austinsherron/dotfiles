@@ -22,7 +22,7 @@ for SCRIPT in "{{ $tmux_scripts }}/"*; do
 
     if [[ "${CURRENT_SHA}" != "${LAST_SHA}" ]]; then
         SCRIPT_NAME="$(basename "${SCRIPT}")"
-        echo "[INFO] change to ${SCRIPT_NAME} detected; deploying tmux scripts"
+        ulogger info "change to ${SCRIPT_NAME} detected; deploying tmux scripts"
 
         deploy scripts -s {{ $tmux_root }}
 
@@ -32,7 +32,7 @@ for SCRIPT in "{{ $tmux_scripts }}/"*; do
 done
 
 if [[ -z "${DEPLOYED_SCRIPTS}" ]]; then
-    echo "[INFO] no changes to tmux scripts since last installation; skipping"
+    ulogger info "no changes to tmux scripts since last installation; skipping"
 fi
 
 if [[ ! -d "{{ $tmux_plugins }}" ]]; then
@@ -40,7 +40,7 @@ if [[ ! -d "{{ $tmux_plugins }}" ]]; then
 fi
 
 if [[ ! -f "{{ $tmux_tpm }}/tpm" ]]; then
-    echo "[INFO] cloning tmp to {{ $tmux_tpm }}"
+    ulogger info "cloning tmp to {{ $tmux_tpm }}"
     [[ -d "{{ $tmux_tpm }}" ]] && rm -rf {{ $tmux_tpm }}
     cd {{ $tmux_plugins }} && git clone https://github.com/tmux-plugins/tpm && cd -
 fi

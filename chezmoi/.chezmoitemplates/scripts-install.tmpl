@@ -1,4 +1,4 @@
-echo "[INFO] installing from scripts"
+ulogger info "installing from scripts"
 
 {{- range $script := . }}
 {{- if typeIs "string" $script }}

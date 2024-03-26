@@ -25,7 +25,7 @@ OPTIONS
 
     -l, --layout        the layout's identifier; the combination of identifier, window dimensions, and pane count should uniquely identify a layout
     -t, --target        optional, defaults to the active window; the name of the window for which to add a layout
-    -s, --specs         optional, default to "${HOME}/.config/tmux/layouts"; must be file path or "stdout"; the file to which to write the new layout
+    -s, --specs         optional, default to "\${HOME}/.config/tmux/layouts"; must be file path or "stdout"; the file to which to write the new layout
                         specifications; using "-s|--specs stdout" will write the layout to stdout
     --force             optional; if specified, forces resize even if pane dimensions match those in the layout spec
     -v, --verbose       optional; write progress/status messages to stdout
@@ -38,19 +38,11 @@ help
 LAYOUT_ID=""
 TARGET="$(tmux display-message -p "#W")"
 SPEC_PATH="${HOME}/.config/tmux/layouts"
-VERBOSE=""
 FORCE=""
 DRY_RUN=""
 
-log() {
-    [[ -n "$VERBOSE" ]] && echo "[INFO] ${1}" || echo -n ""
-}
-
-log_and_exit() {
-    [[ -n "$VERBOSE" ]] && echo "[WARN] ${1}" || echo -n ""
-    exit 1
-}
-
+[[ -z "${ULOGGER_TYPE+x}" ]] && export ULOGGER_TYPE="tmux"
+[[ -z "${ULOGGER_PREFIX+x}" ]] && export ULOGGER_PREFIX="add"
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -70,7 +62,7 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     -v|--verbose)
-      VERBOSE="true"
+      export ULOGGER_VERBOSE="true"
       shift
       ;;
     --force)
@@ -95,24 +87,24 @@ done
 
 
 if [[ -z "${LAYOUT_ID}" ]]; then
-    echo "-l|--layout is required"
+    ulogger error "-l|--layout is required"
     exit 1
 fi
 
 # validate target refers to a window
 if [[ -z "$(tmux list-windows -F "#W" | grep "${TARGET}" || true)" ]]; then
-    log_and_exit "tmux window target='${TARGET}' does not exist"
+    ulogger error "tmux window target='${TARGET}' does not exist"
 fi
 
 if [[ "${SPEC_PATH}" != "stdout" ]] && [[ ! -f "${SPEC_PATH}" ]]; then
-    log_and_exit "-s|--specs must refer to a valid file (${SPEC_PATH (${SPEC_PATH})})"
+    ulogger error "-s|--specs must refer to a valid file (${SPEC_PATH (${SPEC_PATH})})"
 elif [[ -f "${SPEC_PATH}" ]]; then
     SPEC_PATH="$(realpath "${SPEC_PATH}")"
 fi
 
 # get window id
 TARGET_ID="$(tmux list-windows -F "#I #W" | grep "${TARGET}"| cut -d ' ' -f1)"
-log "preparing to add layout for target window='${TARGET}' (id: ${TARGET_ID})"
+ulogger info "preparing to add layout for target window='${TARGET}' (id: ${TARGET_ID})"
 
 PANES="$(tmux list-panes -t "${TARGET_ID}" -F "#{pane_width}x#{pane_height}")"
 DIMENSIONS="$(tmux display-message -t "${TARGET_ID}" -p "#{window_width}x#{window_height}")"
@@ -125,16 +117,16 @@ IDENTIFIER="${LAYOUT_ID} ${DIMENSIONS} ${PANE_COUNT}"
 LAYOUT_SPEC="${IDENTIFIER} ${LAYOUT} ${PANE_DIMENSIONS}"
 
 if [[ "${SPEC_PATH}" == "stdout" ]]; then
-    log "writing layout to sdtout"
+    logger info "writing layout to sdtout"
     echo "${LAYOUT_SPEC}"
     exit
 fi
 
-log "constructed layout spec='${LAYOUT_SPEC}'"
+logger info "constructed layout spec='${LAYOUT_SPEC}'"
 SPEC_MATCH="$(grep -v "^#" "${SPEC_PATH}" | grep "^${IDENTIFIER}" || true)"
 
 if [[ -n "${SPEC_MATCH}" ]] && [[ "${FORCE}" != "true" ]]; then
-    log_and_exit "layout already exists for identifier='${IDENTIFIER}'; exiting"
+    ulogger error "layout already exists for identifier='${IDENTIFIER}'; exiting"
 fi
 
 CMD=""

@@ -9,8 +9,10 @@ set -Eeuo pipefail
 {{ template "version-check.tmpl" (merge . (dict "path" $shared_paths)) }}
 
 if [[ ! -d "{{ $target }}" ]]; then
+    ulogger info "creating non-existent dir={{ $target }}"
     sudo mkdir {{ $target }}
 fi
 
+ulogger info "copying {{ $shared_paths }} to {{ $target }}"
 sudo cp {{ $shared_paths }} {{ $target }}
 

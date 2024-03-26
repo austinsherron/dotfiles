@@ -8,7 +8,7 @@ export OSH="${EXTERNAL_PKGS}/oh-my-bash"
 OSH_PATH="${OSH}/oh-my-bash.sh"
 
 if [[ ! -f "${OSH_PATH}" ]]; then
-    echo "[INFO] no oh-my-bash installation found"
+    ulogger info "no oh-my-bash installation found" -t shell -p rc
     return
 fi
 
@@ -37,5 +37,6 @@ plugins=(kubectl)
 
 ## load ########################################################################
 
+ulogger info "enabling oh-my-bash" -t shell -p rc
 source "${OSH_PATH}"
 

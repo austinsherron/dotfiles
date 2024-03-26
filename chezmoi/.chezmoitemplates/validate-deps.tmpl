@@ -1,6 +1,6 @@
 {{- range . }}
 if ! which {{ . }} > /dev/null; then
-    echo "[ERROR] {{ . }} is not installed"
+    ulogger error "{{ . }} is not installed"
     exit 1
 fi
 {{- end }}

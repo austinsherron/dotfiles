@@ -10,7 +10,7 @@ source /etc/profile.d/shared_paths.sh
 {{ template "validate-deps.tmpl" (list "pkgmgr" "check-pkg") }}
 {{ template "version-check.tmpl" (merge . (dict "type" "darwin")) }}
 
-echo "[INFO] adding brew taps"
+ulogger info "adding brew taps"
 
 {{- range $tap := .packages.darwin.brew.taps }}
 pkgmgr --tap {{ $tap }}

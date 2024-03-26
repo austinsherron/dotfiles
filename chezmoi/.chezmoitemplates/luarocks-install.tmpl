@@ -1,4 +1,4 @@
-echo "[INFO] installing lua rocks"
+ulogger info "installing lua rocks"
 
 {{- range $pkg := . }}
 luarocks show {{ $pkg.name }} &> /dev/null || sudo luarocks install {{ $pkg.name }} {{ $pkg.version }}
