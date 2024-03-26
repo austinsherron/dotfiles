@@ -6,16 +6,15 @@ set -Eeuo pipefail
 {{ template "version-check.tmpl" (merge . (dict "type" "settings")) }}
 
 {{- if eq .chezmoi.os "darwin" }}
-# for screenshots location setting
-mkdir -p ~/Pictures/Screenshots
-
 {{- range $_, $group := .settings.darwin }}
 
 {{- range $group.values }}
+ulogger info "writing \"{{ .key }}\"=\"{{ .value | join " " }}\" for domain=\"{{ $group.domain }}\""
 defaults write {{ $group.domain }} "{{ .key }}" {{ .value | join " " }}
 {{- end }}
 
 {{- if hasKey $group "killall" }}
+ulogger warn "killing {{ $group.killall }}"
 killall -q {{ $group.killall }} || true
 {{- end }}
 

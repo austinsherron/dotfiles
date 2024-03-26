@@ -1,4 +1,4 @@
-echo "[INFO] installing {{ .mgr }} {{ (dig "type" "packages" .) }}"
+ulogger info "installing {{ .mgr }} {{ (dig "type" "packages" .) }}"
 
 {{- $args := dig "args" "" . }}
 {{- $mgr := .mgr }}

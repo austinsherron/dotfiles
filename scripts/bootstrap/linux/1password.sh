@@ -11,7 +11,7 @@ set -Eeuo pipefail
 # 1password-cli to clone that repo
 
 if dpkg -s 1password &> /dev/null && dpkg -s 1password-cli &> /dev/null; then
-    echo "[INFO] 1password and 1password-cli are already installed; exiting"
+    ulogger info "1password and 1password-cli are already installed; exiting"
     exit 0
 fi
 
@@ -35,16 +35,16 @@ KEYRING_DIR="/usr/share/debsig/keyrings/AC2D62742012EA22"
 KEYRING_PATH="${KEYRING_DIR}/debsig.gpg"
 
 # add 1password apt repo key
-echo "[INFO] adding 1password apt repo key"
+ulogger info "adding 1password apt repo key"
 curl -sS ${KEY_URL} | sudo gpg --dearmor --output ${KEY_PATH}
 
 # add repo
-echo "[INFO] adding 1password apt repo"
-echo "${PKG_TYPE} [arch=${ARCH} signed-by=${SIGNED_BY}] ${PKG_URL} ${VERSION} ${BRANCH}" \
+ulogger info "adding 1password apt repo"
+ulogger info "${PKG_TYPE} [arch=${ARCH} signed-by=${SIGNED_BY}] ${PKG_URL} ${VERSION} ${BRANCH}" \
     | sudo tee /etc/apt/sources.list.d/1password.list
 
 # add debsig-verify policy
-echo "[INFO] adding debsig-verify policy"
+ulogger info "adding debsig-verify policy"
 sudo mkdir -p ${POLICY_DIR}
 curl -sS ${POLICY_URL} | sudo tee ${POLICY_PATH}
 
@@ -52,6 +52,6 @@ sudo mkdir -p ${KEYRING_DIR}
 curl -sS ${KEY_URL} | sudo gpg --dearmor --output ${KEYRING_PATH}
 
 # install 1password/1password-cli
-echo "[INFO] installing 1password and 1password-cli"
+ulogger info "installing 1password and 1password-cli"
 sudo apt update && sudo apt install 1password 1password-cli
 

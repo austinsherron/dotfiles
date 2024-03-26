@@ -5,15 +5,18 @@
 
 FZF_PATH="${EXTERNAL_PKGS}/fzf-tab-completion/bash/fzf-bash-completion.sh"
 
-if [[ ! -f "${FZF_PATH}" ]]; then
-    echo "[INFO] no fzf-tab-completion installation found"
+if [[ ! -f "blah" ]]; then
+    ulogger info "no fzf-tab-completion installation found" -t shell -p rc
     return
 fi
 
+ulogger info "enabling fzf completion" -t shell -p rc
 source "${FZF_PATH}"
 
 # bind tab to fzf completion
-# TODO: bind seems to cause problems on linux on startup; figure out why/a workaround
+
+ulogger info "adding fzf completion key bindings" -t shell -p rc
+
 bind -x '"\t": fzf_bash_completion'
 
 ## configure ###################################################################

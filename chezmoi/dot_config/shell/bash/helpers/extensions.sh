@@ -15,7 +15,12 @@ source "${EXTENSIONS_ROOT}/oh-my-bash.sh"
 
 ## starship ####################################################################
 
-which starship &> /dev/null && eval "$(starship init bash)"
+if which starship &> /dev/null; then
+    ulogger info "enabling starship" -t shell -p rc
+    eval "$(starship init bash)"
+else
+    ulogger info "no starship installation found" -t shell -p rc
+fi
 
 ## atuin #######################################################################
 

@@ -66,23 +66,24 @@ help
 LAYOUT=""
 TARGET="$(tmux display-message -p "#W")"
 SPEC_PATH="${HOME}/.config/tmux/layouts"
-VERBOSE=""
 STRICT=""
 FORCE=""
 DRY_RUN=""
 
+[[ -z "${ULOGGER_TYPE+x}" ]] && export ULOGGER_TYPE="tmux"
+[[ -z "${ULOGGER_PREFIX+x}" ]] && export ULOGGER_PREFIX="resize"
 
 log() {
-    [[ -n "$VERBOSE" ]] && echo "[INFO] ${1}" || echo -n ""
+    ulogger info "${1}" || echo -n ""
 }
 
 log_and_exit() {
     if [[ "${STRICT}" == "true" ]]; then
-        echo "[ERROR] ${1}"
+        ulogger error "${1}"
         exit 1
     fi
 
-    [[ -n "$VERBOSE" ]] && echo "[WARN] ${1}" || echo -n ""
+    ulogger warn "${1}"
     exit 0
 }
 
@@ -94,8 +95,8 @@ __extract_layout_from_name() {
 }
 
 __extract_layout_from_env() {
-    local env_var="TMUX_$(to_upper "${TARGET}_LAYOUT")"
-    local env_val="$(tmux show-environment "${env_var}" 2> /dev/null || echo "")"
+    local -r env_var="TMUX_$(to_upper "${TARGET}_LAYOUT")"
+    local -r env_val="$(tmux show-environment "${env_var}" 2> /dev/null || echo "")"
 
     echo "${env_val}" | cut -d "=" -f2
 }
@@ -119,7 +120,7 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --verbose)
-      VERBOSE="true"
+      export ULOGGER_VERBOSE="true"
       shift
       ;;
     --strict)
