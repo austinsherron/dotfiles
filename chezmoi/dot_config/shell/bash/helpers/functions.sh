@@ -239,15 +239,3 @@ function tmux-layout() {
 
 alias txlyt="tmux-layout"
 
-function tmux-cmd-popup() {
-    if [[ $# -lt 1 ]]; then
-        ulogger error "tmux-cmd-popup: one positional argument, cmd, required" -t shell -p util
-        return 1
-    fi
-
-    local cmd="${1}" && shift
-    tmux popup -w 70% -h 90% "${@}" -d "$(pwd)" "${cmd}"
-}
-
-alias txpop="tmux-cmd-popup"
-
