@@ -83,6 +83,7 @@
     fc  = fcheckout
     fd  = fdiff
     fD  = fdel
+    ffD = fdel
     fm  = fmerge
     fM  = fmerc
     fp  = push --force
@@ -133,7 +134,7 @@
 # slightly different configs for work (i.e.: user, branch name format, etc.)
 [includeIf "gitdir:~/Workspace/workspace/granica/**"]
     path = .gitconfig-work
-[includeIf "gitdir:~/.gvm/pkgsets/go1.21/global/src/project.n/"]
+[includeIf "gitdir:~/.gvm/pkgsets/go1.22/global/src/project.n/"]
     path = .gitconfig-work
 
 [gpg]
