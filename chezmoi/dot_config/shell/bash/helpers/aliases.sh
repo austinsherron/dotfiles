@@ -10,10 +10,12 @@ alias g="git"
 alias ls="lsd"
 alias nv="nvim"
 alias pm="pkgmgr"
+alias pop="tmux-popup"
 alias spt="spotify_player"
 alias tk="task"
 alias tkui="taskwarrior-tui"
 alias tx="tmux"
+alias ulog="ulogger"
 alias vi="/usr/bin/vim"
 alias vim="nvim"
 alias wtf="wtfutil"
@@ -36,7 +38,7 @@ alias dfdot="diff-dot"
 alias dfd="dfdot"
 
 # deploy
-alias deploy-dot="chezmoi diff && chezmoi apply && rcload && txload"
+alias deploy-dot="diff-dot && chezmoi apply && rcload && txload"
 alias deploy-dot-force="chezmoi apply && rcload && txload"
 alias dpdot="deploy-dot"
 alias dpdotf="deploy-dot-force"
@@ -81,7 +83,7 @@ alias gh-repo-ls="gh repo ls --no-archived"
 
 ### logs
 
-alias vl="ulogger view -t"
+alias vl="ulogger view"
 alias logls="ulogger list"
 
 ### repls
@@ -105,7 +107,7 @@ alias sanon="s -p google -b \"chromium --incognito\""
 ### informational
 
 function fz-history() { history | fzf-tmux -p; }
-function help() { tmux-cmd-popup "${1} --help | less"; }
-function man() { tmux-cmd-popup "man ${1}"; }
-function tldr() { tmux-cmd-popup "tldr ${1}" -h 70%; }
+function help() { tmux-popup "${1} --help | less" --exit ; }
+function man() { tmux-popup man "${1}" --exit ; }
+function tldr() { tmux-popup tldr "${1}" -h 70% --exit ; }
 
