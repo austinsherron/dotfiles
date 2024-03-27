@@ -7,12 +7,25 @@ import = [
 root = "{{ env "HOME" }}/.local/state/logs"
 type = "default"
 
+[pager]
+list = "lsd -1"
+tree = "lsd --tree"
+
 [level]
 current = "WARN"
 default = "WARN"
 
-[snapshot]
-directory = "snapshot"
+# NOTE: the types section is informational, not functional
+[types]
+chezmoi = "actions taken w/ chezmoi"
+cron = "runnables called by cron"
+deploy = "tools deployment (via deploy)"
+git = "git scripts/tools"
+install = "installation scripts"
+pkg = "installation of packages (via pkgmgr)"
+shell = "shell ops (i.e.: rc/profile sourcing) and shell related scripts"
+status = "scripts that report on system status"
+tmux = "tmux scripts"
 
 [chezmoi]
 level = "INFO"
@@ -20,3 +33,9 @@ directory = "chezmoi"
 
 [install]
 level = "INFO"
+
+[snapshot]
+directory = "snapshot"
+
+[tmux]
+level = "ERROR"
