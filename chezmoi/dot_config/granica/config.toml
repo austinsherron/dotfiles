@@ -1,0 +1,14 @@
+[env]
+default = "uat"
+
+[env.uat]
+cloud = "gcp"
+admin_server = "255d26"
+project = "n-hawkeye-dev"
+zone = "us-central1-c"
+
+[env.validation]
+cloud = "gcp"
+admin_server = "f206a9"
+project = "project-n-88f034c9"
+zone = "us-central1-c"
