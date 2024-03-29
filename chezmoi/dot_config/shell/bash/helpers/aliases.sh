@@ -57,6 +57,11 @@ alias kubec="${EDITOR} ${LEGACY_CONFIG_ROOT_PUB}/.kube/config"
 
 alias gogh='bash -c "$(wget -qO- https://git.io/vQgMr)"'
 
+### ble.sh
+
+alias ba="ble-attach"
+alias bd="ble-detach"
+
 ### diff
 
 alias diff="colordiff -N -u"
@@ -83,7 +88,7 @@ alias gh-repo-ls="gh repo ls --no-archived"
 
 ### logs
 
-alias vl="ulogger view"
+alias vl="ulogger edit"
 alias logls="ulogger list"
 
 ### repls
@@ -107,7 +112,7 @@ alias sanon="s -p google -b \"chromium --incognito\""
 ### informational
 
 function fz-history() { history | fzf-tmux -p; }
-function help() { tmux-popup "${1} --help | less" --exit ; }
-function man() { tmux-popup man "${1}" --exit ; }
-function tldr() { tmux-popup tldr "${1}" -h 70% --exit ; }
+function help() { tmux-popup "$* --help | less" --exit ; }
+function man() { tmux-popup man "$@" --exit ; }
+function tldr() { tmux-popup tldr "$@" -h 70% --exit ; }
 
