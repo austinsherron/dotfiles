@@ -217,15 +217,15 @@ bind-key h command-prompt -p "(resize-pane horizontally)" "resize-pane -x %1%%"
 ## resizing using tmux-resize-layout
 
 # r for resizing based on configured layouts
-bind-key r command-prompt -p "(tmux-resize-layout)" "run-shell \"tmux-resize-layout -l '%1'\""
+bind-key r command-prompt -p "(tmux-resize-layout)" "run-shell \"ULOGGER_DISABLED=\"true\" tmux-resize-layout -l '%1'\""
 # alt-r for resizing based on configured layouts
-bind-key R run-shell "tmux-resize-layouts"
+bind-key R run-shell "ULOGGER_DISABLED=\"true\" tmux-resize-layouts"
 
 ## hooks #######################################################################
 
 # resize all windows when tmux client attaches and resizes
-set-hook -g client-attached 'run-shell "tmux-resize-layouts"'
-set-hook -g client-resized 'run-shell "tmux-resize-layouts"'
+set-hook -g client-attached 'run-shell "ULOGGER_DISABLED=\"true\" tmux-resize-layouts"'
+set-hook -g client-resized 'run-shell "ULOGGER_DISABLED=\"true\" tmux-resize-layouts"'
 # set-hook -g window-pane-changed 'run-shell "tmux-resize-layouts"'
 
 ## plugins #####################################################################
