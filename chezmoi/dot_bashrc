@@ -3,6 +3,8 @@
 
 ## bootstrap ###################################################################
 
+source /etc/profile.d/shared_paths.sh
+
 ### ble.sh
 
 [[ $- == *i* ]] && source "${XDG_DATA_HOME}/blesh/ble.sh" --noattach
@@ -21,7 +23,6 @@ export SHELL_NAME
 
 ### imports
 
-source /etc/profile.d/shared_paths.sh
 source "${BASH_TOOLS}/lib/utils.sh"
 source "${HELPERS_ROOT}/functions.sh"
 
