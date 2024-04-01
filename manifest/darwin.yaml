@@ -4,6 +4,7 @@ packages:
       taps:
         - ankitpokhrel/jira-cli
         - homebrew/cask-fonts
+        - mk-5/mk-5
       formulae:
         # personal
         - blahtexml
@@ -14,6 +15,7 @@ packages:
         - cmake
         - colordiff
         - duf
+        - fjira
         - font-jetbrains-mono-nerd-font
         - fzf
         - gawk
@@ -115,6 +117,7 @@ packages:
       # NOTE: ble.sh should come before atuin
       - ble
       - atuin
+      - st
       - name: gvm
         args: [go1.22]
         # FIXME: see comment in "${INSTALL_SCRIPTS}/darwin/gvm.sh"
