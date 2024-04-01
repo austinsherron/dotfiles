@@ -121,6 +121,7 @@ packages:
       # NOTE: ble.sh should come before atuin
       - ble
       - atuin
+      - st
     pip3:
       - SQLAlchemy
       - coverage
