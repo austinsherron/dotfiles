@@ -8,9 +8,9 @@ BASH_TOOLS="${HOME}/Workspace/workspace/bash-tools"
 TOOLS_ROOT="${BASH_TOOLS}/tools"
 
 if [[ -d "${BASH_TOOLS}" ]]; then
-    echo info "bash-tools repo already exists"
+    echo "[INFO] bash-tools repo already exists"
 else
-    echo info "bash-tools repo doesn't exist; cloning ${BASH_TOOLS_REPO} to ${BASH_TOOLS}"
+    echo "[INFO] bash-tools repo doesn't exist; cloning ${BASH_TOOLS_REPO} to ${BASH_TOOLS}"
     mkdir -p "${BASH_TOOLS}"
     git clone https://github.com/austinsherron/bash-tools "${BASH_TOOLS}"
 fi
@@ -19,7 +19,7 @@ ulogger info "installing bash-tools"
 "${TOOLS_ROOT}/install/install.sh"
 
 if ! which ulogger &> /dev/null; then
-    echo error "ulogger is not installed after bootstrapping tools; something is wrong..."
+    echo "[ERROR] ulogger is not installed after bootstrapping tools; something is wrong..."
     exit 1
 fi
 
