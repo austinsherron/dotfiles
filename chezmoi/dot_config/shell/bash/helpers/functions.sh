@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 source /etc/profile.d/shared_paths.sh
-source "${BASH_TOOLS}/lib/utils.sh"
-source "${BASH_TOOLS}/lib/args/validate.sh"
+source "${LOCAL_LIB}/bash/utils.sh"
+source "${LOCAL_LIB}/bash/args/validate.sh"
 
 
 ## chezmoi #####################################################################

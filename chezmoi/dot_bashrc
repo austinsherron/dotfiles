@@ -23,7 +23,7 @@ export SHELL_NAME
 
 ### imports
 
-source "${BASH_TOOLS}/lib/utils.sh"
+source "${LOCAL_LIB}/bash/utils.sh"
 source "${HELPERS_ROOT}/functions.sh"
 
 ### path manipulations
