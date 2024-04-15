@@ -76,24 +76,39 @@ function symlinks() {
         fi
 
         [[ -n "${clean}" ]] && echo -n "cleaning "
-        echo "${file} -> $(realpath "${file}")"
+        echo -n "${file} -> "
+        if [[ -f "${file}" ]]; then realpath "${file}" ; else echo "?" ; fi
         [[ -n "${clean}" ]] && echo "unlink ${file}"
     done
 }
 
-# TODO: parameterize find pattern, create inverse function
+function hide() {
+    local pattern="${1}"
+
+    GLOBIGNORE=".:.."
+
+    for file in "${pattern}"*; do
+        if [[ ! "${file}" =~ ^\..*$ ]]; then
+            mv -n "$file" ".${file}"
+        fi
+    done
+}
+
 function unhide() {
-  GLOBIGNORE=".:.."
-  for file in .*; do
-     mv -n "$file" "${file#.}"
-  done
+    local pattern="${1:-}"
+
+    GLOBIGNORE=".:.."
+
+    for file in ".${pattern}"*; do
+        mv -n "$file" "${file#.}"
+    done
 }
 
 function uz() {
-  filename="${1}"
-  wo_extension="${filename%.*}"
+    local filename="${1}"
+    local wo_extension="${filename%.*}"
 
-  unzip "$filename" -d "${wo_extension}"
+    unzip "$filename" -d "${wo_extension}"
 }
 
 ## filesystem ##################################################################
@@ -198,6 +213,10 @@ function search-path() {
     inspect-path | grep "${pattern}"
 }
 
+function profile-sh() {
+    PS4='+ $(date "+%s.%N ($LINENO) ")' bash -x "$@"
+}
+
 ## tmux ########################################################################
 
 function tmux-env() {
@@ -237,4 +256,30 @@ function tmux-layout() {
 }
 
 alias txlyt="tmux-layout"
+
+## utils #######################################################################
+
+function sh-pop() {
+    tmux-popup bash --dim 90x30 --exit
+}
+
+function fz-history() {
+    history | fzf-tmux -p
+}
+
+function help() {
+    if [[ "${1:-}" == "aws" ]]; then
+        tmux-popup "$* help | less" --exit
+    else
+        tmux-popup "$* --help | less" --exit
+    fi
+}
+
+function man() {
+    tmux-popup man "$@" --exit
+}
+
+function tldr() {
+    tmux-popup tldr "$@" -h 70% --exit
+}
 

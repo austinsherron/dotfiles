@@ -107,12 +107,9 @@ alias sp="s -p startpage"
 alias srx="s -p searxng"
 alias sanon="s -p google -b \"chromium --incognito\""
 
-## alias functions #############################################################
+### un*
 
-### informational
-
-function fz-history() { history | fzf-tmux -p; }
-function help() { tmux-popup "$* --help | less" --exit ; }
-function man() { tmux-popup man "$@" --exit ; }
-function tldr() { tmux-popup tldr "$@" -h 70% --exit ; }
+alias una="unalias"
+alias unf="unset -f"
+alias uns="unset"
 
