@@ -81,7 +81,10 @@ packages:
         - helm
         - helmfile
         - kubectl
+        - poetry
+        - rpm
         - terraform
+        - tfenv
         - xorgproto
         # tentative
         - neomutt
@@ -128,3 +131,6 @@ packages:
       - name: slack-term
         url: github.com/erroneousboat/slack-term
         version: latest
+    luarocks:
+      - name: busted
+        version: 2.1.2-3
