@@ -1,16 +1,30 @@
 {{- $path := dig "path" "" . }}
 {{- $type := dig "type" "" . }}
+{{- $script := dig "script" "" . }}
 
 {{- $path := default (print .chezmoi.sourceDir "/.chezmoidata/" $type ".yaml") $path }}
+{{- $script_path := (print .chezmoi.sourceDir "/.chezmoiscripts/run_after_" $script ".sh.tmpl"  ) }}
+
 {{- $type := default (base (trimSuffix (ext $path) $path)) $type }}
 {{- $base := base $path -}}
 
-CURRENT_SHA="{{ include $path | sha256sum }}"
-LAST_SHA="{{ dig "versions" $type "" . }}"
+MANIFEST_SHA="{{ include $path | sha256sum }}"
+LAST_MANIFEST_SHA="{{ dig "versions" $type "" . }}"
 
-if [[ "${CURRENT_SHA}" == "${LAST_SHA}" ]]; then
+HOOK_SHA="{{ include $script_path | sha256sum }}"
+LAST_HOOK_SHA="{{ dig "versions" $script "" . }}"
+
+if [[ "${MANIFEST_SHA}" == "${LAST_MANIFEST_SHA}" ]]; then
     ulogger info "no change to {{ $base }} since last installation; skipping"
     exit 0
 else
     ulogger info "change to {{ $base }} detected; installing {{ $base }}"
 fi
+
+if [[ "${HOOK_SHA}" == "${LAST_HOOK_SHA}" ]]; then
+    ulogger info "no change to {{ $script }} hook since last installation; skipping"
+    exit 0
+else
+    ulogger info "change to {{ $script }} hook detected; installing {{ $base }}"
+fi
+

@@ -13,7 +13,7 @@ set -Eeuo pipefail
 {{- $versions := (print $data "/versions.yaml") }}
 
 {{- $shared_paths := (print .chezmoi.homeDir "/.config/shell/bash/helpers/shared_paths.sh") }}
-{{- $tmux_scripts := (print .chezmoi.homeDir "/.config/tmux/scripts") }}
+{{- $hooks := (print .chezmoi.sourceDir "/.chezmoiscripts") }}
 
 # clear versions file
 echo "versions:" >| "{{ $versions }}"
@@ -33,8 +33,10 @@ sha256sum "{{ $data }}/"* \
     >> "{{ $versions }}"
 
 # record checksum of tmux scripts
-sha256sum "{{ $tmux_scripts }}/"* \
+sha256sum "{{ $hooks }}/"* \
     | sed 's/  .*\// /' \
+    | sed 's/run_after_//' \
+    | sed 's/\.sh\.tmpl//' \
     | tr '-' '_' \
     | awk '{print "  "$2": "$1}' \
     >> "{{ $versions }}"

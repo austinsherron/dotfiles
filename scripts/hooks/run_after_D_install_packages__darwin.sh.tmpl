@@ -8,7 +8,7 @@ source /etc/profile.d/shared_paths.sh
 
 {{ template "validate-deps.tmpl" (list "brew") }}
 {{ template "validate-deps.tmpl" (list "pkgmgr" "check-pkg") }}
-{{ template "version-check.tmpl" (merge . (dict "type" "darwin")) }}
+{{ template "version-check.tmpl" (merge . (dict "type" "darwin" "script" "D_install_packages__darwin")) }}
 
 ulogger info "adding brew taps"
 
@@ -24,5 +24,6 @@ pkgmgr --tap {{ $tap }}
 
 {{ template "scripts-install.tmpl" .packages.darwin.scripts }}
 {{ template "go-install.tmpl" .packages.darwin.go }}
+{{ template "luarocks-install.tmpl" .packages.darwin.luarocks }}
 
 {{- end }}
