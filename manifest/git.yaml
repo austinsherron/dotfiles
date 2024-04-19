@@ -1,15 +1,14 @@
+# FIXME: this doesn't seem to be working
 git:
-  common:
-    internal:
-      # WARN: order here matters!
-      - austinsherron/bash-tools
-      - austinsherron/lua-tools
-      - austinsherron/hammerspoon
-      - austinsherron/sieve-filters
-      - austinsherron/snippets
-      - austinsherron/xplr
-    external:
-      - lincheney/fzf-tab-completion
-      - ohmybash/oh-my-bash
-  linux: []
-  darwin: []
+  internal:
+    # WARN: order here matters!
+    - austinsherron/bash-tools
+    - austinsherron/lua-tools
+    - austinsherron/hammerspoon
+    - austinsherron/sieve-filters
+    - austinsherron/snippets
+    - austinsherron/xplr
+  external:
+    - akinomyoga/blesh-contrib
+    - lincheney/fzf-tab-completion
+    - ohmybash/oh-my-bash

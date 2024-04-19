@@ -14,7 +14,7 @@ source /etc/profile.d/shared_paths.sh
 {{ template "validate-deps.tmpl" (list "pkgmgr" "check-pkg") }}
 
 # check if the manifest has changed since the last run
-{{ template "version-check.tmpl" (merge . (dict "type" "linux")) }}
+{{ template "version-check.tmpl" (merge . (dict "type" "linux" "script" "D_install_packages__linux")) }}
 
 {{ template "pkgmgr-install.tmpl" (dict "mgr" "apt" "pkgs" .packages.linux.apt) }}
 {{ template "pkgmgr-install.tmpl" (dict "mgr" "flatpak" "pkgs" .packages.linux.flatpak) }}

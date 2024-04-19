@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+source /etc/profile.d/shared_paths.sh
+
+
+function clone_repo_if_missing() {
+    local dir="${1}"
+    local repo="${2}"
+    local -r target="${dir}/$(basename "${repo}")"
+
+    if [[ ! -d "${target}" ]]; then
+        ulogger info "cloning '${repo}' to '${dir}'"
+        git clone "https://github.com/${repo}"
+    else
+        ulogger debug "'${repo}' already exists in '${dir}'"
+    fi
+}
+
+
+{{- template "validate-deps.tmpl" (list "git") }}
+{{- template "version-check.tmpl" (merge . (dict "type" "git" "script" "C_install_git_repos")) }}
+
+{{- $external_pkgs := (env "EXTERNAL_PKGS") }}
+{{- $code_root := (env "CODE_ROOT") }}
+
+mkdir -p "{{ $code_root }}"
+cd "{{ $code_root }}"  &> /dev/null
+
+{{- range .git.internal }}
+clone_repo_if_missing "{{ $code_root }}" "{{ . }}"
+{{- end }}
+
+mkdir -p "{{ $external_pkgs }}"
+cd "{{ $external_pkgs }}" &> /dev/null
+
+{{- range .git.external }}
+clone_repo_if_missing "{{ $external_pkgs }}" "{{ . }}"
+{{- end }}
+

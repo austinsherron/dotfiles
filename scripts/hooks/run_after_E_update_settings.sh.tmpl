@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 
 
-{{ template "version-check.tmpl" (merge . (dict "type" "settings")) }}
+{{ template "version-check.tmpl" (merge . (dict "type" "settings" "script" "E_update_settings")) }}
 
 {{- if eq .chezmoi.os "darwin" }}
 {{- range $_, $group := .settings.darwin }}

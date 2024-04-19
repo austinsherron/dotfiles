@@ -3,7 +3,7 @@
 set -Eeuo pipefail
 
 
-{{ template "version-check.tmpl" (merge . (dict "type" "filesystem")) }}
+{{ template "version-check.tmpl" (merge . (dict "type" "filesystem" "script" "B_make_filesystem")) }}
 
 function __do_filesystem_update() {
     local path="${1}"

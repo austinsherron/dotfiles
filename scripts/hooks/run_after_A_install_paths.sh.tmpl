@@ -6,7 +6,7 @@ set -Eeuo pipefail
 {{- $target := "/etc/profile.d" }}
 {{- $shared_paths := (print .chezmoi.homeDir "/.config/shell/bash/helpers/shared_paths.sh") }}
 
-{{ template "version-check.tmpl" (merge . (dict "path" $shared_paths)) }}
+{{ template "version-check.tmpl" (merge . (dict "path" $shared_paths "script" "A_install_paths")) }}
 
 if [[ ! -d "{{ $target }}" ]]; then
     ulogger info "creating non-existent dir={{ $target }}"

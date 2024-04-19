@@ -42,6 +42,7 @@ packages:
         - openssl
         - pkg-config
         - pinentry
+        - pyenv-virtualenvwrapper
         - python-toml
         - rg
         - rq --no-quarantine
