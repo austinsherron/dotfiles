@@ -1,7 +1,5 @@
-# FIXME: this doesn't seem to be working
 git:
   internal:
-    # WARN: order here matters!
     - austinsherron/bash-tools
     - austinsherron/lua-tools
     - austinsherron/hammerspoon
@@ -10,5 +8,6 @@ git:
     - austinsherron/xplr
   external:
     - akinomyoga/blesh-contrib
+    - junegunn/fzf
     - lincheney/fzf-tab-completion
     - ohmybash/oh-my-bash
