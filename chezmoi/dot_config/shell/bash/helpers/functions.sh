@@ -2,7 +2,13 @@
 
 source "${LOCAL_LIB}/bash/utils.sh"
 source "${LOCAL_LIB}/bash/args/validate.sh"
+source "${LOCAL_LIB}/bash/utils/exec.sh"
+source "${LOCAL_LIB}/bash/utils/file.sh"
 
+
+## library #####################################################################
+
+source "${LOCAL_LIB}/bash/log/utils.sh"
 
 ## chezmoi #####################################################################
 
@@ -163,6 +169,19 @@ function clone-external() {
 
 ## gpg #########################################################################
 
+function gpg-tar-encrypted() {
+    local in="${1}"
+    local out="${2:-${1}.tar.gz.gpg}"
+
+    tar -cvzf - "${in}" | gpg -c > "${out}"
+}
+
+function gpg-decrypt-tar() {
+    local in="${1}"
+
+    gpg -d "${in}" | tar -xvzf -
+}
+
 function gpg-export() {
     mkdir gpg-keychain
     cd gpg-keychain || exit
@@ -194,6 +213,25 @@ function editor() {
     fi
 }
 
+## scripts #####################################################################
+
+SINGLE_USE_PATH="${BASH_TOOLS}/scripts/single-use"
+
+function __choose-single-use() {
+    find "${SINGLE_USE_PATH}" -type f -exec basename {} \; | echo "${SINGLE_USE_PATH}/$(fzf --height=11 -i +m -e)"
+}
+
+function single-use() {
+    local script="${1:--}"
+
+    if [[ "${script}" == "-" ]]; then
+        script="$(find "${SINGLE_USE_PATH}" -type f | fzf --height=11 -i +m -e)"
+        shift
+    fi
+
+    "${script}" "$@"
+}
+
 ## system ######################################################################
 
 function host-id() {
@@ -218,6 +256,8 @@ function profile-sh() {
 }
 
 ## tmux ########################################################################
+
+## TODO: consolidate these functions and tmux-load-env in a new tool, tmux-env
 
 function tmux-env() {
     local var
@@ -281,5 +321,25 @@ function man() {
 
 function tldr() {
     tmux-popup tldr "$@" -h 70% --exit
+}
+
+## xplr ########################################################################
+
+XPLR="$(which xplr)"
+
+function xplr() {
+    while true; do
+        XPLR_OUT_PATH="$("${XPLR}")"
+
+        if [[ -z "${XPLR_OUT_PATH}" ]]; then
+            return 0
+        elif file::is_text "${XPLR_OUT_PATH}"; then
+            exec::interactive "Open ${XPLR_OUT_PATH} in ${EDITOR}?" "${EDITOR}" "${XPLR_OUT_PATH}" && "${XPLR}" || return $?
+        elif dir::is "${XPLR_OUT_PATH}"; then
+            cd "${XPLR_OUT_PATH}" || return $?
+        else
+            exec::interactive "Open ${XPLR_OUT_PATH}?" "open" "${XPLR_OUT_PATH}"
+        fi
+    done
 }
 

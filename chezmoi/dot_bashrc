@@ -7,6 +7,7 @@ source /etc/profile.d/shared_paths.sh
 
 ### ble.sh
 
+# shellcheck disable=SC1094
 [[ $- == *i* ]] && source "${XDG_DATA_HOME}/blesh/ble.sh" --noattach
 
 ### constants
@@ -92,7 +93,7 @@ export PATH="${PATH}:${HOME}/.cargo/bin"                # cargo
 export PATH="${PATH}:${GO_ROOT}/bin:${GOPATH}/bin"      # golang
 export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"         # java
 export PATH="${PATH}:${SYS_ROOT}/nvim/bin"              # neovim
-export PATH="${PATH}:/usr/local/ulogger/bin"            # ulogger
+export PATH="${PATH}:${HOME}/.local/bin"                # pipx (and others)
 
 ### pythonpath
 
@@ -111,9 +112,6 @@ export LUA_PATH
 ## shell #######################################################################
 
 ### behavior
-
-# append to + reload history = history shared b/w tmux panes, amongst other things
-export PROMPT_COMMAND="history -a; history -n"
 
 # set timeout to 0 (for escape-time)
 stty time 0

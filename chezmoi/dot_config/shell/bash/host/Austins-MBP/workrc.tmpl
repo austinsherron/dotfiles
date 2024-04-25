@@ -18,6 +18,7 @@ export WORK_PATH="${PROJECT_N}"
 ### rename
 
 alias gl="glab"
+alias grn="granica"
 alias hf="helmfile"
 alias kc="kubectl"
 alias kctx="kubectx"
@@ -36,20 +37,20 @@ alias gl-merge="glab mr merge"
 
 ## functions ###################################################################
 
+### library
+
+source "${LOCAL_LIB}/bash/cloud/aws.sh"
+
 ### aws
 
-function aws-set-profile() {
-    AWS_PROFILE="$(aws configure list-profiles | fzf --height=8 +i +m -e)"
-    export AWS_PROFILE
+function aws-choose-cluster() {
+    aws eks list-clusters | jq -r .clusters[] | fzf --height=11 +i +m -e
 }
 
-alias asp="aws-set-profile"
-
-function aws-current-profile() {
-    echo "${AWS_PROFILE}"
+function aws-update-kubeconfig() {
+    local -r cluster="${1:-$(aws-choose-cluster)}"
+    aws eks update-kubeconfig --name "${cluster}" --alias "${cluster}"
 }
-
-alias acp="aws-current-profile"
 
 ### glab
 
@@ -93,12 +94,17 @@ function jr-gimme() {
 
 function kcsn() {
     local namespace="${1:-""}"
-    [[ -z "${namespace}" ]] && namespace="$(kubectl get namespace | tail --lines=+2 | awk '{print $1}' | fzf --height=8 +i +m -e)"
+    [[ -z "${namespace}" ]] && namespace="$(kubectl get namespace | tail --lines=+2 | awk '{print $1}' | fzf --height=11 +i +m -e)"
 
     kubectl config set-context --current --namespace "${namespace}"
 }
 
 ## tools #######################################################################
+
+## aws
+
+export AWS_DEFAULT_PROFILE="screen-dev-admin"
+[[ -z "${AWS_PROFILE}" ]] && export AWS_PROFILE="${AWS_DEFAULT_PROFILE}"
 
 ## gcp
 

@@ -5,7 +5,7 @@
 ## rename ######################################################################
 
 alias c="clear"
-alias db="dropbox"
+alias db="dbxcli"
 alias g="git"
 alias ls="lsd"
 alias nv="nvim"
@@ -88,8 +88,20 @@ alias gh-repo-ls="gh repo ls --no-archived"
 
 ### logs
 
-alias vl="ulogger edit"
+# explore
 alias logls="ulogger list"
+alias tlog="ulogger tree"
+
+# verbosity
+alias lv="LogFlags::set_verbosity_flag"
+
+# env
+alias lre="LogEnv::read"
+alias lse="LogEnv::set"
+alias lce="LogEnv::clear"
+
+# view/edit
+alias vl="ulogger edit"
 
 ### repls
 
