@@ -24,7 +24,6 @@ export SHELL_NAME
 
 ### imports
 
-source "${BASH_LIB}/utils.sh"
 source "${HELPERS_ROOT}/functions.sh"
 
 ### path manipulations
