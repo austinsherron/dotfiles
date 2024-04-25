@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-source "${LOCAL_LIB}/bash/utils.sh"
-source "${LOCAL_LIB}/bash/args/validate.sh"
-source "${LOCAL_LIB}/bash/utils/exec.sh"
-source "${LOCAL_LIB}/bash/utils/file.sh"
+source "${BASH_LIB}/utils.sh"
+source "${BASH_LIB}/args/validate.sh"
+source "${BASH_LIB}/utils/exec.sh"
+source "${BASH_LIB}/utils/file.sh"
 
 
 ## library #####################################################################
 
-source "${LOCAL_LIB}/bash/log/utils.sh"
+source "${BASH_LIB}/log/utils.sh"
 
 ## chezmoi #####################################################################
 

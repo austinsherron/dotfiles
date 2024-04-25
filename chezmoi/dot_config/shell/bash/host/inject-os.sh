@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+source "${BASH_LIB}/utils/sys.sh"
+
 
 ## inject os specific config ###################################################
 
-OS="$(os-type)"
+OS="$(sys::os_type)"
 export OS_ROOT="${HOST_CONFIG_ROOT}/${OS}"
 OSRC="${OS_ROOT}/osrc"
 
