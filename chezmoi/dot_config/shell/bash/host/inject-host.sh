@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+source "${BASH_LIB}/utils/sys.sh"
+
 
 ## inject host specific config #################################################
 
-HOST="$(host-id)"
+HOST="$(sys::hostname)"
 export HOST_ROOT="${HOST_CONFIG_ROOT}/${HOST}"
 HOSTRC="${HOST_ROOT}/hostrc"
 
