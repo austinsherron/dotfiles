@@ -28,14 +28,20 @@ function clone_repo_if_missing() {
 mkdir -p "{{ $code_root }}"
 cd "{{ $code_root }}"  &> /dev/null
 
+ulogger debug "processing internal repos"
+
 {{- range .git.internal }}
+ulogger debug "processing '{{ . }}' repo"
 clone_repo_if_missing "{{ $code_root }}" "{{ . }}"
 {{- end }}
 
 mkdir -p "{{ $external_pkgs }}"
 cd "{{ $external_pkgs }}" &> /dev/null
 
+ulogger debug "processing external repos"
+
 {{- range .git.external }}
+ulogger debug "processing '{{ . }}' repo"
 clone_repo_if_missing "{{ $external_pkgs }}" "{{ . }}"
 {{- end }}
 

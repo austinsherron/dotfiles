@@ -14,17 +14,12 @@ LAST_MANIFEST_SHA="{{ dig "versions" $type "" . }}"
 HOOK_SHA="{{ include $script_path | sha256sum }}"
 LAST_HOOK_SHA="{{ dig "versions" $script "" . }}"
 
-if [[ "${MANIFEST_SHA}" == "${LAST_MANIFEST_SHA}" ]]; then
-    ulogger info "no change to {{ $base }} since last installation; skipping"
-    exit 0
-else
+if [[ "${MANIFEST_SHA}" != "${LAST_MANIFEST_SHA}" ]]; then
     ulogger info "change to {{ $base }} detected; installing {{ $base }}"
-fi
-
-if [[ "${HOOK_SHA}" == "${LAST_HOOK_SHA}" ]]; then
-    ulogger info "no change to {{ $script }} hook since last installation; skipping"
-    exit 0
+elif [[ "${HOOK_SHA}" != "${LAST_HOOK_SHA}" ]]; then
+    ulogger info "change to {{ $script }} script detected; installing {{ $base }}"
 else
-    ulogger info "change to {{ $script }} hook detected; installing {{ $base }}"
+    ulogger info "no changes to {{ $type }} manifest/hook detected; skipping"
+    exit 0
 fi
 
