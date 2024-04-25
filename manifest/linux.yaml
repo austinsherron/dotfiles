@@ -34,6 +34,7 @@ packages:
       - libxcb-xfixes0-dev
       - libxkbcommon-dev
       - lua5.3
+      - luaver
       - pamu2fcfg
       - pass
       - pcscd
@@ -143,6 +144,8 @@ packages:
         version: 0.15.0-1
       - name: luafilesystem
         version: 1.8.0-1
+      - name: lua-toml
+        version: 2.0-1
       - name: see
         version: 0.1-1
       - name: yaml

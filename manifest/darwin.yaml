@@ -17,16 +17,16 @@ packages:
         - duf
         - fjira
         - font-jetbrains-mono-nerd-font
-        - fzf
         - gawk
         - gh
         - git
         - git-credential-manager
         - git-delta
         - google-chrome
-        - grep
         - gpg
+        - grep
         - gsed
+        - gstat
         - hammerspoon
         - htop
         - jira-cli
@@ -110,6 +110,7 @@ packages:
         - telegram
         - tor-browser
         - veracrypt
+        - vlc
         - whatsapp
         - yubico-authenticator
         - yubico-yubikey-manager
@@ -121,6 +122,8 @@ packages:
       # NOTE: ble.sh should come before atuin
       - ble
       - atuin
+      - dbxcli
+      - fzf
       - st
       - name: gvm
         args: [go1.22]
@@ -135,3 +138,5 @@ packages:
     luarocks:
       - name: busted
         version: 2.1.2-3
+      - name: lua-toml
+        version: 2.0-1
