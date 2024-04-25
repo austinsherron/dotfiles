@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-source "${BASH_LIB}/utils.sh"
 source "${BASH_LIB}/args/validate.sh"
+source "${BASH_LIB}/core/str.sh"
+source "${BASH_LIB}/utils.sh"
 source "${BASH_LIB}/utils/exec.sh"
 source "${BASH_LIB}/utils/file.sh"
 
@@ -234,14 +235,6 @@ function single-use() {
 
 ## system ######################################################################
 
-function host-id() {
-    hostname -s
-}
-
-function os-type() {
-    uname | tr '[:upper:]' '[:lower:]'
-}
-
 function inspect-path() {
     echo "${PATH}" | tr ':' '\n'
 }
@@ -261,7 +254,7 @@ function profile-sh() {
 
 function tmux-env() {
     local var
-    [[ -n "${1+x}" ]] && var="TMUX_$(to_upper "${1}")"
+    [[ -n "${1+x}" ]] && var="TMUX_$(str::upper "${1}")"
 
     if [[ $# -eq 0 ]]; then
         tmux show-environment
