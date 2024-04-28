@@ -224,6 +224,9 @@ bind-key h command-prompt -p "(resize-pane horizontally)" "resize-pane -x %1%%"
 bind-key r command-prompt -p "(tmux-resize-layout)" "run-shell \"ULOGGER_DISABLED=\"true\" tmux-resize-layout -l '%1'\""
 # alt-r for resizing based on configured layouts
 bind-key R run-shell "ULOGGER_DISABLED=\"true\" tmux-resize-layouts"
+# l/L for adding new layouts
+bind-key l command-prompt -p "(tmux-add-layout)" "run-shell \"ULOGGER_DISABLED=\"true\" tmux-add-layout '%1'\""
+bind-key L command-prompt -p "(tmux-add-layout)" "run-shell \"ULOGGER_DISABLED=\"true\" tmux-add-layout '%1' --force\""
 
 ## hooks #######################################################################
 

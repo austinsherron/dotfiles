@@ -70,8 +70,13 @@ alias diffw="diff -w"
 
 ### copy/paste
 
-alias pbc="pbcopy"
-alias pbp="pbpaste"
+alias cpy="clipctl paste"
+alias pst="clipctl copy"
+alias cpyf="clipctl copy --file"
+alias pstf="clipctl paste --file"
+alias pstfo="clipctl paste --open --file"
+alias clip-clear="clipctl clear"
+alias diff-clip="clipctl diff --file"
 
 ### github
 
@@ -111,13 +116,13 @@ alias py-pop="tmux-cmd-popup \"python3\""
 
 ### search
 
-alias brv="s -p searxng"
+alias brv="s -p brave -b brave-browser"
 alias ddg="s -p duckduckgo"
-alias goog="s -p google"
-alias qwnt="s -p qwant"
-alias sp="s -p startpage"
-alias srx="s -p searxng"
-alias sanon="s -p google -b \"chromium --incognito\""
+alias goog="s -p google -b google-chrome"
+alias qwnt="s -p qwant -b brave-browser"
+alias sp="s -p startpage -b brave-browser"
+alias srx="s -p searxng -b brave-browser"
+alias sanon="s -p google -b brave-browser-private"
 
 ### un*
 
