@@ -22,30 +22,6 @@ function cm() {
     fi
 }
 
-## clipboard ###################################################################
-
-function clip-clear() {
-    pbcopy < /dev/null
-}
-
-function diff-clip() {
-    tmp="$(mktemp)"
-    pbpaste >| "${tmp}"
-    diff "${tmp}" "${1}" && rm "${tmp}"
-}
-
-function pbcf() {
-    pbcopy < "${1}"
-}
-
-function pbpf() {
-    pbpaste > "${1}"
-}
-
-function pbpo() {
-    pbpaste > "${1}" && ${EDITOR} "${1}"
-}
-
 ## files #######################################################################
 
 function symlink() {
@@ -328,7 +304,7 @@ function xplr() {
         elif file::is_text "${XPLR_OUT_PATH}"; then
             exec::interactive "Open ${XPLR_OUT_PATH} in ${EDITOR}?" "${EDITOR}" "${XPLR_OUT_PATH}" && "${XPLR}" || return $?
         elif dir::is "${XPLR_OUT_PATH}"; then
-            cd "${XPLR_OUT_PATH}" || return $?
+            cd "${XPLR_OUT_PATH}" || z "${XPLR_OUT_PATH}" || return $?
         else
             exec::interactive "Open ${XPLR_OUT_PATH}?" "open" "${XPLR_OUT_PATH}"
         fi

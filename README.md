@@ -43,6 +43,11 @@ I've recently adopted chezmoi; I'm really liking it so far. I think I may be usi
 * I'm pretty comfortable in the Bash universe, but I've heard good things about [Zsh](https://www.zsh.org), and I've always had a fascination with [Fish](https://fishshell.com). I may try my experiment with some other shells in the near-mid term, but a wholesale shell migration *feels* like it would be a large undertaking
 * I'm thinking of exploring [Nix](https://github.com/NixOS/nix) and [home-manager](https://github.com/nix-community/home-manager)
 
+## Todos
+
+- [ ] Integrate fzf w/ ble.sh
+- [ ] Adopt Alacritty
+
 ## Dependencies
 
 ### Submodules

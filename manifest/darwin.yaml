@@ -26,7 +26,6 @@ packages:
         - gpg
         - grep
         - gsed
-        - gstat
         - hammerspoon
         - htop
         - jira-cli
@@ -74,6 +73,7 @@ packages:
         # work
         - awscli
         - coreutils
+        - dive
         - docker
         - eksctl
         - glab
@@ -103,6 +103,7 @@ packages:
         - dropbox
         - iterm2
         - librewolf --no-quarantine
+        - maccy
         - notesnook
         - openshot-video-editor
         - qutebrowser

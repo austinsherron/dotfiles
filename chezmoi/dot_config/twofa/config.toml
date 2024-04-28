@@ -1,0 +1,15 @@
+[ab]
+match_type = "line"
+matcher = 15
+
+[ar]
+match_type = "line"
+matcher = 2
+
+[bh]
+match_type = "pattern"
+matcher = "authorization code is:"
+
+[dr]
+match_type = "pattern"
+matcher = "PIN:"
