@@ -46,6 +46,7 @@ export MY_KEY_ID="D55F49224387A57E0FDB80E1494E1B61A3505B41"
 
 ## tooling
 
+export DIFF="delta"
 export EDITOR="nvim"
 export TRUNK="master"
 
@@ -88,11 +89,13 @@ source "${HOST_CONFIG_ROOT}/inject-host.sh"
 
 ### shell path
 
-export PATH="${PATH}:${HOME}/.cargo/bin"                # cargo
-export PATH="${PATH}:${GO_ROOT}/bin:${GOPATH}/bin"      # golang
-export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"         # java
-export PATH="${PATH}:${SYS_ROOT}/nvim/bin"              # neovim
-export PATH="${PATH}:${HOME}/.local/bin"                # pipx (and others)
+export PATH="${PATH}:${HOME}/.cargo/bin"                                 # cargo
+export PATH="${PATH}:${GO_ROOT}/bin:${GOPATH}/bin"                       # golang
+export PATH="${PATH}:/usr/local/jdk-20.0.1/bin"                          # java
+export PATH="${PATH}:${SYS_ROOT}/nvim/bin"                               # neovim
+export PATH="${PATH}:${HOME}/.local/bin"                                 # pipx (and others)
+export PATH="${SYS_ROOT}/opt/ruby/bin:${PATH}"                           # ruby
+export PATH="${PATH}:${SYS_ROOT}/lib/ruby/gems/$(ruby::version)/bin"     # +gems
 
 ### pythonpath
 
@@ -117,8 +120,6 @@ stty time 0
 
 ## helpers #####################################################################
 
-# NOTE: ensure aliases are loaded after extensions, as oh-my-bash foists on me some
-# unwanted aliases
 source "${HELPERS_ROOT}/extensions.sh"
 source "${HELPERS_ROOT}/aliases.sh"
 source "${HELPERS_ROOT}/tools.sh"

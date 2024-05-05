@@ -1,4 +1,8 @@
 sourceDir = '~/Workspace/dotfiles/chezmoi'
 
 [diff]
+pager = "delta"
 exclude = ['externals', 'scripts']
+
+[scriptEnv]
+ULOGGER_TYPE = "chezmoi"

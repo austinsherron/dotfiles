@@ -17,20 +17,17 @@ success_symbol = "[❯](blue)"
 error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
 
-
 [cmd_duration] # -> displays slow cmd warnings
 min_time = 100
 style = "dimmed white"
 disabled = true
 
-
 [directory] # -> mini path/repo base
 truncate_to_repo = true
-truncation_length = 1
+truncation_length = 2
 style = "cyan"
 repo_root_style = "bold purple"
 home_symbol = "~"
-
 
 [sudo] # -> only visible if sudo creds are cached
 disabled = false
@@ -113,7 +110,6 @@ style = "bold red"
 charging_symbol = "󰚌"
 discharging_symbol = "󰯈"
 
-
 [time]
 format = "[$time]($style)"
 time_format = "%I:%M"
@@ -127,13 +123,11 @@ use_12hr = true
 format = "[$symbol$branch(:$remote_branch)]($style) "
 style = "bold cyan"
 
-
 [git_metrics]
 disabled = false
 added_style = "green"
 deleted_style = "red"
 format = "[$added]($added_style) [$deleted]($deleted_style)"
-
 
 [git_status]
 format = "([$conflicted$modified$staged$ahead_behind]($style))"
@@ -149,18 +143,15 @@ untracked = " "
 version_format = "v${major}.${minor}"
 format = "[$symbol($version )]($style)"
 
-
 [java]
 symbol = "☕ "
 version_format = "v${major}.${minor}"
 format = "[$symbol($version )]($style)"
 
-
 [lua]
 symbol = "🌙 "
 version_format = "v${major}.${minor}"
 format = "[$symbol($version )]($style)"
-
 
 [python]
 symbol = "🐍 "

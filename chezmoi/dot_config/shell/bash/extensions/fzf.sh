@@ -11,6 +11,7 @@ if [[ ! -f "blah" ]]; then
 fi
 
 ulogger info "enabling fzf completion" -t shell -p rc
+# shellcheck disable=SC1090
 source "${FZF_PATH}"
 
 # bind tab to fzf completion
