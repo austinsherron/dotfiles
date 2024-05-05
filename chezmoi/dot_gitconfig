@@ -45,6 +45,9 @@
     sdt = stash drop stash@{0}
     sd  = "!git stash drop stash@{\"$1\"} #"
 
+    stash-staged = "!git stash --keep-index && git stash push"
+    stst         = "stash-staged"
+
     # [fuzzy]
     fcheckout       = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
@@ -150,7 +153,7 @@
     diffFilter = delta --color-only --features=interactive
 [delta]
     features = decorations
-    line-numbers-left-format = ""
+    line-numbers = true
     line-numbers-right-format = "│ "
     side-by-side = true
 [delta "interactive"]

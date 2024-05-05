@@ -2,6 +2,10 @@
 # shellcheck disable=SC1091
 
 
+## delta #######################################################################
+
+export DELTA_FEATURES="+side-by-side +decorations"
+
 ## gcalcli #####################################################################
 
 # TODO: add setup/config
@@ -22,6 +26,16 @@ export NVM_DIR="${LEGACY_CONFIG_ROOT_PUB}/.nvm"
 
 [[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"                    # load nvm
 [[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"  # load completions
+
+## porkbun #####################################################################
+
+if [[ -z "${PORKBUN_API_KEY+x}" ]]; then
+    export PORKBUN_API_KEY="{{ (onepasswordDetailsFields "t7hxmp2zqxhzkidpn3njcma66q" "" "my").rkhh5bzl476o5n4lbeoopk5rzu.value }}"
+fi
+
+if [[ -z "${PORKBUN_API_SECRET+x}" ]]; then
+    export PORKBUN_API_SECRET="{{ (onepasswordDetailsFields "t7hxmp2zqxhzkidpn3njcma66q" "" "my").ml2rk5evxpkz7xcbojqqph7fey.value }}"
+fi
 
 ## zoxide ######################################################################
 

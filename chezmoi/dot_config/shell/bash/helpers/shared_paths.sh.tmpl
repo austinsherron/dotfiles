@@ -19,6 +19,14 @@ export WORKSPACE="${ADMIN_HOME}/Workspace"
 export CODE_ROOT="${WORKSPACE}/workspace"
 export BASH_TOOLS="${CODE_ROOT}/bash-tools"
 
+## remote
+
+{{- if eq .chezmoi.os "linux" }}
+export VOLUMES="/media"
+{{- else if eq .chezmoi.os "darwin" }}
+export VOLUMES="/Volumes"
+{{- end }}
+
 ## logs
 
 export LOG_ROOT="${ADMIN_HOME}/.local/state/logs"

@@ -43,7 +43,7 @@ packages:
         - pinentry
         - pyenv-virtualenvwrapper
         - python-toml
-        - rg
+        - rar --no-quarantine
         - rq --no-quarantine
         - rust
         - qt5
@@ -84,6 +84,7 @@ packages:
         - kubectl
         - poetry
         - rpm
+        - ruby
         - terraform
         - tfenv
         - xorgproto

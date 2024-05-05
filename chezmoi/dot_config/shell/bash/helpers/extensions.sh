@@ -3,15 +3,12 @@
 
 ## bash completion #############################################################
 
+# shellcheck disable=SC1090
 [[ -f "${COMPLETION_PATH}" ]] && . "${COMPLETION_PATH}"
 
 ## fzf completion ##############################################################
 
 source "${EXTENSIONS_ROOT}/fzf.sh"
-
-## oh-my-bash ##################################################################
-
-source "${EXTENSIONS_ROOT}/oh-my-bash.sh"
 
 ## starship ####################################################################
 
