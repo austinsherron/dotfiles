@@ -16,7 +16,7 @@ set-option -g default-shell /opt/homebrew/bin/bash
 {{- end }}
 
 # load tmux env vars
-run-shell "tmux-load-env"
+run-shell "tmux-env --file ${XDG_CONFIG_HOME}/tmux/env"
 
 ## general #####################################################################
 
@@ -71,12 +71,16 @@ set-option -sa terminal-features ',xterm-256color:RGB'
 set -g pane-border-status top
 set -g pane-border-lines "heavy"
 
+# set pane border
+setw -g pane-border-format " #(ULOGGER_DISABLE=true display-path #{pane_current_path}) "
+
 ## status bar ##################################################################
 
 # NOTE: formatting is currently handled by theme, enabled below in plugins
 
 # enable --ugly-- status bar
 set -g status on
+set-option -g status-interval 5
 
 ## position
 
@@ -85,12 +89,6 @@ set-option -g status-position top
 
 # shortcut for changing status bar position
 bind-key s run-shell "tmux-toggle-status-bar"
-
-# FIXME: not only is this not working, it seems that it's preventing tmux-resurrect from auto-restoring on session start
-# set window names to automatically update based on the current directory
-# set-option -g status-interval 5
-# set-option -g automatic-rename on
-# set-option -g automatic-rename-format '#{b:pane_current_path}'
 
 ## navigation ##################################################################
 
@@ -221,7 +219,7 @@ bind-key h command-prompt -p "(resize-pane horizontally)" "resize-pane -x %1%%"
 ## resizing using tmux-resize-layout
 
 # r for resizing based on configured layouts
-bind-key r command-prompt -p "(tmux-resize-layout)" "run-shell \"ULOGGER_DISABLED=\"true\" tmux-resize-layout -l '%1'\""
+bind-key r command-prompt -p "(tmux-resize-layout)" "run-shell \"ULOGGER_DISABLED=\"true\" tmux-resize-layout -l %1\""
 # alt-r for resizing based on configured layouts
 bind-key R run-shell "ULOGGER_DISABLED=\"true\" tmux-resize-layouts"
 # l/L for adding new layouts

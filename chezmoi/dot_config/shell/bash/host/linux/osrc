@@ -7,11 +7,6 @@
 
 export APP_IMAGES="${HOME}/Applications"
 
-## external storage
-
-export VOLUME_ROOT="/media"
-export MOUNT_POINT="${VOLUME_ROOT}/${USER}"
-
 ## completions
 
 export COMPLETION_PATH="/usr/share/bash-completion/bash_completion"
@@ -43,7 +38,6 @@ alias pbpaste='xsel --clipboard'
 
 alias reboot="sudo systemctl reboot -i"
 alias sc="systemctl"
-alias sush="sudo -i -- bash -c \"cd $(pwd); /bin/bash\""
 alias uc="systemctl --user"
 
 ## functions ###################################################################
