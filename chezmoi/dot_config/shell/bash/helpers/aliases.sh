@@ -7,7 +7,7 @@
 alias c="clear"
 alias db="dbxcli"
 alias g="git"
-alias ls="lsd"
+alias ls="lsd --group-directories-first"
 alias nv="nvim"
 alias pm="pkgmgr"
 alias pop="tmux-popup"
@@ -64,17 +64,19 @@ alias bd="ble-detach"
 
 ### diff
 
-alias diff="colordiff -N -u"
-alias diffr="diff -r"
-alias diffw="diff -w"
+# NOTE: diff is primarily configured via gitconfig, i.e.: dotfiles:chezmoi/dot_gitconfig
+alias diff="delta"
+# TODO: check for analogous delta flags
+# alias diffr="diff -r"
+# alias diffw="diff -w"
 
 ### copy/paste
 
-alias cpy="clipctl paste"
-alias pst="clipctl copy"
-alias cpyf="clipctl copy --file"
-alias pstf="clipctl paste --file"
-alias pstfo="clipctl paste --open --file"
+alias pbp="clipctl paste"
+alias pbc="clipctl copy"
+alias pbcf="clipctl copy --file"
+alias pbpf="clipctl paste --file"
+alias pbpo="clipctl paste --open --file"
 alias clip-clear="clipctl clear"
 alias diff-clip="clipctl diff --file"
 

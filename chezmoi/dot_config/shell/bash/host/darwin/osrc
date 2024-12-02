@@ -21,11 +21,6 @@ fi
 
 export GO_ROOT="${SYS_BIN}/go"
 
-## external storage
-
-export VOLUME_ROOT="/Volumes"
-export MOUNT_POINT="${VOLUME_ROOT}"
-
 ## completions
 
 export COMPLETION_PATH="${BREW}/etc/bash_completion"

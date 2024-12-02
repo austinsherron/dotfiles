@@ -4,23 +4,12 @@ source "${BASH_LIB}/args/validate.sh"
 source "${BASH_LIB}/core/str.sh"
 source "${BASH_LIB}/utils/exec.sh"
 source "${BASH_LIB}/utils/file.sh"
+source "${BASH_LIB}/utils/sys.sh"
 
 
 ## library #####################################################################
 
 source "${BASH_LIB}/log/utils.sh"
-
-## chezmoi #####################################################################
-
-declare -A CM_ALIASES=([a]=apply [d]=diff)
-
-function cm() {
-    if [[ -n "${CM_ALIASES[${1}]+x}" ]]; then
-        chezmoi "${CM_ALIASES[${1}]}"
-    else
-        chezmoi "${@}"
-    fi
-}
 
 ## files #######################################################################
 
@@ -45,8 +34,8 @@ function symlinks() {
         esac
     done
 
-    validate_required_positional "path" "${path}"
-    validate_mutually_exclusive "${broken}" "-b" "${valid}" "-v"
+    validate_required_positional "path" "${path}" || return 1
+    validate_mutually_exclusive "${broken}" "-b" "${valid}" "-v" || return 1
 
     find "${path}" -type l | while read -r file; do
         if [[ -e "${file}" ]] && [[ -n "${broken}" ]]; then
@@ -223,48 +212,6 @@ function profile-sh() {
     PS4='+ $(date "+%s.%N ($LINENO) ")' bash -x "$@"
 }
 
-## tmux ########################################################################
-
-## TODO: consolidate these functions and tmux-load-env in a new tool, tmux-env
-
-function tmux-env() {
-    local var
-    [[ -n "${1+x}" ]] && var="TMUX_$(str::upper "${1}")"
-
-    if [[ $# -eq 0 ]]; then
-        tmux show-environment
-    elif [[ $# -eq 1 ]]; then
-        tmux show-environment "${var}" 2> /dev/null | cut -d "=" -f2
-    elif [[ $# -eq 2 ]] && [[ "${2}" == "-c"  ]]; then
-        tmux setenv -u "${var}"
-    elif [[ $# -eq 2 ]]; then
-        tmux setenv "${var}" "${2}"
-    else
-        ulogger error "tmux-env: zero, one, or two arguments, var_name/var_val, required" -t shell -p util
-        return 1
-    fi
-}
-
-alias txenv="tmux-env"
-
-function tmux-layout() {
-    local var
-    var="$(tmux display-message -pF '#W')_layout"
-
-    if [[ $# -eq 0 ]]; then
-        tmux-env "${var}"
-    elif [[ $# -eq 1 ]] && [[ "${1}" == "-c"  ]]; then
-        tmux-env "${var}" "-c"
-    elif [[ $# -eq 1 ]]; then
-        tmux-env "${var}" "${1}"
-    else
-        ulogger error "tmux-layout: zero or one arguments, layout|-c (clear) expected" -t shell -p util
-        return 1
-    fi
-}
-
-alias txlyt="tmux-layout"
-
 ## utils #######################################################################
 
 function sh-pop() {
@@ -301,10 +248,12 @@ function xplr() {
 
         if [[ -z "${XPLR_OUT_PATH}" ]]; then
             return 0
+        # NOTE: order of the follow clauses matters
+        elif dir::is "${XPLR_OUT_PATH}"; then
+            cd "${XPLR_OUT_PATH}" || true
+            return $?
         elif file::is_text "${XPLR_OUT_PATH}"; then
             exec::interactive "Open ${XPLR_OUT_PATH} in ${EDITOR}?" "${EDITOR}" "${XPLR_OUT_PATH}" && "${XPLR}" || return $?
-        elif dir::is "${XPLR_OUT_PATH}"; then
-            cd "${XPLR_OUT_PATH}" || z "${XPLR_OUT_PATH}" || return $?
         else
             exec::interactive "Open ${XPLR_OUT_PATH}?" "open" "${XPLR_OUT_PATH}"
         fi
