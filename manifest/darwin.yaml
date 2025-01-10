@@ -3,7 +3,6 @@ packages:
     brew:
       taps:
         - ankitpokhrel/jira-cli
-        - homebrew/cask-fonts
         - mk-5/mk-5
       formulae:
         # personal
@@ -15,6 +14,7 @@ packages:
         - cmake
         - colordiff
         - duf
+        - fzf
         - fjira
         - font-jetbrains-mono-nerd-font
         - gawk
@@ -42,7 +42,6 @@ packages:
         - pkg-config
         - pinentry
         - pyenv-virtualenvwrapper
-        - python-toml
         - rar --no-quarantine
         - rq --no-quarantine
         - rust
@@ -71,6 +70,7 @@ packages:
         - yq
         - zoxide
         # work
+        - alembic
         - awscli
         - coreutils
         - dive
@@ -88,6 +88,7 @@ packages:
         - terraform
         - tfenv
         - xorgproto
+        - yarn
         # tentative
         - neomutt
       casks:
@@ -109,6 +110,7 @@ packages:
         - openshot-video-editor
         - qutebrowser
         - signal
+        - tailscale
         - telegram
         - tor-browser
         - veracrypt
@@ -116,8 +118,6 @@ packages:
         - whatsapp
         - yubico-authenticator
         - yubico-yubikey-manager
-        # work
-        - tailscale
         # tentative
         - protonmail-bridge
     scripts:
@@ -125,14 +125,7 @@ packages:
       - ble
       - atuin
       - dbxcli
-      - fzf
       - st
-      - name: gvm
-        args: [go1.22]
-        # FIXME: see comment in "${INSTALL_SCRIPTS}/darwin/gvm.sh"
-        # args: [go1.22, --use, go1.22]
-      - name: helm-plugin
-        args: [diff, https://github.com/databus23/helm-diff]
     go:
       - name: slack-term
         url: github.com/erroneousboat/slack-term

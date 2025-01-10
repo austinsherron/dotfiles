@@ -18,6 +18,7 @@ function __do_filesystem_update() {
     echo "[INFO] creating dir=${FS_PATH}"
     mkdir -p "${FS_PATH}"
 
+    [[ -n "${SRC}" || -n "${SRC}" ]] && return 0
     [[ ! -d "${SRC}" ]] && ulogger error "dir=${SRC} doesn't exist"
     [[ ! -d "${DST}" ]] && ulogger error "dir=${DST} doesn't exist"
 

@@ -37,6 +37,14 @@ if [[ -z "${PORKBUN_API_SECRET+x}" ]]; then
     export PORKBUN_API_SECRET="{{ (onepasswordDetailsFields "t7hxmp2zqxhzkidpn3njcma66q" "" "my").ml2rk5evxpkz7xcbojqqph7fey.value }}"
 fi
 
+## pyenv #######################################################################
+
+export PATH="$HOME/.pyenv/bin:$PATH"
+
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
 ## zoxide ######################################################################
 
 if which zoxide > /dev/null 2>&1; then
