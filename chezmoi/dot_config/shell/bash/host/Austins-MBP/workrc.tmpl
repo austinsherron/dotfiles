@@ -5,141 +5,23 @@
 
 ## important paths #############################################################
 
-# export WORK_ROOT="${CODE_ROOT}/basis"
+export WORK_ROOT="${CODE_ROOT}/basis"
 
 ## aliases #####################################################################
 
 ### rename
 
-alias gl="glab"
 alias hf="helmfile"
 alias kc="kubectl"
 alias kctx="kubectx"
 alias tf="terraform"
 alias tg="terragrunt"
 
-### gcloud
-
-alias gcp-auth="gcloud auth login"
-
-### glab
-
-alias gl-new-mr="glab mr create -a austin.sherron"
-
 ## functions ###################################################################
 
-### library
-
-source "${BASH_LIB}/cloud/aws.sh"
-
-### aws
-
-function aws-choose-cluster() {
-    aws eks list-clusters | jq -r .clusters[] | fzf --height=11 +i +m -e
-}
-
-function aws-update-kubeconfig() {
-    local -r cluster="${1:-$(aws-choose-cluster)}"
-    aws eks update-kubeconfig --name "${cluster}" --alias "${cluster}"
-}
-
-### glab
-
-function gl-view-mr() {
-    glab mr view "${@}" -w
-}
-
-alias gl-vmr="gl-view-mr"
-
-### helmfile
-
-### jira
-
-function jr-ls() {
-    jira issue list -a "$(jira me)" -s "To Do" -s "In Progress"
-}
-
-function jr-rls() {
-    jira issue list -r "$(jira me)"
-}
-
-function jr-new() {
-    jira issue create -a "$(jira me)"
-}
-
-# function jr-edit() {
-#     validate_num_args 1 $# || return 1
-#
-#     local issue="${1}"
-#     jira issue edit HAWK-"${issue}"
-# }
-#
-# function jr-gimme() {
-#     validate_num_args 1 $# || return 1
-#
-#     local issue="${1}"
-#     jira issue edit HAWK-"${issue}" -a "$(jira me)"
-# }
-
-### kubectl
-
-function kcsn() {
-    local namespace="${1:-""}"
-    [[ -z "${namespace}" ]] && namespace="$(kubectl get namespace | tail --lines=+2 | awk '{print $1}' | fzf --height=11 +i +m -e)"
-
-    kubectl config set-context --current --namespace "${namespace}"
-}
+### TODO: linear
 
 ## tools #######################################################################
-
-## aws
-
-# export AWS_DEFAULT_PROFILE="screen-dev-admin"
-# [[ -z "${AWS_PROFILE}" ]] && export AWS_PROFILE="${AWS_DEFAULT_PROFILE}"
-#
-# ## gcp
-#
-# export GOOGLE_APPLICATION_CREDENTIALS="${TERRAFORM_SA_KEY_PATH}"
-#
-# ## glab
-#
-# if [[ -z "${GITLAB_TOKEN+x}" ]]; then
-#     export GITLAB_TOKEN="{{ (onepasswordDetailsFields "gbbyczz7ku2kx5ah2ryupcphoe" "" "my").credential.value }}"
-# fi
-#
-# ## jira
-#
-# if [[ -z "${JIRA_API_TOKEN+x}" ]]; then
-#     export JIRA_API_TOKEN="{{ (onepasswordDetailsFields "s22btzdr2q6futjzovqapqtolm" "" "my").credential.value }}"
-# fi
-
-## environment #################################################################
-
-## required: krypton:tellus-multitenant/helmdist
-
-# if [[ -z "${ALERTING_PAGERDUTY_TOKEN+x}" ]]; then
-#     export ALERTING_PAGERDUTY_TOKEN="{{ (onepasswordDetailsFields "myzhr6t5daozr6f5pc2sdbpkxi" "" "granica").password.value }}"
-# fi
-#
-# if [[ -z "${ALERTING_SLACK_TOKEN+x}" ]]; then
-#     export ALERTING_SLACK_TOKEN="{{ (onepasswordDetailsFields "mxqsegi7a7mitjidym22e23ioi" "" "granica").password.value }}"
-# fi
-#
-# if [[ -z "${SCREEN_ALERTING_PAGERDUTY_TOKEN+x}" ]]; then
-#     export SCREEN_ALERTING_PAGERDUTY_TOKEN="{{ (onepasswordDetailsFields "v6dqa2fs7nlmawgrdd37j2sdry" "" "granica").password.value }}"
-# fi
-
-## required: krypton:tellus-multitenant/gke
-
-# if [[ ! -s "${TERRAFORM_SA_KEY_PATH}" ]]; then
-#     echo "{{ onepasswordRead "op://engineering/terraform/key.json" "granica" }}" > ${TERRAFORM_SA_KEY_PATH}
-# fi
-
-## required: superman:utils/scripts/deploy/build_rpm.py
-
-# if [[ -z "${WONDER_WOMAN_AUTH_TOKEN+x}" ]]; then
-#     export WONDER_WOMAN_AUTH_TOKEN="{{ (onepasswordDetailsFields "sbxmidyrpl2cugxcgmjsk45eg4" "" "granica").credential.value }}"
-# fi
 
 ## environment #################################################################
 

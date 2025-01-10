@@ -96,6 +96,7 @@ export PATH="${PATH}:${SYS_ROOT}/nvim/bin"                               # neovi
 export PATH="${PATH}:${HOME}/.local/bin"                                 # pipx (and others)
 export PATH="${SYS_ROOT}/opt/ruby/bin:${PATH}"                           # ruby
 export PATH="${PATH}:${SYS_ROOT}/lib/ruby/gems/$(ruby::version)/bin"     # +gems
+export PATH="${PATH}:${SYS_ROOT}/lib/ruby/gems/3.4.0/bin"                # +gems
 
 ### pythonpath
 
