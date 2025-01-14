@@ -1,39 +1,84 @@
-data.location=~/.local/share/task
-hooks.location=~/.config/task/hooks
+data.location=$XDG_DATA_HOME/task
+hooks.location=$XDG_CONFIG_HOME/task/hooks
 
-# themes (uncomment one to use)
-#include light-16.theme
-#include light-256.theme
-#include dark-16.theme
-#include dark-256.theme
-#include dark-red-256.theme
-#include dark-green-256.theme
-#include dark-blue-256.theme
-#include dark-violets-256.theme
-#include dark-yellow-green.theme
-#include dark-gray-256.theme
-#include dark-gray-blue-256.theme
-#include solarized-dark-256.theme
+## appearance ##################################################################
+
+# theme
 include solarized-light-256.theme
-#include no-color.theme
+
+# width
+defaultwidth=220
 
 ## attributes ##################################################################
 
+## for
+
 uda.for.type=string
 uda.for.label=For
-uda.for.values=home,granica,frb
+uda.for.values=home,basis
+
+## urgent
+
+uda.urg.type=string
+uda.urg.label=Urgent
+uda.urg.values=y,n
+uda.urg.coefficient=1.4
+uda.urg.default=n
+
+## important
+
+uda.impt.type=string
+uda.impt.label=Important
+uda.impt.values=y,n
+uda.impt.default=n
+
+## jira
 
 uda.jira.type=string
 uda.jira.label=Jira
 
+## aliases #####################################################################
+
+## commands
+
+alias.new=add
+alias.rm=delete
+
+## reports
+
+alias.ls=list
+
+## attributes
+
+alias.prj=project
+
+## reports #####################################################################
+
+## list
+
+report.list.columns=id,start.age,entry.age,depends.indicator,priority,project,tags,recur.indicator,scheduled.countdown,due,until.remaining,description.count,urgency,urg,impt
+report.list.context=1
+report.list.descrip=Most details of tasks
+report.list.filter=status:pending -WAITING
+report.list.labels=ID,Active,Age,D,P,Project,Tags,R,Sch,Due,Until,Description,Urg,Urg?,Impt?
+report.list.sort=start-,due+,project+,urgency-
+
+## project
+
+report.project.columns=id,start.age,entry.age,depends.indicator,priority,project,tags,recur.indicator,scheduled.countdown,due,until.remaining,description.count,urgency,urg,impt
+report.project.filter=status:pending -WAITING
+report.project.sort=project
+
 ## contexts ####################################################################
+
+## custom
 
 context.home.read=for:home
 context.home.write=for:home
 
-context.granica.read=for:granica
-context.granica.write=for:granica
+context.basis.read=for:basis
+context.basis.write=for:basis
 
-context.frb.read=for:frb
-context.frb.write=for:frb
-context=granica
+## default/current
+
+context=home
