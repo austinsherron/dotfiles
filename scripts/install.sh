@@ -12,7 +12,7 @@ DOTFILES="$(dirname "$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )")"
 
 ## run os agnostic bootstrap script
 
-"${DOTFILES}/scripts/bootstrap/common.sh"
+"${DOTFILES}/scripts/bootstrap/common.sh" "$@"
 
 ## run os specific bootstrap script
 

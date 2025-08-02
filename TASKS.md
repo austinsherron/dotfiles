@@ -2,6 +2,13 @@
 
 ## To-Do
 
+### Critical Issues
+
+- [ ] nvim is hopelessly broken after update (i.e.: many plugins/settings don't work)
+- [ ] tmux commands are failing from w/in tmux
+- [ ] atuin history is spotty and seems to reset/lose entries
+- [ ] lua path isn't loaded in new terminal windows
+
 ### General
 
 - [ ] Setup atuin sync server
@@ -21,6 +28,10 @@
 ### tmux
 
 - [ ] Investigate incorporating at least pieces of oh-my-tmux
+
+### Misc
+
+- [ ] Add Slack utils
 
 ## Done
 

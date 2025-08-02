@@ -7,6 +7,18 @@ BASH_TOOLS_REPO="https://github.com/austinsherron/bash-tools"
 BASH_TOOLS="${HOME}/Workspace/workspace/bash-tools"
 TOOLS_ROOT="${BASH_TOOLS}/tools"
 
+
+## save persistent hostname
+
+CUSTOM_HOSTNAME="${1:-"$(hostname -s)"}"
+
+sudo mkdir -p /usr/local/etc
+
+echo "[INFO] saving persistent hostname=${CUSTOM_HOSTNAME} to /usr/local/etc"
+sudo echo "${CUSTOM_HOSTNAME}" >| /usr/local/etc/hostname
+
+# install bash-tools
+
 if [[ -d "${BASH_TOOLS}" ]]; then
     echo "[INFO] bash-tools repo already exists"
 else

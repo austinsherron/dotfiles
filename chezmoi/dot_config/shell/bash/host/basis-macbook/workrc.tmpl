@@ -1,0 +1,166 @@
+#!/usr/bin/env bash
+
+
+## constants ###################################################################
+
+NEON_PROJECT_ID="plain-dust-36470029"
+
+## important paths #############################################################
+
+export WORK_ROOT="${CODE_ROOT}/basis"
+
+## aliases #####################################################################
+
+### rename
+
+alias hf="helmfile"
+alias kc="kubectl"
+alias kctx="kubectx"
+alias n="neonctl"
+alias tf="terraform"
+alias tg="terragrunt"
+
+## functions ###################################################################
+
+# gh
+
+function create-pr() {
+    gh pr create -a austinsherron
+    gh pr view -w
+}
+
+function merge-pr() {
+    gh pr merge "$@"
+}
+
+function pr-num() {
+    gh pr view --json number | jq -r .number
+}
+
+function close-pr() {
+    local num="${1:-$(pr-num)}"
+
+    gh pr close $num
+}
+
+# linear
+
+function lr() {
+    local cmd="${1:-ls}"
+
+    case $cmd in
+         ls) linear-cli issues list ;;
+      start) linear-cli issues develop "$(lr::get_issue_id)" ;;
+          *) linear-cli ${@} ;;
+    esac
+}
+
+function lr::get_issue_id() {
+    linear-cli issues list | peco | awk '{print $1}'
+}
+
+# neon/db
+
+function db-url-raw() {
+    local branch="${1:-main}"
+    local role="${2:-neondb_owner}"
+
+    if [[ "$branch" =~ ^prv-(.+)$ ]]; then
+        branch="basis-db-preview-${BASH_REMATCH[1]}"
+    fi
+
+    neon connection-string $branch --role-name $role --project-id "$NEON_PROJECT_ID"
+}
+
+function db-url() {
+    local branch="${1:-main}"
+    local role="${2:-neondb_owner}"
+
+    db-url-raw $branch $role | sed 's/postgresql/postgresql+asyncpg/' | sed 's/?sslmode=require//'
+}
+
+function set-db-url() {
+    local branch="${1:-main}"
+    local role="${2:-neondb_owner}"
+
+    export DATABASE_URL="$(db-url $branch $role)"
+}
+
+# slack
+
+function add-slack-mentions() {
+    local message="$1"
+    local conf_file="$XDG_CONFIG_HOME/slack/users.conf"
+
+    # build sed expression from slack.conf
+    local sed_expr
+    sed_expr=$(awk -F= '
+        /^[^#[:space:]]+=U/ {
+            printf "s/@%s/\\<@%s\\>/g;", $1, $2
+        }
+    ' "$conf_file")
+
+    # apply the expression using sed
+    echo "$message" | sed "$sed_expr"
+}
+
+function get-slack-channel-id() {
+    local channel="${1#[@#]}"   # strip leading @ or # if present
+    local id=""
+
+    # look in channels.conf first (public/private channels)
+    if [[ -f "$XDG_CONFIG_HOME/slack/channels.conf" ]]; then
+        id=$(grep -s "^${channel}=" "$XDG_CONFIG_HOME/slack/channels.conf" | awk -F= '{print $2}')
+    fi
+
+    # if not found, look in users.conf (DMs -> user id)
+    if [[ -z "$id" && -f "$XDG_CONFIG_HOME/slack/users.conf" ]]; then
+        id=$(grep -s "^${channel}=" "$XDG_CONFIG_HOME/slack/users.conf" | awk -F= '{print $2}')
+    fi
+
+    echo "$id"
+}
+
+function send-slack-message() {
+    local channel="${1}"
+    local message="${2}"
+
+    [[ "$channel" != \#* ]] && channel="$(get-slack-channel-id "$channel")"
+    message="$(add-slack-mentions "$message")"
+
+    local res=$(curl -s -X POST https://slack.com/api/chat.postMessage \
+    -H "Authorization: Bearer $SLACK_USER_BOT_TOKEN" \
+    -H 'Content-type: application/json' \
+    --data "{
+        \"channel\":\"${channel}\",
+        \"text\":\"${message}\"
+    }")
+
+    echo "$res" | jq -r '.ok'
+}
+
+## tools #######################################################################
+
+export LINEAR_API_KEY="{{ (onepasswordDetailsFields "qaqkbq4llddfcg7lf6qyybfuly" "personal" "my").credential.value  }}"
+export NEON_API_KEY="{{ (onepasswordDetailsFields "3r3aui5u3dpmy6plhkkyez5344" "shared" "essexlabs").credential.value  }}"
+export SLACK_USER_BOT_TOKEN="{{ (onepasswordDetailsFields "gyzjyq5ugikkxykkexavthaspu" "employee" "essexlabs").credential.value  }}"
+
+## environment #################################################################
+
+BACKEND_ENV_PATH="$WORK_ROOT/arnold/backend/.env"
+FRONTEND_ENV_PATH="$WORK_ROOT/arnold/frontend/.env"
+INFRA_ENV_PATH="$WORK_ROOT/arnold/infra/.env"
+
+# TODO
+
+# if [[ ! -f "${BACKEND_ENV_PATH}" ]]; then
+#     {{/* (onepasswordDocument "g3gjvsdqv3wrezjikifndvgnle" "" "essexlabs") */}} > "${BACKEND_ENV_PATH}"
+# fi
+
+# if [[ ! -f "${FRONTEND_ENV_PATH}" ]]; then
+#     {{/* (onepasswordDocument "yqxg5hqp2np3fql6vsg265rtqi" "" "essexlabs") */}} > "${FRONTEND_ENV_PATH}"
+# fi
+
+# if [[ ! -f "${FRONTEND_ENV_PATH}" ]]; then
+#     {{/* (onepasswordDocument "c3q46lfyhlgevrebwjujv6deey" "" "essexlabs") */}} > "${FRONTEND_ENV_PATH}"
+# fi
