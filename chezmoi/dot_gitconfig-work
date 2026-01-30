@@ -1,10 +1,10 @@
 [user]
     name       = Austin Sherron
-    email      = austin.sherron@granica.ai
+    email      = austin@maybern.com
     signingkey = E70AE3D0F6E9D240C40D20305A2A9E917F395031
 
 [alias]
-    new-branch = "!git checkout -b austinsherron/hawk-\"$1\"-\"$2\" #"
-    rls        = "!git ls-remote | grep sherron"
+    new-branch = "!git checkout -b austin/\"$1\"-\"$2\" #"
+    rls        = "!git ls-remote | grep austin/"
 
 

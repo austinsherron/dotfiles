@@ -16,9 +16,13 @@ fi
 
 ulogger info "loading contents of completion dir='${COMPLETION_DIR}'"
 
-for FILE in "${COMPLETION_DIR}"/*; do
+shopt -s nullglob
+
+for FILE in "${COMPLETION_DIR}/"*; do
     source "${FILE}"
 done
+
+shopt -u nullglob
 
 ## homebrew ####################################################################
 

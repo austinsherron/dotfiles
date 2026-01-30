@@ -3,11 +3,15 @@
 
 ## constants ###################################################################
 
-NEON_PROJECT_ID="plain-dust-36470029"
+
+## path updates ################################################################
+
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 ## important paths #############################################################
 
-export WORK_ROOT="${CODE_ROOT}/basis"
+export WORK_ROOT="${CODE_ROOT}/maybern"
 
 ## aliases #####################################################################
 
@@ -139,28 +143,3 @@ function send-slack-message() {
     echo "$res" | jq -r '.ok'
 }
 
-## tools #######################################################################
-
-export LINEAR_API_KEY="{{ (onepasswordDetailsFields "qaqkbq4llddfcg7lf6qyybfuly" "personal" "my").credential.value  }}"
-export NEON_API_KEY="{{ (onepasswordDetailsFields "3r3aui5u3dpmy6plhkkyez5344" "shared" "essexlabs").credential.value  }}"
-export SLACK_USER_BOT_TOKEN="{{ (onepasswordDetailsFields "gyzjyq5ugikkxykkexavthaspu" "employee" "essexlabs").credential.value  }}"
-
-## environment #################################################################
-
-BACKEND_ENV_PATH="$WORK_ROOT/arnold/backend/.env"
-FRONTEND_ENV_PATH="$WORK_ROOT/arnold/frontend/.env"
-INFRA_ENV_PATH="$WORK_ROOT/arnold/infra/.env"
-
-# TODO
-
-# if [[ ! -f "${BACKEND_ENV_PATH}" ]]; then
-#     {{/* (onepasswordDocument "g3gjvsdqv3wrezjikifndvgnle" "" "essexlabs") */}} > "${BACKEND_ENV_PATH}"
-# fi
-
-# if [[ ! -f "${FRONTEND_ENV_PATH}" ]]; then
-#     {{/* (onepasswordDocument "yqxg5hqp2np3fql6vsg265rtqi" "" "essexlabs") */}} > "${FRONTEND_ENV_PATH}"
-# fi
-
-# if [[ ! -f "${FRONTEND_ENV_PATH}" ]]; then
-#     {{/* (onepasswordDocument "c3q46lfyhlgevrebwjujv6deey" "" "essexlabs") */}} > "${FRONTEND_ENV_PATH}"
-# fi

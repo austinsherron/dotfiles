@@ -135,9 +135,7 @@
     insteadOf = ssh://git@127.0.0.1:56799
 
 # slightly different configs for work (i.e.: user, branch name format, etc.)
-[includeIf "gitdir:~/Workspace/workspace/granica/**"]
-    path = .gitconfig-work
-[includeIf "gitdir:~/.gvm/pkgsets/go1.22/global/src/project.n/"]
+[includeIf "gitdir:~/Workspace/maybern/**"]
     path = .gitconfig-work
 
 [gpg]
@@ -145,7 +143,6 @@
 [credential]
     helper = store
     helper =
-    helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
     useHttpPath = true
 
