@@ -22,8 +22,16 @@ pkgmgr --tap {{ $tap }}
 # NOTE: at the time of writing, go packages must be installed after scripts due to
 # dependency on gvm
 
-{{ template "scripts-install.tmpl" .packages.darwin.scripts }}
+{{ if (index .packages.darwin "scripts") }} 
+{{ template "scripts-install.tmpl" .packages.darwin.scripts }} 
+{{ end }}
+
+{{ if (index .packages.darwin "go") }} 
 {{ template "go-install.tmpl" .packages.darwin.go }}
+{{ end }}
+
+{{ if (index .packages.darwin "luarocks") }} 
 {{ template "luarocks-install.tmpl" .packages.darwin.luarocks }}
+{{ end }}
 
 {{- end }}

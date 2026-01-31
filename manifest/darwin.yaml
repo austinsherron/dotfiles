@@ -20,7 +20,6 @@ packages:
         - gawk
         - gh
         - git
-        - git-credential-manager
         - git-delta
         - google-chrome
         - gpg
@@ -89,47 +88,27 @@ packages:
         - tfenv
         - xorgproto
         - yarn
-        # tentative
-        - neomutt
       casks:
         # personal
         - 1password
         - 1password-cli
-        - amethyst
-        - alacritty --no-quarantine
         - bazecor
         - brave-browser
-        - chromium --no-quarantine
-        - discord
-        - docker
-        - dropbox
         - iterm2
-        - librewolf --no-quarantine
         - maccy
+        - nikitabobko/tap/aerospace
         - notesnook
-        - openshot-video-editor
-        - qutebrowser
         - signal
         - tailscale
         - telegram
         - tor-browser
-        - veracrypt
         - vlc
         - whatsapp
         - yubico-authenticator
-        - yubico-yubikey-manager
-        # tentative
-        - protonmail-bridge
     scripts:
       # NOTE: ble.sh should come before atuin
       - ble
       - atuin
-      - dbxcli
-      - st
-    go:
-      - name: slack-term
-        url: github.com/erroneousboat/slack-term
-        version: latest
     luarocks:
       - name: busted
         version: 2.1.2-3

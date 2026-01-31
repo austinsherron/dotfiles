@@ -5,25 +5,53 @@ set -Eeuo pipefail
 
 {{ template "version-check.tmpl" (merge . (dict "type" "filesystem" "script" "B_make_filesystem")) }}
 
+
+function __create_dir_if_not_exists() {
+    local path="${1}"
+
+    if [[ ! -d "${FS_PATH}" ]]; then
+        echo "[INFO] creating dir=${FS_PATH}"
+        mkdir -p "${FS_PATH}"
+    fi
+
+    ulogger info "dir=${FS_PATH} already exists"
+}
+
+function __move_dir() {
+    local src="${1}"
+    local dst="${2}"
+
+    if [[ ! -n "${src}" || ! -n "${dst}" ]]; then
+        ulogger error "SRC and DST must both be set or both be unset"
+        return 1
+    fi
+
+    if [[ ! -d "${src}" ]]; then
+        ulogger error "dir=${src} doesn't exist"
+        return 1
+    fi
+
+    if [[ ! -d "${dst}" ]]; then
+        ulogger error "dir=${dst} doesn't exist"
+        return 1
+    fi
+
+    ulogger info "moving ${src} to ${dst}"
+    mv "${SRC}" "${DST}"
+}
+
 function __do_filesystem_update() {
     local path="${1}"
     local src="${2:-}"
     local dst="${3:-}"
 
-    if [[ -d "${FS_PATH}" ]]; then
-        ulogger info "dir=${FS_PATH} already exists"
+    __create_dir_if_not_exists "${path}"
+
+    if [[ ! -n "${SRC}" && ! -n "${DST}" ]]; then
         return 0
     fi
 
-    echo "[INFO] creating dir=${FS_PATH}"
-    mkdir -p "${FS_PATH}"
-
-    [[ -n "${SRC}" || -n "${DST}" ]] && return 0
-    [[ ! -d "${SRC}" ]] && ulogger error "dir=${SRC} doesn't exist"
-    [[ ! -d "${DST}" ]] && ulogger error "dir=${DST} doesn't exist"
-
-    ulogger info "moving ${SRC} to ${DST}"
-    mv "${SRC}" "${DST}"
+    __move_dir "${src}" "${dst}"
 }
 
 {{- range (index .fs .chezmoi.os) }}
