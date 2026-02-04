@@ -86,7 +86,7 @@
     fc  = fcheckout
     fd  = fdiff
     fD  = fdel
-    ffD = fdel
+    ffD = ffdel
     fm  = fmerge
     fM  = fmerc
     fp  = push --force
@@ -140,11 +140,13 @@
 
 [gpg]
     program = gpg
-[credential]
-    helper = store
-    helper =
-[credential "https://dev.azure.com"]
-    useHttpPath = true
+
+[credential "https://github.com"]
+        helper =
+        helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+        helper =
+        helper = !/opt/homebrew/bin/gh auth git-credential
 
 [interactive]
     diffFilter = delta --color-only --features=interactive

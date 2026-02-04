@@ -28,23 +28,30 @@ alias tg="terragrunt"
 
 # gh
 
-function create-pr() {
-    gh pr create -a austinsherron
-    gh pr view -w
+function pr() {
+    local cmd="${1}"
+
+    case $cmd in
+        c|cr|create) gh pr create -a @me ;;
+        m|mr|merge) just run-server ;;
+        cl|close) gh pr close $(g branch --show-current) ;;
+        l|ls|list) gh pr ls --author @me ;;
+        n|num) gh pr view --json number | jq -r .number ;;
+        *) ulogger error "Unknown command: $cmd" ; return 1 ;;
+    esac
 }
 
-function merge-pr() {
-    gh pr merge "$@"
-}
+# just
 
-function pr-num() {
-    gh pr view --json number | jq -r .number
-}
+function j() {
+    local cmd="${1}"
 
-function close-pr() {
-    local num="${1:-$(pr-num)}"
-
-    gh pr close $num
+    case $cmd in
+         gf) just generate-fixtures ;;
+         rs) just run-server ;;
+         rc) just run-celery ;;
+          *) ulogger error "Unknown command: $cmd" ; return 1 ;;
+    esac
 }
 
 # linear
@@ -61,33 +68,6 @@ function lr() {
 
 function lr::get_issue_id() {
     linear-cli issues list | peco | awk '{print $1}'
-}
-
-# neon/db
-
-function db-url-raw() {
-    local branch="${1:-main}"
-    local role="${2:-neondb_owner}"
-
-    if [[ "$branch" =~ ^prv-(.+)$ ]]; then
-        branch="basis-db-preview-${BASH_REMATCH[1]}"
-    fi
-
-    neon connection-string $branch --role-name $role --project-id "$NEON_PROJECT_ID"
-}
-
-function db-url() {
-    local branch="${1:-main}"
-    local role="${2:-neondb_owner}"
-
-    db-url-raw $branch $role | sed 's/postgresql/postgresql+asyncpg/' | sed 's/?sslmode=require//'
-}
-
-function set-db-url() {
-    local branch="${1:-main}"
-    local role="${2:-neondb_owner}"
-
-    export DATABASE_URL="$(db-url $branch $role)"
 }
 
 # slack
@@ -142,4 +122,3 @@ function send-slack-message() {
 
     echo "$res" | jq -r '.ok'
 }
-

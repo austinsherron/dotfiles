@@ -5,7 +5,9 @@ packages:
         - ankitpokhrel/jira-cli
         - mk-5/mk-5
       formulae:
+        # TODO: clean these up
         # personal
+        - atuin
         - blahtexml
         - bash
         - bash-completion
@@ -84,6 +86,7 @@ packages:
         - poetry
         - rpm
         - ruby
+        - schpet/tap/linear
         - terraform
         - tfenv
         - xorgproto
@@ -106,9 +109,7 @@ packages:
         - whatsapp
         - yubico-authenticator
     scripts:
-      # NOTE: ble.sh should come before atuin
       - ble
-      - atuin
     luarocks:
       - name: busted
         version: 2.1.2-3

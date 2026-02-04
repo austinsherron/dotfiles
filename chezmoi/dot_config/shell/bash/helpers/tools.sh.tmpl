@@ -22,10 +22,20 @@ export NVIM_AUTO_INSTALL_PACKAGES=true
 
 ## nvm ########################################################################
 
-export NVM_DIR="${LEGACY_CONFIG_ROOT_PUB}/.nvm"
+export NVM_DIR="${HOME}/.nvm"
 
-[[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh"                    # load nvm
-[[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"  # load completions
+if [[ ! -d "${NVM_DIR}" ]]; then
+  ulogger info "creating nvm dir=${NVM_DIR}"
+  mkdir "${NVM_DIR}"
+fi
+
+# load nvm
+if [[ -s "${NVM_DIR}/nvm.sh" ]]; then
+    ulogger info "loading nvm"
+    . "${NVM_DIR}/nvm.sh"
+else
+    ulogger warn "can't load nvm: ${NVM_DIR}/nvm.sh not found"
+fi
 
 ## porkbun #####################################################################
 
@@ -39,11 +49,15 @@ fi
 
 ## pyenv #######################################################################
 
-export PATH="$HOME/.pyenv/bin:$PATH"
+# TODO
 
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+export PATH="$HOME/.pyenv/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+
+# eval "$(pyenv init --path)"
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
 
 ## zoxide ######################################################################
 

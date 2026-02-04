@@ -14,8 +14,10 @@ CUSTOM_HOSTNAME="${1:-"$(hostname -s)"}"
 
 sudo mkdir -p /usr/local/etc
 
-echo "[INFO] saving persistent hostname=${CUSTOM_HOSTNAME} to /usr/local/etc"
-sudo echo "${CUSTOM_HOSTNAME}" >| /usr/local/etc/hostname
+if [[ ! -f /usr/local/etc/hostname ]]; then
+    echo "[INFO] saving persistent hostname=${CUSTOM_HOSTNAME} to /usr/local/etc"
+    sudo echo "${CUSTOM_HOSTNAME}" >| /usr/local/etc/hostname
+fi
 
 # install bash-tools
 
