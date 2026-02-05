@@ -156,7 +156,7 @@ format = "[$symbol($version )]($style)"
 [python]
 symbol = "🐍 "
 version_format = "v${major}.${minor}"
-format = "[$symbol($version )]($style)"
+format = "[$symbol($version )($virtualenv)]($style)"
 
 ## cloud #######################################################################
 
