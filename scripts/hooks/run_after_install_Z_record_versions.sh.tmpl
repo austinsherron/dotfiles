@@ -35,7 +35,7 @@ sha256sum "{{ $data }}/"* \
 # record checksum of tmux scripts
 sha256sum "{{ $hooks }}/"* \
     | sed 's/  .*\// /' \
-    | sed 's/run_after_//' \
+    | sed 's/run_after_install_//' \
     | sed 's/\.sh\.tmpl//' \
     | tr '-' '_' \
     | awk '{print "  "$2": "$1}' \

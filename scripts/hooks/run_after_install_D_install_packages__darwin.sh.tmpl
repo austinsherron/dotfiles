@@ -6,18 +6,7 @@ set -Eeuo pipefail
 source /etc/profile.d/shared_paths.sh
 
 
-{{ template "validate-deps.tmpl" (list "brew") }}
-{{ template "validate-deps.tmpl" (list "pkgmgr" "check-pkg") }}
 {{ template "version-check.tmpl" (merge . (dict "type" "darwin" "script" "D_install_packages__darwin")) }}
-
-ulogger info "adding brew taps"
-
-{{- range $tap := .packages.darwin.brew.taps }}
-pkgmgr --tap {{ $tap }}
-{{- end }}
-
-{{ template "pkgmgr-install.tmpl" (dict "mgr" "brew" "pkgs" .packages.darwin.brew.formulae "type" "formulae") }}
-{{ template "pkgmgr-install.tmpl" (dict "mgr" "brew" "pkgs" .packages.darwin.brew.casks "args" "--cask" "type" "casks") }}
 
 # NOTE: at the time of writing, go packages must be installed after scripts due to
 # dependency on gvm

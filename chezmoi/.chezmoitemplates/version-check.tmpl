@@ -3,7 +3,7 @@
 {{- $script := dig "script" "" . }}
 
 {{- $path := default (print .chezmoi.sourceDir "/.chezmoidata/" $type ".yaml") $path }}
-{{- $script_path := (print .chezmoi.sourceDir "/.chezmoiscripts/run_after_" $script ".sh.tmpl"  ) }}
+{{- $script_path := (print .chezmoi.sourceDir "/.chezmoiscripts/run_after_install_" $script ".sh.tmpl"  ) }}
 
 {{- $type := default (base (trimSuffix (ext $path) $path)) $type }}
 {{- $base := base $path -}}
