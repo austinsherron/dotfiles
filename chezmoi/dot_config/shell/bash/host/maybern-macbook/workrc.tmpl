@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
+source "${BASH_LIB}/utils/file.sh"
+
 
 ## constants ###################################################################
 
+export MAYBERN_REPO="${WORK_ROOT}/maybern"
+export MAYBERN_BACKEND="${MAYBERN_REPO}/backend"
+export MAYBERN_FRONTEND="${MAYBERN_REPO}/frontend"
 
 ## path updates ################################################################
 
@@ -11,7 +16,7 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 ## important paths #############################################################
 
-export WORK_ROOT="${CODE_ROOT}/maybern"
+export WORK_ROOT="${WORKSPACE}/maybern"
 
 ## aliases #####################################################################
 
@@ -37,6 +42,7 @@ function pr() {
         cl|close) gh pr close $(g branch --show-current) ;;
         l|ls|list) gh pr ls --author @me ;;
         n|num) gh pr view --json number | jq -r .number ;;
+        v|view) gh pr view -w ;;
         *) ulogger error "Unknown command: $cmd" ; return 1 ;;
     esac
 }
@@ -44,13 +50,21 @@ function pr() {
 # just
 
 function j() {
+    if [[ ${#?} -gt 1 ]]; then
+        just ${@}
+        return $?
+    fi
+
     local cmd="${1}"
 
     case $cmd in
+         cc) just codegen client ;;
+         cs) just codegen schema ;;
          gf) just generate-fixtures ;;
          rs) just run-server ;;
          rc) just run-celery ;;
-          *) ulogger error "Unknown command: $cmd" ; return 1 ;;
+          t) just pytest "${2:-}" ;;
+          *) just ${@} ;;
     esac
 }
 
@@ -69,6 +83,27 @@ function lr() {
 function lr::get_issue_id() {
     linear-cli issues list | peco | awk '{print $1}'
 }
+
+# misc
+
+function _find_test() {
+    local rel_path="$(find "${MAYBERN_BACKEND}" -iname 'test_*.py' | sed "s/^$(path::escape ${MAYBERN_BACKEND}/)//" | fzf)"
+    echo "${MAYBERN_BACKEND}/${rel_path}"
+}
+
+function run_test() {
+    local test_path="$(_find_test)"
+    local test="${1:+::$1}"
+
+    if [[ -z "$test_path" ]]; then
+        ulogger error "test file required"
+        return 1
+    fi
+
+    just pytest "${test_path}${test}"
+}
+
+alias rt="run_test"
 
 # slack
 

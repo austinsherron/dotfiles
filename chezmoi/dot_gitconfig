@@ -13,7 +13,6 @@
     home        = checkout master
     in-branches = branch --contains
     ls          = "!git branch | grep -v STORAGE"
-    merc        = merge --log --no-ff
     mmerge      = merge master
     mrebase     = rebase master
     mylog       = log --author austin.sherron
@@ -29,6 +28,7 @@
     st          = status
     undo        = checkout --
     unstage     = reset HEAD
+    update      = merge --no-edit origin/master
     wipeout     = !git unstage && git undo && git clean -fd
 
     # [stash]
@@ -58,7 +58,6 @@
     ffdel           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -D ${BRANCH}
     flog            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log ${BRANCH}
     fmerge          = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git merge ${BRANCH}
-    fmerc           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git merc ${BRANCH}
     frebase         = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git rebase ${BRANCH}
     # what commits are in that branch that aren't in this one
     fcommits-in-this-not-that = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges HEAD..${BRANCH}
@@ -80,15 +79,13 @@
     c   = commit
     cl  = clone
     co  = checkout
-    cob = checkout -b
     d   = diff
     f   = fetch
     fc  = fcheckout
-    fd  = fdiff
-    fD  = fdel
+    fd  = fdel
+    fdf = fdiff
     ffD = ffdel
     fm  = fmerge
-    fM  = fmerc
     fp  = push --force
     frb = frebase
     frc = frcheckout
@@ -102,16 +99,18 @@
     p   = push
     pb  = publish
     pl  = pull
-    ps  = pull-sub
+    ps  = pullsub
     ra  = radd
     rh  = "reset --hard HEAD~"
     rs  = "reset --soft HEAD~"
     rv  = revert
     und = undo
     uns = unstage
+    x   = clean -fd
 
     # [submodules]
     addsub = "!git submodule add https://github.com/austinsherron/$1.git $2"
+    pullsub = submodule update --remote --recursive
     # WARN: untested
     rmsub  =  "!git submodule deinit $1 && git rm $1"
 
