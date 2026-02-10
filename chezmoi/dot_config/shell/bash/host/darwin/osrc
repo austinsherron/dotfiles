@@ -17,10 +17,6 @@ if [[ ! -d "${SYS_BIN}" ]]; then
     echo "[WARN] homebrew binaries not found"
 fi
 
-## go
-
-export GO_ROOT="${SYS_BIN}/go"
-
 ## completions
 
 export COMPLETION_PATH="${BREW}/etc/bash_completion"
