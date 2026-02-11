@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
+source "${BASH_LIB}/core/str.sh"
 source "${BASH_LIB}/utils/file.sh"
+source "${BASH_LIB}/utils/input.sh"
 
 
 ## constants ###################################################################
@@ -70,18 +72,29 @@ function j() {
 
 # linear
 
-function lr() {
+function lin::get_issue_id() {
+    linear issue list | tail -n +2 | fzf --ansi | awk '{print $2}'
+}
+
+function lin::start_issue() {
+    local issue_id="$(str::lower $(lin::get_issue_id))"
+    [[ $? -eq 130 ]] || [[ -z "$issue_id" ]] && return 0
+
+    local branch_sfx="$(input::text "Branch suffix: ")"
+    git new-branch "${issue_id}" "${branch_sfx}"
+    [[ $? -gt 1 ]] && return 1
+
+    linear issue update "${issue_id}" -s "started"
+}
+
+function lin() {
     local cmd="${1:-ls}"
 
     case $cmd in
-         ls) linear-cli issues list ;;
-      start) linear-cli issues develop "$(lr::get_issue_id)" ;;
-          *) linear-cli ${@} ;;
+        l|ls) linear issue list -s "unstarted" -s "backlog" -s "started" | grep -v "In QA" ;;
+        s) lin::start_issue ;;
+        *) linear ${@} ;;
     esac
-}
-
-function lr::get_issue_id() {
-    linear-cli issues list | peco | awk '{print $1}'
 }
 
 # misc
