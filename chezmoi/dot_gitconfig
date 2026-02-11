@@ -28,7 +28,7 @@
     st          = status
     undo        = checkout --
     unstage     = reset HEAD
-    update      = merge --no-edit origin/master
+    update      = !git fetch && git merge --no-edit origin/master
     wipeout     = !git unstage && git undo && git clean -fd
 
     # [stash]
@@ -104,6 +104,7 @@
     rh  = "reset --hard HEAD~"
     rs  = "reset --soft HEAD~"
     rv  = revert
+    u   = update
     und = undo
     uns = unstage
     x   = clean -fd

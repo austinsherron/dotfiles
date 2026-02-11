@@ -4,7 +4,7 @@
     signingkey = E70AE3D0F6E9D240C40D20305A2A9E917F395031
 
 [alias]
-    new-branch = "!git checkout -b austin/\"$1\"-\"$2\" #"
+    new-branch = "!git checkout -b austin/\"$1\"\"${2:+-$2}\" #"
     rls        = "!git ls-remote | grep austin/"
 
 
