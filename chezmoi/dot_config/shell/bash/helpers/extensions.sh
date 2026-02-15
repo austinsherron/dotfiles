@@ -21,5 +21,6 @@ fi
 
 ## atuin #######################################################################
 
+# NOTE: must init atuin after fzf
 source "${EXTENSIONS_ROOT}/atuin.sh"
 
