@@ -4,32 +4,35 @@
     # FIXME: not working on mac, even after importing the key
     # signingkey = D55F49224387A57E0FDB80E1494E1B61A3505B41
 [core]
-    excludesfile = /Users/austinsherron/.gitignore
+    excludesfile = {{ env "HOME" }}/.gitignore
+    hooksPath    = {{ env "XDG_CONFIG_HOME" }}/git/hooks
     pager        = delta
 [alias]
-    checkoutr   = checkout
-    diff        = diff -M
-    hdiff       = diff HEAD
-    home        = checkout master
-    in-branches = branch --contains
-    ls          = "!git branch | grep -v STORAGE"
-    mmerge      = merge master
-    mrebase     = rebase master
-    mylog       = log --author austin.sherron
-    new-branch  = "!git checkout -b \"$1\"\\/\"$2\" #"
-    publish     = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
-    radd        = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
-    root        = !ROOT=`git rev-parse --show-toplevel` && cd ${ROOT}
-    rundo       = !ROOT=`git rev-parse --show-toplevel` && git undo ${ROOT}
-    rdel        = "!git push origin :\"$1\" #"
-    rename      = "!git branch -m \"$1\"\\/\"$2\" #"
-    rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\" | awk '{print $2}' | sed 's/refs\\/heads\\///'"
-    squash      = rebase -i
-    st          = status
-    undo        = checkout --
-    unstage     = reset HEAD
-    update      = !git fetch && git merge --no-edit origin/master
-    wipeout     = !git unstage && git undo && git clean -fd
+    checkoutr     = checkout
+    checkout-tree = "!cd {{ env "WORK_ROOT" }}/$1"
+    diff          = diff -M
+    hdiff         = diff HEAD
+    home          = checkout master
+    in-branches   = branch --contains
+    ls            = "!git branch | grep -v STORAGE"
+    ls-worktrees  = "!git worktree list | awk '{print $1}' | xargs -n1 basename"
+    mmerge        = merge master
+    mrebase       = rebase master
+    mylog         = log --author austin.sherron
+    new-branch    = "!git checkout -b \"$1\"\\/\"$2\" #"
+    publish       = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
+    radd          = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
+    root          = !ROOT=`git rev-parse --show-toplevel` && cd ${ROOT}
+    rundo         = !ROOT=`git rev-parse --show-toplevel` && git undo ${ROOT}
+    rdel          = "!git push origin :\"$1\" #"
+    rename        = "!git branch -m \"$1\"\\/\"$2\" #"
+    rls           = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\" | awk '{print $2}' | sed 's/refs\\/heads\\///'"
+    squash        = rebase -i
+    st            = status
+    undo          = checkout --
+    unstage       = reset HEAD
+    update        = !git fetch && git merge --no-edit origin/master
+    wipeout       = !git unstage && git undo && git clean -fd
 
     # [stash]
     s   = stash
@@ -51,6 +54,7 @@
     # [fuzzy]
     fcheckout       = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
+    fcheckout-tree  = !WORKTREE=`git ls-worktrees $@ | fzf --height=8 +i +m -e` && git checkout-tree ${WORKTREE}
     fdiff           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     fdel            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -d ${BRANCH}
@@ -79,9 +83,11 @@
     c   = commit
     cl  = clone
     co  = checkout
+    cot = checkout-tree
     d   = diff
     f   = fetch
     fc  = fcheckout
+    fct = fcheckout-tree
     fd  = fdel
     fdf = fdiff
     ffD = ffdel
@@ -93,6 +99,7 @@
     h   = home
     hd  = hdiff
     l   = log
+    lst = ls-worktrees
     mm  = mmerge
     mr  = mrebase
     nb  = new-branch
@@ -135,7 +142,7 @@
     insteadOf = ssh://git@127.0.0.1:56799
 
 # slightly different configs for work (i.e.: user, branch name format, etc.)
-[includeIf "gitdir:~/Workspace/maybern/**"]
+[includeIf "gitdir:{{ env "WORK_ROOT" }}/**"]
     path = .gitconfig-work
 
 [gpg]

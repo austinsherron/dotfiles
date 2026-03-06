@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title '🔔 Claude Code: needs input' -message 'Please review changes'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title '✅ Claude Code: done' -message 'Task completed successfully'"
+          }
+        ]
+      }
+    ]
+  }
+}

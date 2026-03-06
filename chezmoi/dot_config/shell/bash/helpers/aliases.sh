@@ -5,6 +5,7 @@
 ## rename ######################################################################
 
 alias c="clear"
+alias cld="claude"
 alias db="dbxcli"
 alias g="git"
 alias ls="lsd --group-directories-first"

@@ -77,7 +77,14 @@ function lin::get_issue_id() {
 }
 
 function lin::start_issue() {
-    local issue_id="$(str::lower $(lin::get_issue_id))"
+    local issue_id
+
+    if [[ $? -gt 0 ]]; then
+        issue_id="${1}"
+    else
+        issue_id="$(str::lower $(lin::get_issue_id))"
+    fi
+
     [[ $? -eq 130 ]] || [[ -z "$issue_id" ]] && return 0
 
     local branch_sfx="$(input::text "Branch suffix: ")"
@@ -91,13 +98,25 @@ function lin() {
     local cmd="${1:-ls}"
 
     case $cmd in
-        l|ls) linear issue list -s "unstarted" -s "backlog" -s "started" | grep -v "In QA" ;;
-        s) lin::start_issue ;;
+        l|ls) linear issue list -s "unstarted" -s "backlog" -s "started" ;;
+        s) lin::start_issue ${@} ;;
         *) linear ${@} ;;
     esac
 }
 
 # misc
+
+function get_prod_version() {
+    curl -s "https://app.maybern.com/api/version/" | jq -r ".release_version"
+}
+
+function checkout_prod_version() {
+    git pull
+    git checkout "$(get_prod_version)"
+}
+
+alias pv="get_prod_version"
+alias cpv="checkout_prod_version"
 
 function _find_test() {
     local rel_path="$(find "${MAYBERN_BACKEND}" -iname 'test_*.py' | sed "s/^$(path::escape ${MAYBERN_BACKEND}/)//" | fzf)"
@@ -105,15 +124,29 @@ function _find_test() {
 }
 
 function run_test() {
-    local test_path="$(_find_test)"
-    local test="${1:+::$1}"
+    if [[ $# -gt 0 ]] && [[ "$1" =~ c|clear ]]; then
+        unset RUN_TEST_LAST_TEST
+        return 0
+    fi
 
-    if [[ -z "$test_path" ]]; then
+    local to_run
+
+    if [[ -n "${RUN_TEST_LAST_TEST+x}" ]]; then
+        to_run="${RUN_TEST_LAST_TEST}"
+    else
+        local test_path="$(_find_test)"
+        local test="${1:+::$1}"
+
+        to_run="${test_path}${test}"
+        export RUN_TEST_LAST_TEST="${to_run}"
+    fi
+
+    if [[ -z "$to_run" ]]; then
         ulogger error "test file required"
         return 1
     fi
 
-    just pytest "${test_path}${test}"
+    just pytest "${to_run}"
 }
 
 alias rt="run_test"
