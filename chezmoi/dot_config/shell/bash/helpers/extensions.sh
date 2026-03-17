@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
 
+# INFO: don't load extensions in non-terminal shells
+if [ ! -t 0 ]; then
+    return
+fi
+
 ## bash completion #############################################################
 
 # shellcheck disable=SC1090

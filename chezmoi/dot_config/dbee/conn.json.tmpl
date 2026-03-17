@@ -1,0 +1,26 @@
+[
+    {
+        "id": "local_0",
+        "name": "Local",
+        "type": "postgres",
+        "url": "{{ (index (onepasswordDetailsFields "zjzx2ummya6by4ghopvlgyawba") "jfwf6fgznqun33yje7xd4ieq64").value }}?sslmode=disable"
+    },
+    {
+        "id": "sandbox_0",
+        "name": "Sandbox",
+        "type": "postgres",
+        "url": "{{ (index (onepasswordDetailsFields "h4hewbmavwzdlorlsglfvkesku") "v3glfd644ye5arjh4tfla6xwxm").value }}"
+    },
+    {
+        "id": "staging_0",
+        "name": "Staging",
+        "type": "postgres",
+        "url": "{{ (index (onepasswordDetailsFields "ktx6xr6th3xpovbo5rcmeszpom") "vbaoo5g5xa7xqdacq2vqknpnkm").value }}"
+    },
+    {
+        "id": "prod_0",
+        "name": "Prod (R/O)",
+        "type": "postgres",
+        "url": "{{ (index (onepasswordDetailsFields "w5lrnu6f2sl3ouyhno45idmgba") "vw4rh23gc2kkoplxganjjfvkv4").value }}"
+    }
+]

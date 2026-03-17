@@ -6,8 +6,10 @@ source "${BASH_LIB}/utils/sys.sh"
 ## inject host specific config #################################################
 
 HOST="$(sys::hostname)"
-export HOST_ROOT="${HOST_CONFIG_ROOT}/${HOST}"
+HOST_ROOT="${HOST_CONFIG_ROOT}/${HOST}"
 HOSTRC="${HOST_ROOT}/hostrc"
+
+export HOST_ROOT
 
 # this machine's host specific config
 if [[ -f "${HOSTRC}" ]]; then
