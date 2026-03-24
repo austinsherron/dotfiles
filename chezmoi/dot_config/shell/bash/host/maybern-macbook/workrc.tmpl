@@ -5,6 +5,10 @@ source "${BASH_LIB}/utils/file.sh"
 source "${BASH_LIB}/utils/input.sh"
 
 
+## args ########################################################################
+
+STAGE="${1-:}"
+
 ## constants ###################################################################
 
 export IS_WORK="true"
@@ -205,3 +209,11 @@ function send-slack-message() {
 
     echo "$res" | jq -r '.ok'
 }
+
+## tools #######################################################################
+
+if [[ "${STAGE}" = "POST" ]] && path::is_child "$(pwd)" "${WORK_ROOT}"; then
+    source "${MAYBERN_BACKEND}/.venv/bin/activate"
+    nvm use "$(cat "${MAYBERN_FRONTEND}/.nvmrc")"
+fi
+
