@@ -9,14 +9,13 @@
     pager        = delta
 [alias]
     checkoutr     = checkout
-    checkout-tree = "!cd {{ env "WORK_ROOT" }}/$1"
     diff          = diff -M
     hdiff         = diff HEAD
     home          = checkout master
     in-branches   = branch --contains
     ls            = "!git branch | grep -v STORAGE"
-    ls-worktrees  = "!git worktree list | awk '{print $1}' | xargs -n1 basename"
-    mmerge        = merge master
+    ls-worktree   = "!git worktree list | awk '{print $1}' | xargs -n1 basename"
+    mmerge        = merge master --no-edit
     mrebase       = rebase master
     mylog         = log --author austin.sherron
     new-branch    = "!git checkout -b \"$1\"\\/\"$2\" #"
@@ -47,6 +46,7 @@
     sp  = "!git stash pop stash@{\"$1\"} #"
     sdt = stash drop stash@{0}
     sd  = "!git stash drop stash@{\"$1\"} #"
+    sdf = "!git diff stash@{\"$1\"} stash@{\"$2\"} #"
 
     stash-staged = "!git stash --keep-index && git stash push"
     stst         = "stash-staged"
@@ -54,19 +54,18 @@
     # [fuzzy]
     fcheckout       = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
-    fcheckout-tree  = !WORKTREE=`git ls-worktrees $@ | fzf --height=8 +i +m -e` && git checkout-tree ${WORKTREE}
     fdiff           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     fdel            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -d ${BRANCH}
     frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git rdel ${BRANCH}
     ffdel           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -D ${BRANCH}
     flog            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log ${BRANCH}
-    fmerge          = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git merge ${BRANCH}
+    fmerge          = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git merge ${BRANCH} --no-edit
     frebase         = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git rebase ${BRANCH}
-    # what commits are in that branch that aren't in this one
-    fcommits-in-this-not-that = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges HEAD..${BRANCH}
     # what commits are in this branch that aren't in that one
-    fcommits-in-that-not-this = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges ${BRANCH}..HEAD
+    fcommits-in-this-not-that = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges ${BRANCH}..HEAD
+    # what commits are in that branch that aren't in this one
+    fcommits-in-that-not-this = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges HEAD..${BRANCH}
     # what commits are in that branch that aren't in this one
     fremote-commits-in-this-not-that = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges HEAD..origin/${BRANCH}
     # what commits are in this branch that aren't in that one
@@ -83,11 +82,9 @@
     c   = commit
     cl  = clone
     co  = checkout
-    cot = checkout-tree
     d   = diff
     f   = fetch
     fc  = fcheckout
-    fct = fcheckout-tree
     fd  = fdel
     fdf = fdiff
     ffD = ffdel
@@ -99,7 +96,7 @@
     h   = home
     hd  = hdiff
     l   = log
-    lst = ls-worktrees
+    lsw = ls-worktree
     mm  = mmerge
     mr  = mrebase
     nb  = new-branch

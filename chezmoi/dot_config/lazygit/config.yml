@@ -11,8 +11,8 @@ customCommands:
   - key: 'C'
     context: "global"
     command: "EDITOR=\"nvr -cc split --remote-wait +'set bufhidden=wipe'\" && git commit"
-    subprocess: true
+    output: terminal
   - key: 'C'
     context: "files"
     command: "EDITOR=\"nvr -cc split --remote-wait +'set bufhidden=wipe'\" && git commit"
-    subprocess: true
+    output: terminal
