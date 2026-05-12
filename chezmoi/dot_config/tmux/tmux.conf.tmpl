@@ -32,6 +32,10 @@ setw -g pane-base-index 1
 # set escape-time to 0
 set -sg escape-time 0
 
+# rebind detach to prefix + D (instead of prefix + d)
+unbind d
+bind-key D detach-client
+
 ## interactions ################################################################
 
 # vi key bindings in copy mode
@@ -238,7 +242,7 @@ set-hook -g client-resized 'run-shell "ULOGGER_DISABLED=\"true\" tmux-resize-lay
 # list of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'Morantron/tmux-fingers'     # TODO: configure
+set -g @plugin 'Morantron/tmux-fingers'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
@@ -264,8 +268,20 @@ set -g @resurrect-capture-pane-contents 'on'
 set -g @continuum-boot 'on'
 set -g @continuum-boot-options 'fullscreen'
 
+## misc
+
+# skip tmux-fingers setup
+set -g @fingers-skip-wizard 1
+
 ## plugin manager
 
 # initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run "{{ print (env "TMUX_ROOT_PUB") "/plugins/tpm/tpm" }}"
+
+# workaround for initializing tmux-continuum w/ tmux 3.6+ (see script for details)
+run "{{ print (env "TMUX_ROOT_PUB") "/scripts/init-continuum.sh" }}"
+
+## additional conf #############################################################
+
+source-file -q  "{{ print (env "TMUX_ROOT_PUB") "/conf.d/*.conf" }}"
 

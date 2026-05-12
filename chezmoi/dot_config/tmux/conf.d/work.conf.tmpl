@@ -1,0 +1,3 @@
+{{ if eq (env "IS_WORK") "true" }}
+bind-key d command-prompt -1 -p "(dev)" "run-shell 'cd #{pane_current_path} && dev %% &'"
+{{end}}
