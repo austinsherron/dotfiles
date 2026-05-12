@@ -1,0 +1,13 @@
+[maybern.indicator]
+maybern = "➜"
+pull-request = "→"
+ad-hoc = "‣"
+prod = "✔"
+staging = "✓"
+
+[maybern.color]
+maybern = 95
+pull-request = 93
+ad-hoc = 94
+prod = 32
+staging = 92
