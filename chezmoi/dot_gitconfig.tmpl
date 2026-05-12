@@ -13,7 +13,8 @@
     hdiff         = diff HEAD
     home          = checkout master
     in-branches   = branch --contains
-    ls            = "!git branch | grep -v STORAGE"
+    ls            = "!git branches"
+    lsf           = "!git branches -f"
     ls-worktree   = "!git worktree list | awk '{print $1}' | xargs -n1 basename"
     mmerge        = merge master --no-edit
     mrebase       = rebase master
@@ -52,20 +53,20 @@
     stst         = "stash-staged"
 
     # [fuzzy]
-    fcheckout       = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
+    fcheckout       = !BRANCH=`git lsf` && git checkout ${BRANCH}
     frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
-    fdiff           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git diff ${BRANCH}
+    fdiff           = !BRANCH=`git lsf` && git diff ${BRANCH}
     frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
-    fdel            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -d ${BRANCH}
+    fdel            = !BRANCH=`git lsf` && git branch -d ${BRANCH}
     frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git rdel ${BRANCH}
-    ffdel           = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git branch -D ${BRANCH}
-    flog            = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log ${BRANCH}
-    fmerge          = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git merge ${BRANCH} --no-edit
-    frebase         = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git rebase ${BRANCH}
+    ffdel           = !BRANCH=`git lsf` && git branch -D ${BRANCH}
+    flog            = !BRANCH=`git lsf` && git log ${BRANCH}
+    fmerge          = !BRANCH=`git lsf` && git merge ${BRANCH} --no-edit
+    frebase         = !BRANCH=`git lsf` && git rebase ${BRANCH}
     # what commits are in this branch that aren't in that one
-    fcommits-in-this-not-that = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges ${BRANCH}..HEAD
+    fcommits-in-this-not-that = !BRANCH=`git lsf` && git log --no-merges ${BRANCH}..HEAD
     # what commits are in that branch that aren't in this one
-    fcommits-in-that-not-this = !BRANCH=`git ls $@ | fzf --height=8 +i +m -e` && git log --no-merges HEAD..${BRANCH}
+    fcommits-in-that-not-this = !BRANCH=`git lsf` && git log --no-merges HEAD..${BRANCH}
     # what commits are in that branch that aren't in this one
     fremote-commits-in-this-not-that = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges HEAD..origin/${BRANCH}
     # what commits are in this branch that aren't in that one
