@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+source "${BASH_LIB}/api/git.sh"
 source "${BASH_LIB}/core/str.sh"
 source "${BASH_LIB}/utils/file.sh"
 source "${BASH_LIB}/utils/input.sh"
@@ -13,18 +14,17 @@ STAGE="${1-:}"
 
 export IS_WORK="true"
 
+export WORK_ROOT="${WORKSPACE}/maybern"
 export MAYBERN_REPO="${WORK_ROOT}/maybern"
 export MAYBERN_BACKEND="${MAYBERN_REPO}/backend"
 export MAYBERN_FRONTEND="${MAYBERN_REPO}/frontend"
+
+export AWS_PROFILE="corp-admin"
 
 ## path updates ################################################################
 
 export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
-## important paths #############################################################
-
-export WORK_ROOT="${WORKSPACE}/maybern"
 
 ## aliases #####################################################################
 
@@ -45,15 +45,26 @@ function pr() {
     local cmd="${1}"
 
     case $cmd in
-        c|cr|create) gh pr create -a @me ;;
-        m|mr|merge) just run-server ;;
-        cl|close) gh pr close $(g branch --show-current) ;;
+        c|cr|create) gh pr create -a @me ${@:2} ;;
+        m|mr|merge) gh pr merge ${@:2} ;;
+        cl|close) gh pr close "$(g branch --show-current) ${@:2}" ;;
         l|ls|list) gh pr ls --author @me ;;
         n|num) gh pr view --json number | jq -r .number ;;
-        v|view) gh pr view -w ;;
+        v|view) gh pr view -w ${@:2} ;;
         *) ulogger error "Unknown command: $cmd" ; return 1 ;;
     esac
 }
+
+# git
+
+function fcheckout_tree() {
+    local worktree
+
+    worktree="$(git ls-worktree | fzf --height=8 +i +m -e)"
+    cd "${WORK_ROOT}/${worktree}" || return
+}
+
+alias fct="fcheckout_tree"
 
 # just
 
@@ -66,8 +77,10 @@ function j() {
     local cmd="${1}"
 
     case $cmd in
+         ca) just codegen all ;;
          cc) just codegen client ;;
          cs) just codegen schema ;;
+         dc) just delete-customers ;;
          gf) just generate-fixtures ;;
          rs) just run-server ;;
          rc) just run-celery ;;
@@ -88,12 +101,14 @@ function lin::start_issue() {
     if [[ $? -gt 0 ]]; then
         issue_id="${1}"
     else
-        issue_id="$(str::lower $(lin::get_issue_id))"
+        issue_id="$(str::lower "$(lin::get_issue_id)")"
     fi
 
     [[ $? -eq 130 ]] || [[ -z "$issue_id" ]] && return 0
 
-    local branch_sfx="$(input::text "Branch suffix: ")"
+    local branch_sfx
+    branch_sfx="$(input::text "Branch suffix: ")"
+
     git new-branch "${issue_id}" "${branch_sfx}"
     [[ $? -gt 1 ]] && return 1
 
@@ -116,17 +131,47 @@ function get_prod_version() {
     curl -s "https://app.maybern.com/api/version/" | jq -r ".release_version"
 }
 
+function get_staging_version() {
+    curl -s "https://app.maybern.staging/api/version/" | jq -r ".release_version"
+}
+
 function checkout_prod_version() {
     git pull
     git checkout "$(get_prod_version)"
 }
 
+function checkout_staging_version() {
+    git pull
+    git checkout "$(get_staging_version)"
+}
+
 alias pv="get_prod_version"
 alias cpv="checkout_prod_version"
+alias sv="get_staging_version"
+alias csv="checkout_staging_version"
 
 function _find_test() {
-    local rel_path="$(find "${MAYBERN_BACKEND}" -iname 'test_*.py' | sed "s/^$(path::escape ${MAYBERN_BACKEND}/)//" | fzf)"
-    echo "${MAYBERN_BACKEND}/${rel_path}"
+    local maybern_backend
+    local rel_path
+
+    maybern_backend="$(git::worktree)/backend"
+    rel_path="$(find "${maybern_backend}" -iname 'test_*.py' | sed "s/^$(path::escape "${maybern_backend}/")//" | fzf)"
+
+    [[ -z "${rel_path}" ]] && return 1
+
+    echo "${maybern_backend}/${rel_path}"
+}
+
+function _get_test_to_run() {
+    if [[ -n "${RUN_TEST_LAST_TEST+x}" ]]; then
+        to_run="${RUN_TEST_LAST_TEST}"
+        return 0
+    fi
+
+    test_path="$(_find_test)" || return 1
+    test="${1:+::$1}"
+
+    echo "${test_path}${test}"
 }
 
 function run_test() {
@@ -137,21 +182,11 @@ function run_test() {
 
     local to_run
 
-    if [[ -n "${RUN_TEST_LAST_TEST+x}" ]]; then
-        to_run="${RUN_TEST_LAST_TEST}"
-    else
-        local test_path="$(_find_test)"
-        local test="${1:+::$1}"
-
-        to_run="${test_path}${test}"
-        export RUN_TEST_LAST_TEST="${to_run}"
+    if ! to_run="$(_get_test_to_run "${1}")"; then
+        return 0
     fi
 
-    if [[ -z "$to_run" ]]; then
-        ulogger error "test file required"
-        return 1
-    fi
-
+    export RUN_TEST_LAST_TEST="${to_run}"
     just pytest "${to_run}"
 }
 
@@ -195,11 +230,12 @@ function get-slack-channel-id() {
 function send-slack-message() {
     local channel="${1}"
     local message="${2}"
+    local res
 
     [[ "$channel" != \#* ]] && channel="$(get-slack-channel-id "$channel")"
     message="$(add-slack-mentions "$message")"
 
-    local res=$(curl -s -X POST https://slack.com/api/chat.postMessage \
+    res=$(curl -s -X POST https://slack.com/api/chat.postMessage \
     -H "Authorization: Bearer $SLACK_USER_BOT_TOKEN" \
     -H 'Content-type: application/json' \
     --data "{
