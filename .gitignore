@@ -8,3 +8,4 @@ chezmoi/dot_config/tmux/plugins/
 chezmoi/dot_config/tmux/resurrect/
 chezmoi/dot_config/xplr/packages/
 manifest/versions.yaml
+.claude/settings.local.json
