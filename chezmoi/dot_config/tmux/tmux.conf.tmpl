@@ -36,6 +36,9 @@ set -sg escape-time 0
 unbind d
 bind-key D detach-client
 
+# ensure windows reindex when one is closed
+set-option -g renumber-windows on
+
 ## interactions ################################################################
 
 # vi key bindings in copy mode

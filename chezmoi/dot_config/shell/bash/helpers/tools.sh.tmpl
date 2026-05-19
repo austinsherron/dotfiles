@@ -5,6 +5,12 @@
 ## claude-code #################################################################
 
 export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME}/claude"
+export CLAUDE_DATA_DIR="${XDG_DATA_HOME}/claude"
+export CLAUDE_STATE_DIR="${XDG_STATE_HOME}/claude"
+
+mkdir -p "${CLAUDE_CONFIG_DIR}"
+mkdir -p "${CLAUDE_DATA_DIR}"
+mkdir -p "${CLAUDE_STATE_DIR}"
 
 ## delta #######################################################################
 

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -title '🔔 Claude Code: needs input' -message 'Please review changes'"
+            "command": "notify-terminal -t 🔔 Claude Code -m Please review changes"
           }
         ]
       }
@@ -17,10 +17,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -title '✅ Claude Code: done' -message 'Task completed successfully'"
+            "command": "notify-terminal -t ✅ Claude Code -m Task completed successfully"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "save-plan",
+            "timeout": 10
           }
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "maybern-dev@maybern": true,
+    "maybern-monitoring@maybern": true,
+    "maybern-ticket-lifecycle@maybern": true
   }
 }
