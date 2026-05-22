@@ -1,13 +1,24 @@
 [maybern.indicator]
 maybern = "➜"
-pull-request = "→"
 ad-hoc = "‣"
+investigation = "▪"
+main = "⦿"
 prod = "✔"
+pull-request = "→"
 staging = "✓"
 
 [maybern.color]
 maybern = 95
-pull-request = 93
 ad-hoc = 94
+investigation = 91
+main = 34
 prod = 32
+pull-request = 93
 staging = 92
+
+[maybern.default]
+maybern = "master"
+ad-hoc = "ad-hoc"
+investigation = "investigation"
+main = "main"
+pull-request = "pull-request"
