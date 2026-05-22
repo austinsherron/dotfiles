@@ -13,6 +13,10 @@ source /etc/profile.d/shared_paths.sh
 ### constants
 
 SHELL_NAME="$(basename "${SHELL}")"
+TERM_APP="iterm2"
+
+export SHELL_NAME
+export TERM_APP
 
 ### paths
 
@@ -20,7 +24,6 @@ export SHELL_ROOT="${CONFIG_ROOT_PUB}/shell/${SHELL_NAME}"
 export HELPERS_ROOT="${CONFIG_ROOT_PUB}/shell/${SHELL_NAME}/helpers"
 export HOST_CONFIG_ROOT="${SHELL_ROOT}/host"
 
-export SHELL_NAME
 
 ### imports
 

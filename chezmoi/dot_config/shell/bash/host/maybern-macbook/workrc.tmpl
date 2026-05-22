@@ -165,7 +165,7 @@ function _find_test() {
 
 function _get_test_to_run() {
     if [[ -n "${RUN_TEST_LAST_TEST+x}" ]]; then
-        to_run="${RUN_TEST_LAST_TEST}"
+        echo "${RUN_TEST_LAST_TEST}"
         return 0
     fi
 
