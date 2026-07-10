@@ -9,6 +9,7 @@
     pager        = delta
 [alias]
     checkoutr     = checkout
+    default       = change-branch -d
     diff          = diff -M
     hdiff         = diff HEAD
     home          = checkout master
@@ -18,7 +19,7 @@
     ls-worktree   = "!git worktree list | awk '{print $1}' | xargs -n1 basename"
     mmerge        = merge master --no-edit
     mrebase       = rebase master
-    mylog         = log --author austin.sherron
+    mylog         = log --author 'Austin Sherron'
     new-branch    = "!git checkout -b \"$1\"\\/\"$2\" #"
     publish       = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
     radd          = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
@@ -53,8 +54,8 @@
     stst         = "stash-staged"
 
     # [fuzzy]
-    fcheckout       = !BRANCH=`git lsf` && git checkout ${BRANCH}
-    frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git checkout ${BRANCH}
+    fcheckout       = !BRANCH=`git lsf` && git change-branch ${BRANCH}
+    frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git change-branch ${BRANCH}
     fdiff           = !BRANCH=`git lsf` && git diff ${BRANCH}
     frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
     fdel            = !BRANCH=`git lsf` && git branch -d ${BRANCH}
@@ -84,6 +85,7 @@
     cl  = clone
     co  = checkout
     d   = diff
+    df  = default
     f   = fetch
     fc  = fcheckout
     fd  = fdel
@@ -98,6 +100,7 @@
     hd  = hdiff
     l   = log
     lsw = ls-worktree
+    ml  = mylog
     mm  = mmerge
     mr  = mrebase
     nb  = new-branch

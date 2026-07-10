@@ -1,4 +1,58 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(linear issue:*)",
+      "Bash(linear team:*)",
+      "Bash(git stash *)",
+      "Bash(git clone *)",
+      "Bash(git check-ignore *)",
+      "Bash(just makemigrations:*)",
+      "Bash(pnpm gen:routes)",
+      "Bash(terraform fmt *)",
+      "Bash(terraform validate *)",
+      "Bash(terraform init *)",
+      "Read(//Users/austin/.claude/**)",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_linear_linear__get_issue",
+      "mcp__claude_ai_Linear__get_issue",
+      "mcp__claude_ai_Linear__get_user",
+      "mcp__claude_ai_Linear__list_teams",
+      "mcp__claude_ai_Linear__list_users",
+      "mcp__claude_ai_Linear__list_projects",
+      "mcp__claude_ai_Linear__list_milestones",
+      "mcp__claude_ai_Linear__list_issue_statuses",
+      "mcp__claude_ai_Slack__slack_search_channels",
+      "mcp__claude_ai_Slack__slack_read_channel",
+      "mcp__claude_ai_Slack__slack_search_public",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_logs",
+      "mcp__plugin_maybern-monitoring_datadog__analyze_datadog_logs",
+      "mcp__plugin_maybern-monitoring_datadog__get_datadog_metric",
+      "mcp__plugin_maybern-monitoring_datadog__get_datadog_metric_context",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_metrics",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_services",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_events",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_spans",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_monitors",
+      "mcp__plugin_maybern-monitoring_datadog__aggregate_spans",
+      "mcp__plugin_maybern-monitoring_datadog__aggregate_events",
+      "mcp__plugin_maybern-monitoring_datadog__load_datadog_skill",
+      "mcp__plugin_maybern-monitoring_datadog__list_datadog_skills",
+      "mcp__maybern-sandbox__list_recent_integration_test_runs",
+      "mcp__maybern-sandbox__get_integration_test_run_metadata",
+      "mcp__maybern-sandbox__get_integration_test_failures",
+      "mcp__maybern-sandbox__get_first_failure_for_test",
+      "mcp__maybern-sandbox__get_individual_test_failure_details",
+      "mcp__plugin_maybern-dev_aurora-prod__run_query",
+      "mcp__plugin_maybern-dev_aurora-dev__run_query",
+      "mcp__plugin_maybern-dev_aurora-staging__run_query",
+      "mcp__plugin_maybern-dev_aurora-prod__get_table_schema",
+      "mcp__plugin_github_github__pull_request_read"
+    ],
+    "additionalDirectories": [
+        "/Users/austin/Workspace/maybern",
+        "/Users/austin/Workspace/workspace"
+    ]
+  },
   "hooks": {
     "Notification": [
       {
@@ -38,6 +92,8 @@
   "enabledPlugins": {
     "maybern-dev@maybern": true,
     "maybern-monitoring@maybern": true,
-    "maybern-ticket-lifecycle@maybern": true
-  }
+    "maybern-ticket-lifecycle@maybern": true,
+    "pyright-lsp@claude-plugins-official": true
+  },
+  "tui": "default"
 }

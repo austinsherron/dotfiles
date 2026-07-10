@@ -1,6 +1,10 @@
+[maybern]
+hide = ["prod", "staging"]
+
 [maybern.indicator]
 maybern = "➜"
 ad-hoc = "‣"
+bugs = "✖"
 investigation = "▪"
 main = "⦿"
 prod = "✔"
@@ -10,6 +14,7 @@ staging = "✓"
 [maybern.color]
 maybern = 95
 ad-hoc = 94
+bugs = 31
 investigation = 91
 main = 34
 prod = 32
@@ -19,6 +24,11 @@ staging = 92
 [maybern.default]
 maybern = "master"
 ad-hoc = "ad-hoc"
+bugs = "bugs"
 investigation = "investigation"
 main = "main"
 pull-request = "pull-request"
+
+
+[maybern.sync]
+exclude = ["prod", "staging"]

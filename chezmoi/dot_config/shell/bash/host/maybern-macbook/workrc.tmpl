@@ -19,9 +19,6 @@ export MAYBERN_REPO="${WORK_ROOT}/maybern"
 export MAYBERN_BACKEND="${MAYBERN_REPO}/backend"
 export MAYBERN_FRONTEND="${MAYBERN_REPO}/frontend"
 
-export AWS_PROFILE="corp-admin"
-export NODE_EXTRA_CA_CERTS="${ADMIN_HOME}/.certs/rootCA.crt"
-
 ## path updates ################################################################
 
 export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
@@ -249,8 +246,26 @@ function send-slack-message() {
 
 ## tools #######################################################################
 
+# claude
+
+export CLAUDE_PROJECT_DIR=""
+git::in_repo_worktree maybern && CLAUDE_PROJECT_DIR="$(git::worktree)"
+
+# dev env
+
 if [[ "${STAGE}" = "POST" ]] && path::is_child "$(pwd)" "${WORK_ROOT}"; then
     source "${MAYBERN_BACKEND}/.venv/bin/activate"
     nvm use "$(cat "${MAYBERN_FRONTEND}/.nvmrc")"
 fi
 
+# mcp config
+
+export NODE_EXTRA_CA_CERTS="${ADMIN_HOME}/.certs/rootCA.crt"
+
+# mise
+
+eval "$(mise activate bash)"
+
+# temporal
+
+export TEMPORAL_API_KEY="{{ (onepasswordDetailsFields "2culwzsyrww25lf76ytatwrmx4" "" "my").credential.value }}"

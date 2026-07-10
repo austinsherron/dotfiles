@@ -15,7 +15,7 @@ defaultwidth=220
 
 uda.for.type=string
 uda.for.label=For
-uda.for.values=home,basis
+uda.for.values=home,maybern
 
 ## urgent
 
@@ -32,10 +32,10 @@ uda.impt.label=Important
 uda.impt.values=y,n
 uda.impt.default=n
 
-## jira
+## ticket
 
-uda.jira.type=string
-uda.jira.label=Jira
+uda.ticket.type=string
+uda.ticket.label=Ticket
 
 ## aliases #####################################################################
 
@@ -76,9 +76,9 @@ report.project.sort=project
 context.home.read=for:home
 context.home.write=for:home
 
-context.basis.read=for:basis
-context.basis.write=for:basis
+context.maybern.read=for:maybern
+context.maybern.write=for:maybern
 
 ## default/current
 
-context=home
+context=maybern

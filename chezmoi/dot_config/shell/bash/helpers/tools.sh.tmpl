@@ -24,6 +24,10 @@ eval "$(direnv hook bash)"
 
 # TODO: add setup/config
 
+## git #########################################################################
+
+export GITHUB_PERSONAL_ACCESS_TOKEN="{{ (onepasswordDetailsFields "s6rrobe3jbxfoe6vzlc7k6p4h4" "" "my").credential.value }}"
+
 ## neovim ######################################################################
 
 export NVIM_LOG_LEVEL="DEBUG"
