@@ -54,7 +54,7 @@
     stst         = "stash-staged"
 
     # [fuzzy]
-    fcheckout       = !BRANCH=`git lsf` && git change-branch ${BRANCH}
+    fcheckout       = !BRANCH=`git lsf $@` && git change-branch ${BRANCH} #
     frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git change-branch ${BRANCH}
     fdiff           = !BRANCH=`git lsf` && git diff ${BRANCH}
     frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
