@@ -16,14 +16,16 @@
     in-branches   = branch --contains
     ls            = "!git branches"
     lsf           = "!git branches -f"
-    ls-worktree   = "!git worktree list | awk '{print $1}' | xargs -n1 basename"
+    ls-worktree   = "!bash -c 'source \"${BASH_LIB}/api/git.sh\" && git::list_worktrees -r'"
     mmerge        = merge master --no-edit
     mrebase       = rebase master
     mylog         = log --author 'Austin Sherron'
+    mylog1        = mylog --oneline
     new-branch    = "!git checkout -b \"$1\"\\/\"$2\" #"
     publish       = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
     radd          = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
     root          = !ROOT=`git rev-parse --show-toplevel` && cd ${ROOT}
+    rtests        = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}/'**tests/*'
     rundo         = !ROOT=`git rev-parse --show-toplevel` && git undo ${ROOT}
     rdel          = "!git push origin :\"$1\" #"
     rename        = "!git branch -m \"$1\"\\/\"$2\" #"
@@ -56,18 +58,18 @@
     # [fuzzy]
     fcheckout       = !BRANCH=`git lsf $@` && git change-branch ${BRANCH} #
     frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git change-branch ${BRANCH}
-    fdiff           = !BRANCH=`git lsf` && git diff ${BRANCH}
+    fdiff           = !BRANCH=`git lsf $@` && git diff ${BRANCH} #
     frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
-    fdel            = !BRANCH=`git lsf` && git branch -d ${BRANCH}
+    fdel            = !BRANCH=`git lsf $@` && git branch -d ${BRANCH} #
     frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git rdel ${BRANCH}
-    ffdel           = !BRANCH=`git lsf` && git branch -D ${BRANCH}
-    flog            = !BRANCH=`git lsf` && git log ${BRANCH}
-    fmerge          = !BRANCH=`git lsf` && git merge ${BRANCH} --no-edit
-    frebase         = !BRANCH=`git lsf` && git rebase ${BRANCH}
+    ffdel           = !BRANCH=`git lsf $@` && git branch -D ${BRANCH} #
+    flog            = !BRANCH=`git lsf $@` && git log ${BRANCH} #
+    fmerge          = !BRANCH=`git lsf $@` && git merge ${BRANCH} --no-edit #
+    frebase         = !BRANCH=`git lsf $@` && git rebase ${BRANCH} #
     # what commits are in this branch that aren't in that one
-    fcommits-in-this-not-that = !BRANCH=`git lsf` && git log --no-merges ${BRANCH}..HEAD
+    fcommits-in-this-not-that = !BRANCH=`git lsf $@` && git log --no-merges ${BRANCH}..HEAD #
     # what commits are in that branch that aren't in this one
-    fcommits-in-that-not-this = !BRANCH=`git lsf` && git log --no-merges HEAD..${BRANCH}
+    fcommits-in-that-not-this = !BRANCH=`git lsf $@` && git log --no-merges HEAD..${BRANCH} #
     # what commits are in that branch that aren't in this one
     fremote-commits-in-this-not-that = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges HEAD..origin/${BRANCH}
     # what commits are in this branch that aren't in that one
@@ -101,6 +103,7 @@
     l   = log
     lsw = ls-worktree
     ml  = mylog
+    ml1 = mylog1
     mm  = mmerge
     mr  = mrebase
     nb  = new-branch
@@ -111,6 +114,7 @@
     ra  = radd
     rh  = "reset --hard HEAD~"
     rs  = "reset --soft HEAD~"
+    rt  = rtests
     rv  = revert
     u   = update
     und = undo
@@ -125,8 +129,6 @@
 
 [push]
     default = upstream
-[pull]
-    ff = only
 [commit]
     # FIXME: this should be true, see FIXME at signingkey
     gpgsign = false

@@ -1,0 +1,141 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(cd:*)",
+      "Bash(column:*)",
+      "Bash(comm:*)",
+      "Bash(fd:*)",
+      "Bash(fold:*)",
+      "Bash(git check-ignore *)",
+      "Bash(git clone *)",
+      "Bash(git stash *)",
+      "Bash(just makemigrations:*)",
+      "Bash(linear issue:*)",
+      "Bash(linear team:*)",
+      "Bash(mkdir -p /private/tmp/*)",
+      "Bash(mkdir -p /tmp/*)",
+      "Bash(nl:*)",
+      "Bash(pnpm gen:routes)",
+      "Bash(rev:*)",
+      "Bash(rg:*)",
+      "Bash(rm -f /private/tmp/*)",
+      "Bash(rm -f /tmp/*)",
+      "Bash(terraform fmt *)",
+      "Bash(terraform init *)",
+      "Bash(terraform validate *)",
+      "Bash(touch /private/tmp/*)",
+      "Bash(touch /tmp/*)",
+      "Bash(tree:*)",
+      "Edit(//private/tmp/**)",
+      "Edit(//tmp/**)",
+      "mcp__claude_ai_Linear__get_issue",
+      "mcp__claude_ai_Linear__get_user",
+      "mcp__claude_ai_Linear__list_documents",
+      "mcp__claude_ai_Linear__list_issue_statuses",
+      "mcp__claude_ai_Linear__list_milestones",
+      "mcp__claude_ai_Linear__list_projects",
+      "mcp__claude_ai_Linear__list_teams",
+      "mcp__claude_ai_Linear__list_users",
+      "mcp__claude_ai_Slack__slack_read_channel",
+      "mcp__claude_ai_Slack__slack_search_channels",
+      "mcp__claude_ai_Slack__slack_search_public",
+      "mcp__maybern-sandbox__get_first_failure_for_test",
+      "mcp__maybern-sandbox__get_individual_test_failure_details",
+      "mcp__maybern-sandbox__get_integration_test_failures",
+      "mcp__maybern-sandbox__get_integration_test_run_metadata",
+      "mcp__maybern-sandbox__list_recent_integration_test_runs",
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_github_github__pull_request_read",
+      "mcp__plugin_linear_linear__get_issue",
+      "mcp__plugin_maybern-dev_aurora-dev__*",
+      "mcp__plugin_maybern-dev_aurora-dev__run_query",
+      "mcp__plugin_maybern-dev_aurora-prod__*",
+      "mcp__plugin_maybern-dev_aurora-prod__get_table_schema",
+      "mcp__plugin_maybern-dev_aurora-prod__run_query",
+      "mcp__plugin_maybern-dev_aurora-staging__*",
+      "mcp__plugin_maybern-dev_aurora-staging__run_query",
+      "mcp__plugin_maybern-monitoring_datadog__aggregate_events",
+      "mcp__plugin_maybern-monitoring_datadog__aggregate_spans",
+      "mcp__plugin_maybern-monitoring_datadog__analyze_datadog_logs",
+      "mcp__plugin_maybern-monitoring_datadog__get_datadog_metric",
+      "mcp__plugin_maybern-monitoring_datadog__get_datadog_metric_context",
+      "mcp__plugin_maybern-monitoring_datadog__list_datadog_skills",
+      "mcp__plugin_maybern-monitoring_datadog__load_datadog_skill",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_events",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_logs",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_metrics",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_monitors",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_services",
+      "mcp__plugin_maybern-monitoring_datadog__search_datadog_spans",
+      "Read(//Users/austin/.claude/**)"
+    ],
+    "defaultMode": "auto",
+    "additionalDirectories": [
+        "{{ print (env "CODE_ROOT") }}",
+        "{{ print (env "WORK_ROOT") }}"
+    ]
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-terminal -t 🔔 Claude Code -m Please review changes"
+          },
+          {
+            "type": "command",
+            "command": "cld-agent-status --state input"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-terminal -t ✅ Claude Code -m Task completed successfully"
+          },
+          {
+            "type": "command",
+            "command": "cld-agent-status --state done"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "save-plan",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "extraKnownMarketplaces": {
+    "hiroppy": {
+      "source": {
+        "source": "directory",
+        "path": "{{ print (env "TMUX_ROOT") "/plugins/tmux-agent-sidebar" }}"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "maybern-dev@maybern": true,
+    "maybern-monitoring@maybern": true,
+    "maybern-ticket-lifecycle@maybern": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "maybern-incident-response@maybern": true,
+    "tmux-agent-sidebar@hiroppy": true
+  },
+  "tui": "fullscreen",
+  "model": "opus[1m]"
+}

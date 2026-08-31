@@ -1,0 +1,18 @@
+# vim: set filetype=tmux :
+
+{{ if eq .chezmoi.os "linux" }}
+# add bins to path
+setenv -g PATH "${PATH}:/usr/local/bin"
+
+# set default shell
+set-option -g default-shell /bin/bash
+{{ else if eq .chezmoi.os "darwin" }}
+# add bins to path
+setenv -g PATH "${PATH}:/opt/homebrew/bin"
+
+# set default shell
+set-option -g default-shell /opt/homebrew/bin/bash
+{{- end }}
+
+# load tmux env vars
+run-shell "tmux-env --file ${XDG_CONFIG_HOME}/tmux/env"

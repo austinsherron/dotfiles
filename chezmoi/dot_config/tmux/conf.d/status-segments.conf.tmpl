@@ -1,0 +1,20 @@
+# vim: set filetype=tmux :
+
+## agent status ################################################################
+
+# The window indicator of a window holding an agent pane that wants attention is
+# re-colored until that pane is focused (see: tmux-agent-status). One style per
+# state, loudest first:
+#
+#   error     the session ended on an API error
+#   input     the session is waiting on an answer
+#   done      the session finished its turn
+#
+set -g @agent_style_error "#[fg=#1c1b19 bg=#f75341 bold]"
+set -g @agent_style_input "#[fg=#1c1b19 bg=#fbb829 bold]"
+set -g @agent_style_done  "#[fg=#1c1b19 bg=#519f50 bold]"
+
+# splice the indicator into the theme's window status formats
+#
+# NOTE: must run after the theme
+run "{{ print (env "TMUX_ROOT_PUB") "/scripts/init-agent-status.sh" }}"

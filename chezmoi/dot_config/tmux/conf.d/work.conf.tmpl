@@ -1,3 +1,5 @@
 {{ if eq (env "IS_WORK") "true" }}
-bind-key d command-prompt -1 -p "(dev)" "run-shell 'cd #{pane_current_path} && dev %% &'"
+# the single-key commands are dev's "local" group; its "worktree" group is
+# interactive (fzf/prompts) and needs a real terminal, so it isn't bound here
+bind-key d command-prompt -1 -p "(dev local)" "run-shell 'cd #{pane_current_path} && dev local %% &'"
 {{end}}

@@ -1,0 +1,40 @@
+# vim: set filetype=tmux :
+
+## general #####################################################################
+
+# bind R to reload tmux.conf
+bind M-r source-file "{{ print (env "TMUX_ROOT_PUB") "/tmux.conf" }}"
+
+## status bar ##################################################################
+
+# shortcut for changing status bar position
+bind-key s run-shell "tmux-toggle-status-bar"
+
+## claude ######################################################################
+
+# jump to the oldest/newest tmux pane flagged by an agent, unflagging it on
+# arrival. Panes that want something come first: a pane that errored or is
+# waiting on an answer outranks one that merely finished (see: tmux-agent-status)
+bind-key N run-shell "tmux-agent-status goto newest"
+
+## panes #######################################################################
+
+source-file -q  "{{ print (env "TMUX_ROOT_PUB") "/conf.d/keymap/pane.conf" }}"
+
+## windows #####################################################################
+
+source-file -q  "{{ print (env "TMUX_ROOT_PUB") "/conf.d/keymap/window.conf" }}"
+
+#### sessions
+
+# extra binding for choose-session; hides the sessions that exist to hold panes
+# rather than to be worked in (see: tmux-stack, tmux-popup)
+bind-key S choose-tree -s -f "#{?#{m/r:^(_|popup-),#{session_name}},0,1}"
+
+# bindings for next/prev session. tmux's own "switch-client -n|-p" cycles every
+# session on the server, including the pane-holding ones above, so the cycling
+# is done out of tree (see: tmux-switch-session)
+bind-key \{ run-shell "tmux-switch-session -d p"
+bind-key \} run-shell "tmux-switch-session -d n"
+bind-key -n M-, run-shell "tmux-switch-session -d p"
+bind-key -n M-. run-shell "tmux-switch-session -d n"
