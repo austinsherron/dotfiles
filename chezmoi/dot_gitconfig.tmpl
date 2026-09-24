@@ -8,34 +8,34 @@
     hooksPath    = {{ env "XDG_CONFIG_HOME" }}/git/hooks
     pager        = delta
 [alias]
-    checkoutr     = checkout
-    default       = change-branch -d
-    diff          = diff -M
-    hdiff         = diff HEAD
-    home          = checkout master
-    in-branches   = branch --contains
-    ls            = "!git branches"
-    lsf           = "!git branches -f"
-    ls-worktree   = "!bash -c 'source \"${BASH_LIB}/api/git.sh\" && git::list_worktrees -r'"
-    mmerge        = merge master --no-edit
-    mrebase       = rebase master
-    mylog         = log --author 'Austin Sherron'
-    mylog1        = mylog --oneline
-    new-branch    = "!git checkout -b \"$1\"\\/\"$2\" #"
-    publish       = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
-    radd          = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
-    root          = !ROOT=`git rev-parse --show-toplevel` && cd ${ROOT}
-    rtests        = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}/'**tests/*'
-    rundo         = !ROOT=`git rev-parse --show-toplevel` && git undo ${ROOT}
-    rdel          = "!git push origin :\"$1\" #"
-    rename        = "!git branch -m \"$1\"\\/\"$2\" #"
-    rls           = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\" | awk '{print $2}' | sed 's/refs\\/heads\\///'"
-    squash        = rebase -i
-    st            = status
-    undo          = checkout --
-    unstage       = reset HEAD
-    update        = !git fetch && git merge --no-edit origin/master
-    wipeout       = !git unstage && git undo && git clean -fd
+    add-all     = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}
+    add-tests   = !ROOT=`git rev-parse --show-toplevel` && git add ${ROOT}/'**tests/*'
+    checkoutr   = checkout
+    default     = change-branch -d
+    diff        = diff -M
+    hdiff       = diff HEAD
+    home        = checkout master
+    in-branches = branch --contains
+    ls          = "!git branches"
+    lsf         = "!git branches -f"
+    ls-worktree = "!bash -c 'source \"${BASH_LIB}/api/git.sh\" && git::list_worktrees -r'"
+    mmerge      = merge master --no-edit
+    mrebase     = rebase master
+    mylog       = log --author 'Austin Sherron'
+    mylog1      = mylog --oneline
+    new-branch  = "!git checkout -b \"$1\"\\/\"$2\" #"
+    publish     = !BRANCH=`git rev-parse --abbrev-ref HEAD` && git push -u origin ${BRANCH}
+    root        = !ROOT=`git rev-parse --show-toplevel` && cd ${ROOT}
+    rundo       = !ROOT=`git rev-parse --show-toplevel` && git undo ${ROOT}
+    rdel        = "!git push origin :\"$1\" #"
+    rename      = "!git branch -m \"$1\"\\/\"$2\" #"
+    rls         = "!git ls-remote | grep -v \"HEAD\\|refs/heads/master\" | awk '{print $2}' | sed 's/refs\\/heads\\///'"
+    squash      = rebase -i
+    st          = status
+    undo        = checkout --
+    unstage     = reset HEAD
+    update      = !git fetch && git merge --no-edit origin/master
+    wipeout     = !git unstage && git undo && git clean -fd
 
     # [stash]
     s   = stash
@@ -56,16 +56,17 @@
     stst         = "stash-staged"
 
     # [fuzzy]
-    fcheckout       = !BRANCH=`git lsf $@` && git change-branch ${BRANCH} #
-    frcheckout      = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git change-branch ${BRANCH}
-    fdiff           = !BRANCH=`git lsf $@` && git diff ${BRANCH} #
-    frdiff          = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
-    fdel            = !BRANCH=`git lsf $@` && git branch -d ${BRANCH} #
-    frdel           = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git rdel ${BRANCH}
-    ffdel           = !BRANCH=`git lsf $@` && git branch -D ${BRANCH} #
-    flog            = !BRANCH=`git lsf $@` && git log ${BRANCH} #
-    fmerge          = !BRANCH=`git lsf $@` && git merge ${BRANCH} --no-edit #
-    frebase         = !BRANCH=`git lsf $@` && git rebase ${BRANCH} #
+    fcheckout  = !BRANCH=`git lsf $@` && git change-branch ${BRANCH} #
+    frcheckout = !BRANCH=`git ls-remote | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git change-branch ${BRANCH}
+    fdiff      = !BRANCH=`git lsf $@` && git diff ${BRANCH} #
+    frdiff     = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git diff ${BRANCH}
+    fdel       = !BRANCH=`git lsf $@` && git branch -d ${BRANCH} #
+    frdel      = !BRANCH=`git rls $@ | sed 's/.*refs\\/heads\\///' | fzf --height=8 +i +m -e` && git rdel ${BRANCH}
+    ffdel      = !BRANCH=`git lsf $@` && git branch -D ${BRANCH} #
+    flog       = !BRANCH=`git lsf $@` && git log ${BRANCH} #
+    fmerge     = !BRANCH=`git lsf $@` && git merge ${BRANCH} --no-edit #
+    frebase    = !BRANCH=`git lsf $@` && git rebase ${BRANCH} #
+    fronto     = !REF=`git ml1 | fzf --height=8 +i +m -e | awk '{print $1}'` && git rebase origin/master --onto ${REF}
     # what commits are in this branch that aren't in that one
     fcommits-in-this-not-that = !BRANCH=`git lsf $@` && git log --no-merges ${BRANCH}..HEAD #
     # what commits are in that branch that aren't in this one
@@ -75,13 +76,15 @@
     # what commits are in this branch that aren't in that one
     fremote-commits-in-that-not-this = !BRANCH=`git rls $@ | awk '{print $2}' | cut -d '/' -f3- | fzf --height=8 +i +m -e` && git log --no-merges origin/${BRANCH}..HEAD
     # aliases for the four previous (lengthy) aliases
-    fcinthis = fcommits-in-this-not-that
-    fcinthat = fcommits-in-that-not-this
+    fcinthis  = fcommits-in-this-not-that
+    fcinthat  = fcommits-in-that-not-this
     frcinthis = fremote-commits-in-this-not-that
     frcinthat = fremote-commits-in-that-not-this
 
     # [micro]
     a   = add
+    aa  = add-all
+    at  = add-tests
     br  = rename
     c   = commit
     cl  = clone
@@ -111,10 +114,8 @@
     pb  = publish
     pl  = pull
     ps  = pullsub
-    ra  = radd
     rh  = "reset --hard HEAD~"
     rs  = "reset --soft HEAD~"
-    rt  = rtests
     rv  = revert
     u   = update
     und = undo
@@ -127,11 +128,11 @@
     # WARN: untested
     rmsub  =  "!git submodule deinit $1 && git rm $1"
 
-[push]
-    default = upstream
 [commit]
     # FIXME: this should be true, see FIXME at signingkey
     gpgsign = false
+[rebase]
+    updateRefs = true
 
 [url "https://user@hostname"]
     insteadOf = ssh://git@hostname

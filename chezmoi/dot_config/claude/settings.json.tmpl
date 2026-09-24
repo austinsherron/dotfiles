@@ -103,6 +103,11 @@
           {
             "type": "command",
             "command": "cld-agent-status --state done"
+          },
+          {
+            "type": "command",
+            "command": "cld-index update 2> /dev/null || true",
+            "timeout": 10
           }
         ]
       }
@@ -114,6 +119,30 @@
           {
             "type": "command",
             "command": "save-plan",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cld-index update 2> /dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cld-index update 2> /dev/null || true",
             "timeout": 10
           }
         ]
@@ -137,5 +166,6 @@
     "tmux-agent-sidebar@hiroppy": true
   },
   "tui": "fullscreen",
-  "model": "opus[1m]"
+  "model": "opus[1m]",
+  "includeCoAuthoredBy": false
 }
