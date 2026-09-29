@@ -79,11 +79,24 @@
   "hooks": {
     "Notification": [
       {
-        "matcher": "",
+        "matcher": "permission_prompt|worker_permission_prompt",
         "hooks": [
           {
             "type": "command",
-            "command": "notify-terminal -t 🔔 Claude Code -m Please review changes"
+            "command": "notify-terminal -t 🔔 Claude Code -m Permission needed"
+          },
+          {
+            "type": "command",
+            "command": "cld-agent-status --state input"
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt|agent_needs_input",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-terminal -t 💤 Claude Code -m Waiting for input"
           },
           {
             "type": "command",
@@ -106,7 +119,49 @@
           },
           {
             "type": "command",
+            "command": "cld-save plans",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "cld-save handoffs",
+            "timeout": 10
+          },
+          {
+            "type": "command",
             "command": "cld-index update 2> /dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-terminal -t ❌ Claude Code -m Session ended on an error"
+          },
+          {
+            "type": "command",
+            "command": "cld-agent-status --state error"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cld-save plans",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "cld-save handoffs",
             "timeout": 10
           }
         ]
@@ -118,7 +173,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "save-plan",
+            "command": "cld-save plans",
             "timeout": 10
           }
         ]
