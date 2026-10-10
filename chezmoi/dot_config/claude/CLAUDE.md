@@ -99,3 +99,13 @@ change set:
 
 ...
 ```
+
+## When addressing PR bot comments
+
+When asked to "handle" or "address" PR comments from code review review bots (i.e.: coderabbit, 
+Claude, etc.), please do so according to the following rules:
+
+* Only address the comments that are relevant/necessary.
+* Please resolve both the addressed and the ignored comments.
+* If replies are posted that reference an incoming fix, please mention that the fix is incoming/not
+  committed yet so the bots aren't confused by the apparent inconsistency.

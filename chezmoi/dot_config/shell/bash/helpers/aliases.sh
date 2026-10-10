@@ -5,7 +5,6 @@
 ## rename ######################################################################
 
 alias c="clear"
-alias cld="claude"
 alias db="dbxcli"
 alias g="git"
 alias ls="lsd --group-directories-first"
@@ -22,6 +21,13 @@ alias vim="nvim"
 alias wtf="wtfutil"
 alias zd="z"
 alias zx="zoxide"
+
+## claude ######################################################################
+
+alias cl="cld ls -f"
+alias cr="cld ls -f -r"
+alias clh="cld ls h -f"
+alias clp="cld ls p -f"
 
 ## config ######################################################################
 
